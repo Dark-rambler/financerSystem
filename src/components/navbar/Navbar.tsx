@@ -4,7 +4,7 @@ const Navbar = () => {
     return (
 
      <div className="text-3xl font-bold underline">
-        Hola a todos
+       This is a test to prove the functionality of the fork
      </div>
 
     )
