@@ -7,9 +7,10 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
     return (
-        < >
+        <div className='h-screen'>
             <Navbar />
-        </>
+            {children}
+        </div>
 
 
     )
