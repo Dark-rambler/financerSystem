@@ -8,11 +8,20 @@ function App () {
   const { isLoggedIn } = useLoginStore()
   return (
     <Routes>
-      <Route path='*' element={<Navigate to={'/login'}></Navigate>}></Route>
+      <Route path='*' element={<Navigate to={'/login'} />} />
       <Route element={<MainLayout />}>
-        <Route path='/login' element={<Login />} />
+        <Route
+          path='/login'
+          element={
+            isLoggedIn ? <Navigate to={'/techobol/deposit-order'} /> : <Login />
+          }
+        />
         {isLoggedIn && (
-          <Route path='/techobol/deposit-order' element={<DepositOrder />} />
+          <>
+            {' '}
+            <Route path='/techobol/deposit-order' element={<DepositOrder />} />
+            <Route path='/megadis/deposit-order' element={<div>Holaaa esto es megadis</div>} />
+          </>
         )}
       </Route>
     </Routes>

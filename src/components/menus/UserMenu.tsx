@@ -17,7 +17,7 @@ const UserMenu = () => {
             <div
               className={`${
                 open ? 'bg-blue-600 text-white' : 'border border-blue-600'
-              }  rounded-full w-9 h-9 flex items-center justify-center text-blue-600 font-bold hover:cursor-pointer hover:bg-blue-600 hover:text-white select-none`}
+              }  transition ease-in-out rounded-full w-9 h-9 flex items-center justify-center text-blue-600 font-bold hover:cursor-pointer hover:bg-blue-600 hover:text-white select-none`}
             >
               {fullName.charAt(0).toUpperCase()}
             </div>
@@ -42,7 +42,7 @@ const UserMenu = () => {
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <button onClick={logOut} className='flex items-center space-x-2 hover:text-white m-1 text-left text-sm font-gray-800  p-2 hover:bg-blue-600 hover:rounded-md bg-white rounded-b-md'>
+                  <button onClick={logOut} className=' transition ease-in-out flex items-center space-x-2 hover:text-white m-1 text-left text-sm font-gray-800  p-2 hover:bg-blue-600 hover:rounded-md bg-white rounded-b-md'>
                     {active ? (<HoverIcon />) : (<NormalIcon />)}
                     
                     <p>Cerrar sesión</p>
