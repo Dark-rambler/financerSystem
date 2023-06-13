@@ -1,19 +1,13 @@
+import { Outlet } from 'react-router-dom'
 import Navbar from '../components/navbar/Navbar'
 
-
-interface MainLayoutProps {
-    children: React.ReactNode
-}
-
-const MainLayout = ({ children }: MainLayoutProps) => {
-    return (
-        <div className='h-screen'>
-            <Navbar />
-            {children}
-        </div>
-
-
-    )
+const MainLayout = () => {
+  return (
+    <div className='h-screen'>
+      <Navbar />
+      <Outlet />
+    </div>
+  )
 }
 
 export default MainLayout
