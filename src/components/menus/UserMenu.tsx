@@ -14,13 +14,13 @@ const UserMenu = () => {
         <>
           <Menu.Button>
             {' '}
-            <div
+            <button
               className={`${
-                open ? 'bg-blue-600 text-white' : 'border border-blue-600'
-              }  transition ease-in-out rounded-full w-9 h-9 flex items-center justify-center text-blue-600 font-bold hover:cursor-pointer hover:bg-blue-600 hover:text-white select-none`}
+                open ? 'bg-blue-700 text-white' : ' border-blue-600'
+              } hover:shadow-md focus:bg-blue-800 hover:bg-blue-700 bg-blue-600 transition ease-in-out rounded-lg w-9 h-9 flex items-center justify-center text-white font-bold hover:cursor-pointer select-none`}
             >
               {fullName.charAt(0).toUpperCase()}
-            </div>
+            </button>
           </Menu.Button>
           <Transition
             as={Fragment}
@@ -31,18 +31,18 @@ const UserMenu = () => {
             leaveFrom='transform opacity-100 scale-100'
             leaveTo='transform opacity-0 scale-95'
           >
-            <Menu.Items className='border whitespace-nowrap border-gray-200 bg-white shadow-md rounded-md absolute mt-2 right-2 flex flex-col'>
+            <Menu.Items className='border whitespace-nowrap border-slate-200 bg-white shadow-md rounded-md absolute mt-2 right-2 flex flex-col'>
               <Menu.Item>
                 {({ active }) => (
-                  <div className='px-4 py-3 border-b border-gray-200'>
-                    <p className='text-sm text-gray-800'>{fullName}</p>
-                    <p className='text-xs text-gray-500'>{role}</p>
+                  <div className='px-4 py-3 border-b border-slate-200'>
+                    <p className='text-sm text-slate-800'>{fullName}</p>
+                    <p className='text-xs text-slate-500'>{role}</p>
                   </div>
                 )}
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <button onClick={logOut} className=' transition ease-in-out flex items-center space-x-2 hover:text-white m-1 text-left text-sm font-gray-800  p-2 hover:bg-blue-600 hover:rounded-md bg-white rounded-b-md'>
+                  <button onClick={logOut} className='  text-slate-800 focus:bg-blue-700 transition ease-in-out flex items-center space-x-2 hover:text-white m-1 text-left text-sm font-slate-800  p-2 hover:bg-blue-600 hover:rounded-md bg-white rounded-b-md'>
                     {active ? (<HoverIcon />) : (<NormalIcon />)}
                     
                     <p>Cerrar sesión</p>

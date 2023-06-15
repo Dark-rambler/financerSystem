@@ -20,7 +20,7 @@ function App () {
           <>
             {' '}
             <Route path='/techobol/deposit-order' element={<DepositOrder />} />
-            <Route path='/megadis/deposit-order' element={<div>Holaaa esto es megadis</div>} />
+            <Route path='/megadis/deposit-order' element={<div className='h-full bg-slate-200'>Holaaa esto es megadis</div>} />
           </>
         )}
       </Route>

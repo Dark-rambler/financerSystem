@@ -6,18 +6,18 @@ interface BlueButtonProps {
 
 const BlueButton = ({ label, onClick, isLoading }: BlueButtonProps) => {
   return (
-    <div className='w-full'>
+    <div className=' w-full'>
       <button
         onClick={onClick}
-        className='font-semibold w-full bg-blue-600 text-white p-2 rounded-md hover:opacity-80 select-none disabled:opacity-80 disabled:cursor-not-allowed'
+        className='active:bg-blue-800 hover:bg-blue-700 font-medium text-sm w-full bg-blue-600 text-white p-2 rounded-md  select-none disabled:opacity-80 disabled:cursor-not-allowed h-11'
         disabled={isLoading}
       >
         {isLoading ? (
           <div className="flex justify-center">
              <svg
-            className='w-6 h-6 animate-spin'
-            width='24'
-            height='24'
+            className='w-5 h-5 animate-spin'
+            width='20'
+            height='20'
             viewBox='0 0 24 24'
             fill='none'
             xmlns='http://www.w3.org/2000/svg'

@@ -6,7 +6,7 @@ export const NormalIcon = () => {
       viewBox='0 0 24 24'
       stroke-width='1.5'
       stroke='currentColor'
-      className='w-4 h-4 text-gray-700'
+      className='w-4 h-4 text-slate-700'
     >
       <path
         stroke-linecap='round'
