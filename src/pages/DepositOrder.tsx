@@ -1,28 +1,29 @@
-import RegisterDepositOrderModal from '../modals/RegisterDepositOrderModal'
 import { Button } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
+
+import { useNavigate } from 'react-router-dom'
+import {TbPlus} from 'react-icons/tb'
 
 
 const DepositOrder = () => {
-  const [opened, { open, close }] = useDisclosure(false)
-
+  const navigate = useNavigate()
   return (
-    <div className='h-full bg-slate-200'>
+    <div className='h-full bg-white'>
       <div className='w-full p-5'>
         <div>
           <div className='w-64'>
-            {/* <BlueButton label={'Emitir nueva orden de depósito'} onClick={() => {() => window.my_modal_1.showModal()} } isLoading={false}/> */}
+            {/* <blueButton label={'Emitir nueva orden de depósito'} onClick={() => {() => window.my_modal_1.showModal()} } isLoading={false}/> */}
             <Button
+            leftIcon={<TbPlus />}
               size='sm'
               variant='filled'
               color='blue'
               radius={'sm'}
               className='bg-blue-600 hover:bg-blue-700'
-              onClick={open}
+              // onClick={open}
+              onClick={() => {navigate('/techobol/register-deposit-order')}}
             >
               Emitir nueva orden de depósito
             </Button>
-            <RegisterDepositOrderModal opened={opened} close={close}/>
    
           </div>
         </div>

@@ -12,7 +12,7 @@ const PasswordInput = ({ password, setPassword }: PasswordInputProps) => {
     <div className='space-y-2'>
       <div className='flex space-x-1'>
         <p className='text-sm font-medium text-slate-800'>Contraseña</p>
-        <span className='text-xs text-red-500'>*</span>
+        <span className='text-xs text-red-600'>*</span>
       </div>
 
       <div className='flex relative'>

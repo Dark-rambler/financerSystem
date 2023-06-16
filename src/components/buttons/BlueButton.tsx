@@ -1,10 +1,10 @@
-interface BlueButtonProps {
+interface blueButtonProps {
   label: string
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
   isLoading: boolean
 }
 
-const BlueButton = ({ label, onClick, isLoading }: BlueButtonProps) => {
+const blueButton = ({ label, onClick, isLoading }: blueButtonProps) => {
   return (
     <div className=' w-full'>
       <button
@@ -46,4 +46,4 @@ const BlueButton = ({ label, onClick, isLoading }: BlueButtonProps) => {
   )
 }
 
-export default BlueButton
+export default blueButton

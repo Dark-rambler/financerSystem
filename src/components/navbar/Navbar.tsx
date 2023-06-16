@@ -14,7 +14,7 @@ const Navbar = () => {
   const isTechoBol = location.pathname.includes('techobol')
 
   return (
-    <div className=' h-16 bg-slate-200 border-b border-slate-200 px-3'>
+    <div className=' h-16 bg-white border-b border-slate-200 px-3'>
       <div className='relative flex justify-center items-center h-full'>
         <div className='absolute left-0 flex items-center space-x-2'>
           <RiMoneyCnyBoxFill className='text-[40px] text-blue-600' />
