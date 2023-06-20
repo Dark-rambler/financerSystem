@@ -27,14 +27,6 @@ const LoginCard = () => {
           >
           Iniciar sesión
         </Button>
-        {/* <blueButton
-          label={'Iniciar sesión'}
-          onClick={() =>
-            authentication.signIn(authentication.email, authentication.password)
-          }
-          isLoading={authentication.isLoading}
-          // isLoading={true}
-        /> */}
       </div>
     </div>
   )
