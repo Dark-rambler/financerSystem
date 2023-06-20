@@ -1,5 +1,7 @@
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { useRegisterDepositOrder } from '../../hooks/useRegisterDepositOrder'
+import dayjs from 'dayjs'
+import 'dayjs/locale/es-us'
 
 interface PDFVisualizerProps {
   depositOrder: ReturnType<typeof useRegisterDepositOrder>
@@ -15,7 +17,9 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
   const firstPage = pages[0]
   const { width, height } = firstPage.getSize()
   const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
-  const helveticaItalicFont = await pdfDoc.embedFont( StandardFonts.HelveticaOblique)
+  const helveticaItalicFont = await pdfDoc.embedFont(
+    StandardFonts.HelveticaOblique
+  )
 
   const financeTechical = depositOrder.employeesData.find(
     employee => employee.role.name === 'Técnico de finanzas'
@@ -46,13 +50,18 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
     }
   )
 
-  firstPage.drawText(`${depositOrder.form.values.orderDate}`, {
-    x: 112,
-    y: height - 162,
-    size: 10,
-    font: helveticaFont,
-    color: rgb(0, 0, 0)
-  })
+  // const newDate: string = depositOrder.form.values.orderDate
+
+  firstPage.drawText(
+    `${depositOrder.form.values.orderDate?.toLocaleDateString()}`,
+    {
+      x: 112,
+      y: height - 162,
+      size: 10,
+      font: helveticaFont,
+      color: rgb(0, 0, 0)
+    }
+  )
 
   firstPage.drawText(
     `${depositOrder.form.values.administrator.toUpperCase()}`,
@@ -73,7 +82,7 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
     color: rgb(0, 0, 0)
   })
 
-  firstPage.drawText(`${depositOrder.form.values.orderNumber}`, {
+  firstPage.drawText(`${depositOrder.form.values.orderNumber.toUpperCase()}`, {
     x: 450,
     y: height - 162,
     size: 14,
@@ -81,13 +90,20 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
     color: rgb(0, 0, 0)
   })
 
-  firstPage.drawText(`${depositOrder.form.values.orderRange[0]} - ${depositOrder.form.values.orderRange[1]}`, {
-    x: 196,
-    y: height - 272,
-    size: 10,
-    font: helveticaFont,
-    color: rgb(0, 0, 0)
-  })
+  firstPage.drawText(
+    `${dayjs(depositOrder.form.values.orderRange[0])
+      .locale('es-us')
+      .format('DD MMMM YYYY')} - ${dayjs(depositOrder.form.values.orderRange[1])
+      .locale('es-us')
+      .format('DD MMMM YYYY')}`,
+    {
+      x: 196,
+      y: height - 272,
+      size: 10,
+      font: helveticaFont,
+      color: rgb(0, 0, 0)
+    }
+  )
 
   firstPage.drawText(`${depositOrder.form.values.amount} BS.`, {
     x: 187,
@@ -129,7 +145,7 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
     color: rgb(0, 0, 0)
   })
 
-  firstPage.drawText(`${depositOrder.form.values.limitedDate}`, {
+  firstPage.drawText(`${dayjs(depositOrder.form.values.limitedDate).locale('es-us').format('DD MMMM YYYY')}`, {
     x: 274,
     y: height - 502,
     size: 8,

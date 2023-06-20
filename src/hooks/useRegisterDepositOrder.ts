@@ -26,8 +26,18 @@ interface SelectManineData {
   label: string
 }
 
+interface useFormInterface { 
+    regional: string
+    administrator: string
+    orderNumber: string
+    orderDate: Date | null
+    orderRange: [Date | null, Date | null]
+    amount: string
+    limitedDate: Date | null
+}
+
 export const useRegisterDepositOrder = () => {
-  const form = useForm({
+  const form = useForm<useFormInterface>({
     initialValues: {
       regional: '',
       administrator: '',
@@ -75,7 +85,7 @@ export const useRegisterDepositOrder = () => {
           label: regional.name
         }))
         setData(mantineSelectData)
-      })
+      }).catch(err => console.log(err))
   }
 
   const fetchEmployeesWithRoles = async () => {

@@ -18,7 +18,7 @@ const useAuthentication = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
     }
-    const response = await fetch('http://localhost:8080/api/authentication/signIn', requestOptions)
+    const response = await fetch(`${import.meta.env.VITE_API_DOMAIN}/authentication/signIn`, requestOptions)
 
     if (response.status !== 200){
       setIsLoading(false)
