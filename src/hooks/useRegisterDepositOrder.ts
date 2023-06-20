@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLoginStore } from '../components/store/loginStore'
 import { useForm, isNotEmpty, } from '@mantine/form'
-import { PDFDocument } from 'pdf-lib'
 
 interface RegionalData {
   id: number
@@ -94,8 +93,8 @@ export const useRegisterDepositOrder = () => {
       })
   }
 
-  const onSelectRegional = (regionalSelected: string) => {
-    const employee = employeesData.find(
+  const onSelectRegional = async (regionalSelected: string) => {
+    const employee = await employeesData.find(
       employee =>
         employee.regionalOffice.name === regionalSelected &&
         employee.role.name.includes(

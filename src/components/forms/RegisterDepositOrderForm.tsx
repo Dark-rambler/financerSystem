@@ -29,19 +29,12 @@ const RegisterDepositOrderForm = ({
   depositOrder
 }: RegisterDepositOrderFormProps) => {
 
-
-  const onSubmit = () => {
-    PDFModifier({depositOrder})
-
-  }
-
   return (
     <Box
       component='form'
       className='space-y-8 h-full'
       onSubmit={depositOrder.form.onSubmit(values => {
-        console.log('clicked')
-        console.log(values)
+        PDFModifier({depositOrder})
       })}
     >
       {' '}
@@ -134,7 +127,7 @@ const RegisterDepositOrderForm = ({
         </SimpleGrid>
       </Box>
       <Divider />
-      <Button className='w-full bg-blue-600 hover:bg-blue-700' type='submit' onClick={onSubmit}>
+      <Button className='w-full bg-blue-600 hover:bg-blue-700' type='submit'>
         {depositOrder.isDocumentGenerated ? 'Editar orden de depósito' : 'Generar orden de depósito'}
       </Button>
     </Box>
