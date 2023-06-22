@@ -33,7 +33,7 @@ const UserMenu = () => {
           >
             <Menu.Items className='border whitespace-nowrap border-slate-200 bg-white shadow-md rounded-md absolute mt-2 right-2 flex flex-col'>
               <Menu.Item>
-                {({ active }) => (
+                {() => (
                   <div className='px-4 py-3 border-b border-slate-200'>
                     <p className='text-sm text-slate-800'>{fullName}</p>
                     <p className='text-xs text-slate-600'>{role}</p>

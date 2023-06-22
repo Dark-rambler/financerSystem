@@ -33,7 +33,7 @@ const RegisterDepositOrderForm = ({
     <Box
       component='form'
       className='space-y-8 h-full'
-      onSubmit={depositOrder.form.onSubmit(values => {
+      onSubmit={depositOrder.form.onSubmit(() => {
         PDFModifier({depositOrder})
       })}
     >

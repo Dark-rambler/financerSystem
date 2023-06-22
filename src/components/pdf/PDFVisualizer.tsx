@@ -15,7 +15,7 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
 
   const pages = pdfDoc.getPages()
   const firstPage = pages[0]
-  const { width, height } = firstPage.getSize()
+  const { height } = firstPage.getSize()
   const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
   const helveticaItalicFont = await pdfDoc.embedFont(
     StandardFonts.HelveticaOblique

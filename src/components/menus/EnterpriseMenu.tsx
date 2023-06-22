@@ -75,7 +75,7 @@ const EnterpriseMenu = ({ isTechoBol }: EnterpriseMenuProps) => {
             >
               <Menu.Items className='absolute mt-1.5 shadow-md rounded-md'>
                 <Menu.Item>
-                  {({ active }) => (
+                  {() => (
                     <>
                       {isTechoBol ? (
                         <MegadisMenu open={open} close={close}/>
