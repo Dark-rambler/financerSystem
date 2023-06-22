@@ -21,7 +21,7 @@ const RegisterDepositOrder = () => {
                 className='absolute left-[-50px]'
                 size={'md'}
                 onClick={() => {
-                  navigate(-1)
+                  navigate('/deposit-order')
                 }}
               >
                 <TbChevronLeft />
@@ -38,8 +38,9 @@ const RegisterDepositOrder = () => {
               <PDFVisualizer depositOrder={registerOrder} />
             </div>
             <Button
-              disabled
+              disabled={!registerOrder.isDocumentGenerated}
               className=' disabled:hover:cursor-not-allowed w-full bg-blue-600 hover:bg-blue-700'
+              onClick={() => {registerOrder.onCreateDepositOrder()}}
             >
               Enviar orden de depósito
             </Button>

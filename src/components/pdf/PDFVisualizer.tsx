@@ -169,6 +169,7 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
   const blob = new Blob([bytes], { type: 'application/pdf' })
   const docUrl = URL.createObjectURL(blob)
   depositOrder.setPdfDoc(docUrl)
+  depositOrder.setIsDocumentGenerated(true)
 }
 
 const PDFVisualizer = ({ depositOrder }: PDFVisualizerProps) => {
