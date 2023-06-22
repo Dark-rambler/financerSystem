@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLoginStore } from '../components/store/loginStore'
-import { useForm, isNotEmpty } from '@mantine/form'
+import { useForm, isNotEmpty, } from '@mantine/form'
 
 interface RegionalData {
   id: number
@@ -26,8 +26,18 @@ interface SelectManineData {
   label: string
 }
 
+interface useFormInterface { 
+    regional: string
+    administrator: string
+    orderNumber: string
+    orderDate: Date | null
+    orderRange: [Date | null, Date | null]
+    amount: string
+    limitedDate: Date | null
+}
+
 export const useRegisterDepositOrder = () => {
-  const form = useForm({
+  const form = useForm<useFormInterface>({
     initialValues: {
       regional: '',
       administrator: '',
@@ -39,29 +49,22 @@ export const useRegisterDepositOrder = () => {
     },
     validate: {
         regional: isNotEmpty('Seleccione una región'),
-        administrator: isNotEmpty('Seleccione una región para ver el administrador'),
+        administrator: isNotEmpty('Seleccione una región válida'),
         orderNumber: isNotEmpty('Ingrese el número de orden'),
         orderDate: isNotEmpty('Seleccione la fecha de la orden'),
-        orderRange: isNotEmpty('Seleccione el periodo del deposito'),
-        amount: isNotEmpty('Ingrese el monto del deposito'),
-        limitedDate: isNotEmpty('Seleccione la fecha limite del deposito')
+        orderRange: (value) => { 
+            if (value[0] === null || value[1] === null) {
+                return 'Seleccione el rango de fechas del depósito'
+            }
+        },
+        amount: isNotEmpty('Ingrese el monto del depósito'),
+        limitedDate: isNotEmpty('Seleccione la fecha limite del depósito')
     }
   })
-  // const [regionalData, setRegionalData] = useState<RegionalData[]>([])
   const [employeesData, setEmployeesData] = useState<EmployeeData[]>([])
-
+  const [isDocumentGenerated, setIsDocumentGenerated] = useState(false)
   const [data, setData] = useState<SelectManineData[]>([])
-
-  // const [regional, setRegional] = useState<string | null>(null)
-  // const [administrator, setAdministrator] = useState<string>('')
-  // const [orderNumber, setOrderNumber] = useState<string>('')
-  // const [orderDate, setOrderDate] = useState<Date | null>(null)
-  // const [orderRange, setOrderRange] = useState<[Date | null, Date | null]>([
-  //   null,
-  //   null
-  // ])
-  // const [amount, setAmount] = useState<number | ''>('')
-  // const [limitedDate, setLimitedDate] = useState<Date | null>(null)
+  const [pdfDoc, setPdfDoc] = useState< string | undefined>(undefined)
 
   const { token } = useLoginStore()
 
@@ -82,7 +85,7 @@ export const useRegisterDepositOrder = () => {
           label: regional.name
         }))
         setData(mantineSelectData)
-      })
+      }).catch(err => console.log(err))
   }
 
   const fetchEmployeesWithRoles = async () => {
@@ -100,8 +103,8 @@ export const useRegisterDepositOrder = () => {
       })
   }
 
-  const onSelectRegional = (regionalSelected: string) => {
-    const employee = employeesData.find(
+  const onSelectRegional = async (regionalSelected: string) => {
+    const employee = await employeesData.find(
       employee =>
         employee.regionalOffice.name === regionalSelected &&
         employee.role.name.includes(
@@ -109,8 +112,8 @@ export const useRegisterDepositOrder = () => {
         )
     )
   
-    if (!employee) form.setValues({ administrator: '' })
-    else form.setValues({ administrator: `${employee?.name} ${employee?.lastName}` })
+    if (!employee) form.setFieldValue('administrator', '')
+    else form.setFieldValue('administrator', `${employee.name} ${employee.lastName}`)
   }
 
   useEffect(() => {
@@ -119,24 +122,13 @@ export const useRegisterDepositOrder = () => {
   }, [])
 
   return {
-    // regionalData,
-    // setRegionalData,
     data,
-    // regional,
-    // setRegional,
-    // administrator,
-    // setAdministrator,
-    // orderNumber,
-    // setOrderNumber,
-    // orderDate,
-    // setOrderDate,
-    // orderRange,
-    // setOrderRange,
-    // amount,
-    // setAmount,
-    // limitedDate,
-    // setLimitedDate,
     onSelectRegional,
-    form
+    form,
+    employeesData,
+    isDocumentGenerated,
+    setIsDocumentGenerated,
+    pdfDoc,
+    setPdfDoc
   }
 }
