@@ -4,6 +4,8 @@ import { useForm, isNotEmpty } from '@mantine/form'
 import { succesToast } from '../services/toasts'
 import { useNavigate } from 'react-router-dom'
 
+
+
 interface RegionalData {
   id: number
   name: string
@@ -70,6 +72,7 @@ export const useRegisterDepositOrder = () => {
   const [isDocumentGenerated, setIsDocumentGenerated] = useState(false)
   const [data, setData] = useState<SelectManineData[]>([])
   const [pdfDoc, setPdfDoc] = useState<string | undefined>(undefined)
+  const [pdfFile, setPdfFile] = useState<File | undefined>(undefined)
 
   const [regionalId, setRegionalId] = useState<number | undefined>(undefined)
   const [administratorId, setAdministratorId] = useState<number | undefined>(
@@ -80,6 +83,8 @@ export const useRegisterDepositOrder = () => {
   const navigate = useNavigate()
 
   const fetchRegionalData = async () => {
+
+
     fetch(`${import.meta.env.VITE_API_DOMAIN}/regional/regionals`, {
       method: 'GET',
       headers: {
@@ -137,24 +142,61 @@ export const useRegisterDepositOrder = () => {
   }
 
   const onCreateDepositOrder = async () => {
+    const formData = new FormData() 
+    formData.append('pdfFile', pdfFile as File); // Adjunta el archivo PDF al formulario
+
+    // formData.append('pdfDoc', pdfDoc as string); // Adjunta el archivo PDF al formulario
+
+    // const jsonData = {
+    //   orderNumber: form.values.orderNumber,
+    //   orderRange: form.values.orderRange,
+    //   orderDate: form.values.orderDate,
+    //   amount: form.values.amount,
+    //   limitedDate: form.values.limitedDate,
+    //   regional: regionalId,
+    //   administrator: administratorId
+    // }
+      
+    // const blob = new Blob([jsonData as BlobPart], {
+    //   type: 'application/json'
+    // });
+
+    // formData.append('jsonData', blob) 
+  
+
+
+    formData.append('orderNumber', form.values.orderNumber);
+    formData.append('orderRange', form.values.orderRange.toString());
+    formData.append('orderDate', form.values.orderDate?.toISOString() as string);
+    formData.append('amount', form.values.amount);
+    formData.append('limitedDate', form.values.limitedDate?.toString() as string);
+    formData.append('regional', regionalId?.toString() as string);
+    formData.append('administrator', administratorId?.toString() as string);
+
+
+    
     try {
       fetch(
         `${import.meta.env.VITE_API_DOMAIN}/deposit-order/create-deposit-order`,
         {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/json',
+            // "Content-Type": "multipart/form-data",
             'x-access-token': token
           },
-          body: JSON.stringify({
-            orderNumber: form.values.orderNumber,
-            orderRange: form.values.orderRange,
-            orderDate: form.values.orderDate,
-            amount: form.values.amount,
-            limitedDate: form.values.limitedDate,
-            regional: regionalId,
-            administrator: administratorId
-          })
+          // body: JSON.stringify({
+          //   orderNumber: form.values.orderNumber,
+          //   orderRange: form.values.orderRange,
+          //   orderDate: form.values.orderDate,
+          //   amount: form.values.amount,
+          //   limitedDate: form.values.limitedDate,
+          //   regional: regionalId,
+          //   administrator: administratorId,
+          //   pdfDoc: pdfDoc,
+          //   pdfFile: pdfFile
+          // }),
+          body: formData
         }
       )
         .then(res => {
@@ -163,7 +205,6 @@ export const useRegisterDepositOrder = () => {
         .then(data => {
           succesToast('Orden de depósito enviada con éxito')
           navigate('/deposit-order')
-          console.log(data)
         })
 
     } catch (err) {
@@ -185,6 +226,8 @@ export const useRegisterDepositOrder = () => {
     setIsDocumentGenerated,
     pdfDoc,
     setPdfDoc,
-    onCreateDepositOrder
+    onCreateDepositOrder,
+    pdfFile,
+    setPdfFile
   }
 }

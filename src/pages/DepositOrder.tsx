@@ -4,140 +4,23 @@ import { useNavigate } from 'react-router-dom'
 import { TbPlus } from 'react-icons/tb'
 import { useEffect } from 'react'
 import { useLoginStore } from '../components/store/loginStore'
-import { useState, useMemo } from 'react'
-import { Table } from '../components/table/Table'
-import StatusBadge from '../components/badges/StatusBadge'
-import RevisionStatusBadge from '../components/badges/RevisionStatusBadge'
-import ReviewDepositOrder from '../components/buttons/ReviewDepositOrder'
-import CancelDepositOrder from '../components/buttons/CancelDepositOrder'
-//import default as another
-import CancelDepositOrderModal from '../components/modals/CancelDepositOrder'
+import { useState } from 'react'
 
-import { ColumnDef } from '@tanstack/react-table'
-import dayjs from 'dayjs'
-import 'dayjs/locale/es-us'
-
-interface Regional {
-  id: number
-  name: string
-}
-
-interface Employee {
-  id: number
-  name: string
-  lastName: string
-}
-interface DepositOrderModel {
-  amount: number
-  deliveryDate: Date
-  employee: Employee
-  endDate: Date
-  id: number
-  orderNumber: string
-  regional: Regional
-  revitionStatus: string
-  solitudeDate: Date
-  startDate: Date
-  status: string
-}
+import DepositOrderTable from '../components/table/DepositOrderTable'
+import { useAmazonS3 } from '../hooks/useAmazonS3'
 
 const DepositOrder = () => {
   const navigate = useNavigate()
   const { token } = useLoginStore()
   const [despositOrderData, setDepositOrderData] = useState([])
+  const s3 = useAmazonS3()
 
-  const cols = useMemo<ColumnDef<DepositOrderModel>[]>(
-    () => [
-      {
-        header: 'Nº Orden',
-        cell: row => row.renderValue(),
-        accessorKey: 'orderNumber',
-        enableSorting: true
-      },
-      {
-        header: 'Fecha de orden',
-        cell: row =>
-          `${dayjs(row.row.original.solitudeDate)
-            .locale('es-us')
-            .format('DD MMMM YYYY')}`,
-        accessorKey: 'solitudeDate'
-      },
-      {
-        header: 'Regional',
-        cell: row => row.renderValue(),
-        accessorKey: 'regional.name'
-      },
-      {
-        header: 'Administrador',
-        cell: row =>
-          row.row.original.employee.name +
-          ' ' +
-          row.row.original.employee.lastName,
-        accessorKey: 'employee'
-      },
-      {
-        header: 'Monto',
-        cell: row => `${row.renderValue()} Bs.`,
-        accessorKey: 'amount'
-      },
-      {
-        header: 'Periodo deposito',
-        cell: row =>
-          `${dayjs(row.row.original.startDate)
-            .locale('es-us')
-            .format('DD MMMM YYYY')} - ${dayjs(row.row.original.endDate)
-            .locale('es-us')
-            .format('DD MMMM YYYY')}`
-      },
-      {
-        header: 'Fecha limite',
-        cell: row =>
-          `${dayjs(row.row.original.deliveryDate)
-            .locale('es-us')
-            .format('DD MMMM YYYY')}`,
-        accessorKey: 'deliveryDate'
-      },
-      {
-        header: 'Estado de entrega',
-        cell: row => <StatusBadge Status={row.row.original.status} />,
-        accessorKey: 'status'
-      },
-      {
-        header: 'Estado de revisión',
-        cell: row => (
-          <RevisionStatusBadge
-            Status={row.row.original.status}
-            RevisionStatus={row.row.original.revitionStatus}
-          />
-        ),
-        accessorKey: 'revitionStatus'
-      },
-      {
-        header: 'Documento',
-        cell: row => row.renderValue(),
-        accessorKey: 'document'
-      },
-      {
-        header: 'Informe',
-        cell: row => row.renderValue(),
-        accessorKey: 'report'
-      },
-      {
-        header: '',
-        cell: row => <ReviewDepositOrder status={row.row.original.status} />,
-        accessorKey: 'review'
-      },
-      {
-        header: '',
-        cell: row => {
-          // setSelectedOrder(row.row.original)
-          return <CancelDepositOrder status={row.row.original.status} id={row.row.original.id} />
-        },
-        accessorKey: 'cancel'
-      }
-    ],
-    []
-  )
+  const conectionWithR2 = async () => {
+    // console.log(await s3?.listBuckets().promise())
+
+    // console.log(await s3?.listObjects({ Bucket: 'finance-docs' }).promise())
+
+  }
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_DOMAIN}/deposit-order/deposit-orders`, {
@@ -151,6 +34,8 @@ const DepositOrder = () => {
       .then(data => {
         setDepositOrderData(data)
       })
+
+    conectionWithR2()
   }, [])
 
   return (
@@ -175,8 +60,8 @@ const DepositOrder = () => {
             </Button>
           </div>
           <div className='h-full'>
-            {/* <DepositOrderTable depositOrderData={despositOrderData} /> */}
-            <Table data={despositOrderData} columns={cols} showNavigation/>
+            <DepositOrderTable depositOrderData={despositOrderData} />
+            {/* <Table data={despositOrderData} columns={cols} showNavigation/> */}
           </div>
         </div>
       </div>
