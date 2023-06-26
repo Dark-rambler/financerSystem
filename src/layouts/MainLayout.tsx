@@ -1,15 +1,16 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../components/navbar/Navbar'
+import { Stack } from '@mantine/core'
 
 const MainLayout = () => {
   return (
-    <div className='h-screen'>
-      <Navbar />
-      <div className='h-[calc(100%-64px)]'>
-      <Outlet />
+    <Stack className='h-screen' spacing={0}>
+      <div className='min-h-16'>
+        <Navbar />
       </div>
- 
-    </div>
+
+      <Outlet />
+    </Stack>
   )
 }
 

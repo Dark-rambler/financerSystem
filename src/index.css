@@ -11,7 +11,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: slatescale;
   -webkit-text-size-adjust: 100%;
+  min-height: 100vh;
+  height: 100vh
 }
+
 
 body {
   margin: 0;

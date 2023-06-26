@@ -12,6 +12,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <MantineProvider
+      
         theme={{
           colors: {
             blue_tailwind: [
@@ -27,13 +28,17 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               '#1e3a8a'
             ]
           },
-          primaryColor: 'blue_tailwind'
+          primaryColor: 'blue_tailwind',
+   
         }}
       >
         <DatesProvider
           settings={{ locale: 'es-us', firstDayOfWeek: 1, weekendDays: [0] }}
         >
+
           <App />
+ 
+          
         </DatesProvider>
       </MantineProvider>
 

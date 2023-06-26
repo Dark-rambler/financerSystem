@@ -145,39 +145,37 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
     color: rgb(0, 0, 0)
   })
 
-  firstPage.drawText(`${dayjs(depositOrder.form.values.limitedDate).locale('es-us').format('DD MMMM YYYY')}`, {
-    x: 274,
-    y: height - 502,
-    size: 8,
-    font: helveticaItalicFont,
-    color: rgb(0, 0, 0)
-  })
+  firstPage.drawText(
+    `${dayjs(depositOrder.form.values.limitedDate)
+      .locale('es-us')
+      .format('DD MMMM YYYY')}`,
+    {
+      x: 274,
+      y: height - 502,
+      size: 8,
+      font: helveticaItalicFont,
+      color: rgb(0, 0, 0)
+    }
+  )
 
   //save document as File and store it in a variable in orden to be able to send it to the aws s3 bucket
   const pdfBytes = await pdfDoc.save()
   const pdfFile = new File([pdfBytes], 'DEPOSIT_ORDER_DOCUMENT.pdf', {
     type: 'application/pdf'
   })
-   const docUrl = URL.createObjectURL(pdfFile)
-
-  
+  const docUrl = URL.createObjectURL(pdfFile)
 
   depositOrder.setPdfFile(pdfFile)
-   depositOrder.setPdfDoc(docUrl)
-depositOrder.setIsDocumentGenerated(true)
-
-
+  depositOrder.setPdfDoc(docUrl)
+  depositOrder.setIsDocumentGenerated(true)
 
   // const pdfBytes = await pdfDoc.save()
   // const bytes = new Uint8Array(pdfBytes)
   // const blob = new Blob([bytes], { type: 'application/pdf' })
   // const docUrl = URL.createObjectURL(blob)
 
-
   // depositOrder.setPdfDoc(docUrl)
   // depositOrder.setIsDocumentGenerated(true)
-
-
 }
 
 const PDFVisualizer = ({ depositOrder }: PDFVisualizerProps) => {
