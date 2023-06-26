@@ -26,7 +26,7 @@ const RegisterDepositOrder = () => {
               >
                 <TbChevronLeft />
               </ActionIcon>
-              <h1 className=' text-gray-900 font-bold text-xl'>
+              <h1 className=' text-gray-900 font-bold text-xl m-0'>
                 Emitir nueva orden de depósito
               </h1>
             </div>

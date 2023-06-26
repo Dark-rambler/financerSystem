@@ -8,6 +8,7 @@ import RegisterDepositOrder from './pages/RegisterDepositOrder'
 function App () {
   const { isLoggedIn } = useLoginStore()
   return (
+
     <Routes>
       <Route path='*' element={<Navigate to={'/login'} />} />
       <Route element={<MainLayout />}>
@@ -28,6 +29,8 @@ function App () {
         )}
       </Route>
     </Routes>
+
+
   )
 }
 

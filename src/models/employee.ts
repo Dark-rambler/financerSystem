@@ -1,7 +1,7 @@
-interface Employee {
+interface EmployeeInterface {
   name: string
   lastName: string
   email: string
 }
 
-export default Employee
+export default EmployeeInterface

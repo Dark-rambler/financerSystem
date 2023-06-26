@@ -71,6 +71,7 @@ const RegisterDepositOrderForm = ({
             // value={depositOrder.orderNumber}
             // onChange={(e) => {depositOrder.setOrderNumber(e.currentTarget.value)}}
             {...depositOrder.form.getInputProps('orderNumber')}
+            disabled
           />
           <DatePickerInput
             withAsterisk
