@@ -7,7 +7,7 @@ interface ReviewDepositOrderProps {
 
 const ReviewDepositOrder = ({status}:ReviewDepositOrderProps ) => {
   return (
-    <Tooltip label={'Revisar orden de deposito'}>
+    <Tooltip label={'Revisar orden de depósito'}>
     <ActionIcon
       className='bg-slate-200 hover:bg-slate-300 disabled:cursor-not-allowed'
       disabled={status !== 'Entregado'}

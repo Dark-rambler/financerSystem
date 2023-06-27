@@ -6,14 +6,11 @@ import {
   TbDiscountCheck,
   TbExclamationCircle
 } from 'react-icons/tb'
+import { DepositOrderInterface } from '../../models/DepositOrder'
 
-const RevisionStatusBadge = ({
-  RevisionStatus,
-  Status
-}: {
-  RevisionStatus: string
-  Status: string
-}) => {
+const RevisionStatusBadge = ({ data }: DepositOrderInterface) => {
+  const Status = data.status
+  const RevisionStatus = data.revisionStatus
   return (
     <>
       {Status.toUpperCase() === StatusEnum.RECEIVED ? (
@@ -35,9 +32,7 @@ const RevisionStatusBadge = ({
           )}
         </>
       ) : (
-        <Badge color='gray'>
-         No asignado
-        </Badge>
+        <Badge color='gray'>No asignado</Badge>
       )}
     </>
   )
