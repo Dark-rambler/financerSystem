@@ -29,12 +29,12 @@ const CancelDepositOrder = ({ opened, close, id }: CancelDepositOrderProps) => {
         }
       )
       if (!response.ok) {
-        throw new Error('Error al cancelar la orden de deposito')
+        throw new Error('Error al cancelar la orden de depósito')
       }
       close()
-      succesToast('Orden de deposito cancelada')
+      succesToast('Orden de depósito cancelada')
     } catch (err) {
-      errorToast('Error al cancelar la orden de deposito')
+      errorToast('Error al cancelar la orden de depósito')
     }
     setIsLoading(() => false)
   }
@@ -43,7 +43,7 @@ const CancelDepositOrder = ({ opened, close, id }: CancelDepositOrderProps) => {
       <Modal
         opened={opened}
         onClose={close}
-        title={'Cancelar orden de deposito'}
+        title={'Cancelar orden de depósito'}
         styles={{
           title: { fontSize: '18px', fontWeight: 'bold' },
           body: { padding: '20px' }
@@ -52,7 +52,7 @@ const CancelDepositOrder = ({ opened, close, id }: CancelDepositOrderProps) => {
       >
         <div className='space-y-2'>
           {/* <p className=' text-md'>
-            ¿Está seguro que desea cancelar la orden de deposito?
+            ¿Está seguro que desea cancelar la orden de depósito?
           </p> */}
           <p className='text-sm '>Esta accion no se puede deshacer</p>
         </div>
@@ -62,7 +62,7 @@ const CancelDepositOrder = ({ opened, close, id }: CancelDepositOrderProps) => {
             onClick={handleCancelButton}
             className='bg-red-600 hover:bg-red-700 w-full'
           >
-            Cancelar orden de deposito
+            Cancelar orden de depósito
           </Button>
         </div>
       </Modal>

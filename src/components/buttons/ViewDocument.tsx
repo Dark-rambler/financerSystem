@@ -1,12 +1,10 @@
 import { Tooltip, ActionIcon } from "@mantine/core"
 
 import { BsFillFileEarmarkPdfFill } from 'react-icons/bs'
+import { DepositOrderInterface } from "../../models/DepositOrder"
 
-interface ViewDocumentProps {
-    url?: string
-}
-
-const ViewDocument = ({url}: ViewDocumentProps) => {
+const ViewDocument = ({data}: DepositOrderInterface) => {
+  const url = data.documentUrl
   return (
     <Tooltip label={'Ver documento'}>
     <ActionIcon

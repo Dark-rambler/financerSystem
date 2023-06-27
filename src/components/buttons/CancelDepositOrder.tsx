@@ -2,17 +2,14 @@ import { Tooltip, ActionIcon } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { TbBan } from 'react-icons/tb'
 import CancelDepositOrderModal from '../modals/CancelDepositOrder'
+import { DepositOrderInterface } from '../../models/DepositOrder'
 
-interface CancelDepositOrderProps {
-  id: number
-  status: string
-}
-
-const CancelDepositOrder = ({ id, status }: CancelDepositOrderProps) => {
+const CancelDepositOrder = ({ data }: DepositOrderInterface) => {
+  const {id, status} = data
   const [opened, { close, open }] = useDisclosure()
   return (
     <>
-      <Tooltip label={'Cancelar orden de deposito'}>
+      <Tooltip label={'Cancelar orden de depósito'}>
         <ActionIcon
           className='bg-slate-200 hover:bg-slate-300'
           onClick={open}

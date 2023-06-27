@@ -2,8 +2,12 @@ import { useState, useEffect } from 'react'
 import { useLoginStore } from '../components/store/loginStore'
 import { useForm, isNotEmpty } from '@mantine/form'
 import { succesToast, errorToast } from '../services/toasts'
+
 import { useNavigate } from 'react-router-dom'
 import { useAmazonS3 } from './useAmazonS3'
+
+import { getAllEmployeesWithRoles } from '../services/EmployeeService'
+import { getAllRegionals } from '../services/RegionalService'
 
 interface RegionalOffice {
   id: number
@@ -82,44 +86,29 @@ export const useRegisterDepositOrder = () => {
   const s3 = useAmazonS3()
 
   const fetchRegionalData = async () => {
-    fetch(`${import.meta.env.VITE_API_DOMAIN}/regional/regionals`, {
-      method: 'GET',
-      headers: {
-        'x-access-token': token
-      }
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        const mantineSelectData = data.map((regional: RegionalOffice) => ({
-          value: regional.name,
-          label: regional.name
-        }))
-        setData(mantineSelectData)
-        setRegionalData(data)
-      })
-      .catch(() => {
-        errorToast('Error al cargar los datos')
-      })
+    const data = await getAllRegionals(token)
+
+    if (!data) {
+      errorToast('Error al cargar los datos')
+      return
+    }
+
+    const mantineSelectData = data.map((regional: RegionalOffice) => ({
+      value: regional.name,
+      label: regional.name
+    }))
+    setData(mantineSelectData)
+    setRegionalData(data)
   }
 
   const fetchEmployeesWithRoles = async () => {
-    fetch(`${import.meta.env.VITE_API_DOMAIN}/employee/employees`, {
-      method: 'GET',
-      headers: {
-        'x-access-token': token
-      }
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        setEmployeesData(data)
-      })
-      .catch(() => {
-        errorToast('Error al cargar los datos')
-      })
+    const data = await getAllEmployeesWithRoles(token)
+
+    if (!data) {
+      errorToast('Error al cargar los datos')
+      return
+    }
+    setEmployeesData(data)
   }
 
   const onSelectRegional = async (regionalSelected: string) => {
@@ -154,7 +143,10 @@ export const useRegisterDepositOrder = () => {
 
   const onCreateDepositOrder = async () => {
     try {
-      s3.uploadDepositOrderFileOfTechoBol(pdfFile as File, form.values.orderNumber)
+      s3.uploadDepositOrderFileOfTechoBol(
+        pdfFile as File,
+        form.values.orderNumber
+      )
       fetch(
         `${import.meta.env.VITE_API_DOMAIN}/deposit-order/create-deposit-order`,
         {
@@ -172,8 +164,10 @@ export const useRegisterDepositOrder = () => {
             regional: regionalId,
             administrator: administratorId,
             pdfDoc: pdfDoc,
-            documentUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}/TECHOBOL/DEPOSIT_ORDER/${form.values.orderNumber}.pdf`
-          }),
+            documentUrl: `${
+              import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN
+            }/TECHOBOL/DEPOSIT_ORDER/${form.values.orderNumber}.pdf`
+          })
         }
       )
         .then(res => {

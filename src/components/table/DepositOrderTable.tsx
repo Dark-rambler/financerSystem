@@ -23,32 +23,6 @@ import { useEffect, useState } from 'react'
 import ViewUploadReport from '../buttons/ViewUploadReport'
 import ViewDocument from '../buttons/ViewDocument'
 
-interface Regional {
-  id: number
-  name: string
-}
-
-interface Employee {
-  id: number
-  name: string
-  lastName: string
-}
-
-interface DepositOrderModel {
-  amount: number
-  deliveryDate: Date
-  employee: Employee
-  endDate: Date
-  id: number
-  orderNumber: string
-  regional: Regional
-  revitionStatus: string
-  solitudeDate: Date
-  startDate: Date
-  status: string
-  documentUrl: string
-}
-
 interface DepositOrderTableProps {
   depositOrderData: DepositOrderInterface[]
 }
@@ -370,7 +344,7 @@ const DepositOrderTable = ({ depositOrderData }: DepositOrderTableProps) => {
                   )}
                 </td>
                 <td>
-                  <Tooltip label={'Revisar orden de deposito'}>
+                  <Tooltip label={'Revisar orden de depósito'}>
                     <ActionIcon
                       className='bg-slate-200 hover:bg-slate-300 disabled:cursor-not-allowed'
                       disabled={depositOrder.status !== 'Entregado'}
@@ -380,7 +354,7 @@ const DepositOrderTable = ({ depositOrderData }: DepositOrderTableProps) => {
                   </Tooltip>
                 </td>
                 <td className=' text-center'>
-                  <Tooltip label={'Cancelar orden de deposito'}>
+                  <Tooltip label={'Cancelar orden de depósito'}>
                     <ActionIcon
                       disabled={depositOrder.status === 'Cancelado'}
                       className='bg-slate-200 hover:bg-slate-300'
