@@ -7,9 +7,6 @@ import { useLoginStore } from '../components/store/loginStore'
 import { useState, useRef, useCallback } from 'react'
 
 import { DepositOrderInterface } from '../models/DepositOrder'
-import { useDisclosure } from '@mantine/hooks'
-import { useFilterTable } from '../hooks/useFilterTable'
-import FilterTable from '../components/modals/FilterTable'
 import { getAllDepositOrders } from '../services/DepositOrderService'
 import { errorToast } from '../services/toasts'
 import Table from '../components/table/Table'
@@ -23,8 +20,6 @@ const DepositOrder = () => {
     DepositOrderInterface[]
   >([])
 
-  const [opened, { close, open }] = useDisclosure()
-  const filter = useFilterTable(depositOrderData)
   const gridRef = useRef<AgGridReact<DepositOrderInterface>>(null)
 
   const getDepositOrders = async () => {
@@ -56,7 +51,6 @@ const DepositOrder = () => {
     <>
       <div className='w-full p-10 space-y-5 h-full'>
         <div className='flex space-x-5'>
-          {/* <blueButton label={'Emitir nueva orden de depósito'} onClick={() => {() => window.my_modal_1.showModal()} } isLoading={false}/> */}
           <Button
             leftIcon={<TbPlus />}
             size='sm'
@@ -78,33 +72,12 @@ const DepositOrder = () => {
             className='w-72'
             onChange={onFilterTextBoxChanged}
           />
-          <Button
-            onClick={open}
-            className='bg-gray-50 border border-gray-300 text-gray-800 hover:bg-gray-100'
-          >
-            <div className='flex justify-between space-x-1 items-center'>
-              <TbFilter />
-              <p>Filtrar tabla</p>
-            </div>
-          </Button>
-          <Button
-            // onClick={open}
-            className='bg-gray-50 border border-gray-300 text-gray-800 hover:bg-gray-100'
-          >
-            <div className='flex justify-between space-x-1 items-center'>
-              <TbFilterOff />
-              <p>Qutiar filtros</p>
-            </div>
-          </Button>
         </div>
 
         <div className='h-[calc(100%-46px)]'>
-          {/* <DepositOrderTable depositOrderData={selectedData} /> */}
           <Table depositOrderData={depositOrderData} gridRef={gridRef} />
-          {/* <Table data={despositOrderData} columns={cols} showNavigation/> */}
         </div>
       </div>
-      <FilterTable opened={opened} close={close} filterHook={filter} />
     </>
   )
 }

@@ -33,8 +33,8 @@ export const AG_GRID_LOCALE_ES = {
     dateFormatOoo: 'yyyy-mm-dd',
   
     // Filter Conditions
-    andCondition: 'AND',
-    orCondition: 'OR',
+    andCondition: 'Y',
+    orCondition: 'O',
   
     // Filter Buttons
     applyFilter: 'Apply',
