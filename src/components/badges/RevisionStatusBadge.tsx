@@ -1,6 +1,5 @@
 import { Badge } from '@mantine/core'
 import RevisionStatusEnum from '../../enums/RevisionStatus'
-import StatusEnum from '../../enums/Status'
 import {
   TbClockHour4,
   TbDiscountCheck,
@@ -9,12 +8,9 @@ import {
 import { DepositOrderInterface } from '../../models/DepositOrder'
 
 const RevisionStatusBadge = ({ data }: DepositOrderInterface) => {
-  const Status = data.status
-  const RevisionStatus = data.revisionStatus
+  const RevisionStatus = data.revitionStatus
   return (
     <>
-      {Status.toUpperCase() === StatusEnum.RECEIVED ? (
-        <>
           {RevisionStatus.toUpperCase() === RevisionStatusEnum.PENDING && (
             <Badge color='yellow' leftSection={<TbClockHour4 />}>
               {RevisionStatus}
@@ -30,10 +26,9 @@ const RevisionStatusBadge = ({ data }: DepositOrderInterface) => {
               {RevisionStatus}
             </Badge>
           )}
-        </>
-      ) : (
-        <Badge color='gray'>No asignado</Badge>
-      )}
+             {RevisionStatus.toUpperCase() === RevisionStatusEnum.NOT_ASSIGNED && (
+              <Badge color='gray'>{RevisionStatus}</Badge>
+          )}
     </>
   )
 }
