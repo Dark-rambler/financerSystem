@@ -81,7 +81,7 @@ const Table = ({ depositOrderData, gridRef }: DepositOrderTableProps) => {
     },
     {
       valueGetter: data => {
-        return new Date(data.data.endDate)
+        return new Date(data.data.startDate)
       },
       valueFormatter: params => {
         return `${params.value.toLocaleDateString('es-ES')}`
@@ -93,7 +93,7 @@ const Table = ({ depositOrderData, gridRef }: DepositOrderTableProps) => {
     },
     {
       valueGetter: data => {
-        return new Date(data.data.startDate)
+        return new Date(data.data.endDate)
       },
       valueFormatter: params => {
         return `${params.value.toLocaleDateString('es-ES')}`
