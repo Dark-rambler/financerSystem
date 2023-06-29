@@ -1,3 +1,5 @@
+import EmployeeInterface from '../models/Employee'
+
 export const getAllEmployeesWithRoles = async (token: string) => {
   try {
     const response = await fetch(
@@ -18,5 +20,17 @@ export const getAllEmployeesWithRoles = async (token: string) => {
     return data
   } catch {
     return null
+  }
+}
+
+export const createEmployee = async (
+  token: string,
+  body: EmployeeInterface
+) => {
+  try {
+    console.log(token)
+    console.log(body)
+  } catch {
+    console.log('Something went wrong')
   }
 }

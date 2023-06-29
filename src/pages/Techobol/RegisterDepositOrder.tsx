@@ -1,12 +1,12 @@
-import RegisterDepositOrderForm from '../components/forms/RegisterDepositOrderForm'
-import PDFVisualizer from '../components/pdf/PDFVisualizer'
+import RegisterDepositOrderForm from '../../components/forms/RegisterDepositOrderForm'
+import PDFVisualizer from '../../components/pdf/PDFVisualizer'
 
 import { Button, Stack, ActionIcon } from '@mantine/core'
 
 import { TbChevronLeft } from 'react-icons/tb'
 
 import { useNavigate } from 'react-router-dom'
-import { useRegisterDepositOrder } from '../hooks/useRegisterDepositOrder'
+import { useRegisterDepositOrder } from '../../hooks/useRegisterDepositOrder'
 
 const RegisterDepositOrder = () => {
   const navigate = useNavigate()
