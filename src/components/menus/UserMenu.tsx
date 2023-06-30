@@ -9,7 +9,7 @@ const UserMenu = () => {
   const { fullName, role } = useLoginStore()
   const {logOut} = useAuthentication()
   return (
-    <Menu as='div' className='relative text-left'>
+    <Menu as='div' className='relative text-left z-20'>
       {({ open }) => (
         <>
           <Menu.Button>

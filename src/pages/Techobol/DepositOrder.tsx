@@ -9,7 +9,7 @@ import { useState, useRef, useCallback } from 'react'
 import { DepositOrderInterface } from '../../models/DepositOrder'
 import { getAllDepositOrders } from '../../services/DepositOrderService'
 import { errorToast } from '../../services/toasts'
-import Table from '../../components/table/Table'
+import Table from '../../components/table/DepositOrderTable'
 
 import { AgGridReact } from 'ag-grid-react'
 
