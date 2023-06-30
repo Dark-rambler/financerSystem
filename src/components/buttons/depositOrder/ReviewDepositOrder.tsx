@@ -1,7 +1,7 @@
 import { Tooltip, ActionIcon } from '@mantine/core'
 import { TbZoomQuestion } from 'react-icons/tb'
-import { DepositOrderInterface } from '../../models/DepositOrder'
-import ReviewModal from '../modals/ReviewModal'
+import { DepositOrderInterface } from '../../../models/DepositOrder'
+import ReviewModal from '../../modals/ReviewModal'
 
 import { useDisclosure } from '@mantine/hooks'
 

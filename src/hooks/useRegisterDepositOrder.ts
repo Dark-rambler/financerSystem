@@ -157,13 +157,13 @@ export const useRegisterDepositOrder = () => {
           },
           body: JSON.stringify({
             orderNumber: form.values.orderNumber,
-            orderRange: form.values.orderRange,
-            orderDate: form.values.orderDate,
+            startDate: form.values.orderRange[0],
+            endDate: form.values.orderRange[1],
+            solitudeDate: form.values.orderDate,
             amount: form.values.amount,
-            limitedDate: form.values.limitedDate,
-            regional: regionalId,
-            administrator: administratorId,
-            pdfDoc: pdfDoc,
+            deliveryDate: form.values.limitedDate,
+            regionalId: regionalId,
+            employeeId: administratorId,
             documentUrl: `${
               import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN
             }/TECHOBOL/DEPOSIT_ORDER/${form.values.orderNumber}.pdf`

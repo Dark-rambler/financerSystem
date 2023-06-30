@@ -28,9 +28,44 @@ export const createEmployee = async (
   body: EmployeeInterface
 ) => {
   try {
-    console.log(token)
-    console.log(body)
+    const response = await fetch(
+      `${import.meta.env.VITE_API_DOMAIN}/employee/create-employee`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        },
+        body: JSON.stringify(body)
+      }
+    )
+
+    if (response.status !== 201) {
+      return null
+    }
+
+    return response.json()
   } catch {
     console.log('Something went wrong')
+    return null
   }
+}
+
+export const deleteEmployee = async (token: string, id: number) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_DOMAIN}/employee/delete-employee/${id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+
+  if (response.status !== 200) {
+    return null
+  }
+
+  return response.json()
 }

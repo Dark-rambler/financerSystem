@@ -1,8 +1,8 @@
 import { Tooltip, ActionIcon } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { TbBan } from 'react-icons/tb'
-import CancelDepositOrderModal from '../modals/CancelDepositOrder'
-import { DepositOrderInterface } from '../../models/DepositOrder'
+import CancelDepositOrderModal from '../../modals/CancelDepositOrder'
+import { DepositOrderInterface } from '../../../models/DepositOrder'
 
 const CancelDepositOrder = ({ data }: DepositOrderInterface) => {
   const {id, status} = data

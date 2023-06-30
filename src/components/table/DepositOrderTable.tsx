@@ -4,13 +4,11 @@ import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-alpine.css'
 import { ColDef, GridOptions } from 'ag-grid-community'
 import { DepositOrderInterface } from '../../models/DepositOrder'
-import dayjs from 'dayjs'
-import 'dayjs/locale/es-us'
 import StatusBadge from '../badges/StatusBadge'
 import RevisionStatusBadge from '../badges/RevisionStatusBadge'
-import ReviewDepositOrder from '../buttons/ReviewDepositOrder'
-import CancelDepositOrder from '../buttons/CancelDepositOrder'
-import ViewDocument from '../buttons/ViewDocument'
+import ReviewDepositOrder from '../buttons/depositOrder/ReviewDepositOrder'
+import CancelDepositOrder from '../buttons/depositOrder/CancelDepositOrder'
+import ViewDocument from '../buttons/depositOrder/ViewDocument'
 import { AG_GRID_LOCALE_ES } from '../../locale/locale.es'
 
 interface DepositOrderTableProps {
@@ -232,11 +230,6 @@ const Table = ({ depositOrderData, gridRef }: DepositOrderTableProps) => {
       },
       onFirstDataRendered: params => {
         params.api.sizeColumnsToFit()
-        //   const colIds = params.columnApi
-        //     .getAllDisplayedColumns()
-        //     .map(col => col.getColId())
-
-        //   params.columnApi.autoSizeColumns(colIds)
         }
   
     }),

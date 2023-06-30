@@ -1,7 +1,7 @@
 import { Tooltip, ActionIcon } from "@mantine/core"
 
 import { BsFillFileEarmarkPdfFill } from 'react-icons/bs'
-import { DepositOrderInterface } from "../../models/DepositOrder"
+import { DepositOrderInterface } from "../../../models/DepositOrder"
 
 const ViewDocument = ({data}: DepositOrderInterface) => {
   const url = data.documentUrl
