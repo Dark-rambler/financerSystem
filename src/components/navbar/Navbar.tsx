@@ -1,8 +1,7 @@
 import { RiMoneyCnyBoxFill } from 'react-icons/ri'
 import { TbMoon } from 'react-icons/tb'
 
-
-import { RxHamburgerMenu } from "react-icons/rx";
+import { RxHamburgerMenu } from 'react-icons/rx'
 
 import { ActionIcon } from '@mantine/core'
 
@@ -16,8 +15,7 @@ interface NavbarProps {
   onClickSidebarButton: () => void
 }
 
-const Navbar = ({onClickSidebarButton}: NavbarProps) => {
-
+const Navbar = ({ onClickSidebarButton }: NavbarProps) => {
   const { isLoggedIn } = useLoginStore()
   const location = useLocation()
   const isTechoBol = location.pathname.includes('techobol')
@@ -28,11 +26,16 @@ const Navbar = ({onClickSidebarButton}: NavbarProps) => {
         <div className='absolute left-0 flex items-center space-x-2'>
           <RiMoneyCnyBoxFill className='text-[40px] text-blue-600' />
           <p className=' font-bold text-slate-800 text-lg'>Finanzas</p>
-          <div className='pl-3'>
-            <ActionIcon className='bg-gray-100 hover:bg-gray-200' onClick={onClickSidebarButton}>
-              <RxHamburgerMenu color={'#374151'} />
-            </ActionIcon>
-          </div>
+          {isLoggedIn && (
+            <div className='pl-3'>
+              <ActionIcon
+                className='bg-gray-100 hover:bg-gray-200'
+                onClick={onClickSidebarButton}
+              >
+                <RxHamburgerMenu color={'#374151'} />
+              </ActionIcon>
+            </div>
+          )}
         </div>
         <div className=''>
           {isLoggedIn && <EnterpriseMenu isTechoBol={isTechoBol} />}

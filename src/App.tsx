@@ -13,12 +13,15 @@ import BranchOffices from './pages/Admin/BranchOffices'
 import Accounts from './pages/Admin/Accounts'
 import SubAccounts from './pages/Admin/SubAccounts'
 
+import SetPassword from './pages/SetPassword'
+import SetPasswordError from './pages/SetPasswordError'
 
 function App () {
   const { isLoggedIn, role } = useLoginStore()
   return (
     <Routes>
       <Route path='*' element={<Navigate to={'/login'} />} />
+      <Route path='/set-password-error' element={<SetPasswordError />} />
       <Route element={<MainLayout />}>
         <Route
           path='/login'
@@ -26,6 +29,8 @@ function App () {
             isLoggedIn ? <Navigate to={'/techobol/deposit-order'} /> : <Login />
           }
         />
+        <Route path='/set-password/:token' element={<SetPassword />} />
+
         {isLoggedIn && (
           <>
             {' '}
@@ -48,10 +53,16 @@ function App () {
             />
             {role === Roles.FINANCIAL_MANAGER && (
               <>
-                <Route path='/techobol/admin/users' element={<Users/>}/>
-                <Route path='/techobol/admin/branch-offices' element={<BranchOffices />}/>
-                <Route path='/techobol/admin/accounts' element={<Accounts/>}/>
-                <Route path='/techobol/admin/sub-accounts' element={<SubAccounts/>}/>
+                <Route path='/techobol/admin/users' element={<Users />} />
+                <Route
+                  path='/techobol/admin/branch-offices'
+                  element={<BranchOffices />}
+                />
+                <Route path='/techobol/admin/accounts' element={<Accounts />} />
+                <Route
+                  path='/techobol/admin/sub-accounts'
+                  element={<SubAccounts />}
+                />
               </>
             )}
           </>

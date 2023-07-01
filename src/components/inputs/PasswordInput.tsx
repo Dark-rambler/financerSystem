@@ -4,14 +4,15 @@ import { useState } from 'react'
 interface PasswordInputProps {
   password: string
   setPassword: (password: string) => void
+  label?: string
 }
 
-const PasswordInput = ({ password, setPassword }: PasswordInputProps) => {
+const PasswordInput = ({ password, setPassword, label }: PasswordInputProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   return (
     <div className='space-y-2'>
       <div className='flex space-x-1'>
-        <p className='text-sm font-medium text-slate-800'>Contraseña</p>
+        <p className='text-sm font-medium text-slate-800'>{label ? label : 'Contraseña'}</p>
         <span className='text-xs text-red-600'>*</span>
       </div>
 

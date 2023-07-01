@@ -69,3 +69,23 @@ export const deleteEmployee = async (token: string, id: number) => {
 
   return response.json()
 }
+
+
+export const changePassword = async (token: string, body: {password: string, newPassword: string}) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_DOMAIN}/authentication/change-password/${token}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+  )
+
+  if (response.status !== 200) {
+    return null
+  }
+
+  return response.json()
+}
