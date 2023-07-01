@@ -146,8 +146,8 @@ export const useUser = () => {
     handlersDelete.close()
     setIsLoading(false)
     succesToast('Usuario eliminado correctamente')
-
   }
+
 
   return {
     opened,
