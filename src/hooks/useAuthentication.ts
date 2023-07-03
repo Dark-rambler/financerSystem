@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { errorToast, succesToast } from '../services/toasts'
+import { succesToast } from '../services/toasts'
 import { useLoginStore } from '../components/store/loginStore'
 import { logInAuth } from '../services/AuthenticationService'
 

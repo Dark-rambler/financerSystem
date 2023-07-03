@@ -26,7 +26,7 @@ const UserTable = ({ user, gridRef }: UserTableProps) => {
     setRowData(user.users)
   }, [user.users])
 
-  const [columnDefs, setColumnDefs] = useState<ColDef[]>([
+  const columnDefs = useMemo<ColDef[]>(() => ([
     {
       field: 'name',
       headerName: 'Nombre',
@@ -81,7 +81,9 @@ const UserTable = ({ user, gridRef }: UserTableProps) => {
         justifyContent: 'center'
       }
     }
-  ])
+  ]), [])
+
+
 
   const gridOptions = useMemo<GridOptions>(
     () => ({

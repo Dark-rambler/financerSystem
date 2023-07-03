@@ -29,191 +29,190 @@ const Table = ({ depositOrderData, gridRef }: DepositOrderTableProps) => {
     setRowData(depositOrderData)
   }, [depositOrderData])
 
-  const [columnDefs, setColumnDefs] = useState<ColDef[]>([
-    {
-      field: 'orderNumber',
-      headerName: 'Nº orden',
-      sortable: true,
-      filter: true,
-      resizable: true,
-      flex: 1
-      // width: 120
-    },
+  const columnDefs = useMemo<ColDef[]>(() => ([  {
+    field: 'orderNumber',
+    headerName: 'Nº orden',
+    sortable: true,
+    filter: true,
+    resizable: true,
+    flex: 1
+    // width: 120
+  },
 
-    {
-      field: 'solitudeDate',
-      valueGetter: data => {
-        return new Date(data.data.solitudeDate)
-      },
-      valueFormatter: params => {
-        return `${params.value.toLocaleDateString('es-ES')}`
-      },
-      headerName: 'Fecha orden',
-      sortable: true,
-      filter: 'agDateColumnFilter',
+  {
+    field: 'solitudeDate',
+    valueGetter: data => {
+      return new Date(data.data.solitudeDate)
+    },
+    valueFormatter: params => {
+      return `${params.value.toLocaleDateString('es-ES')}`
+    },
+    headerName: 'Fecha orden',
+    sortable: true,
+    filter: 'agDateColumnFilter',
 
-      resizable: true
-      // width: 150,
-      // sort: 'desc'
-    },
-    {
-      field: 'regional.name',
-      headerName: 'Regional',
-      sortable: true,
-      filter: true,
-      resizable: true,
- 
-    },
-    {
-      field: '',
-      valueGetter: data => {
-        return `${data.data.employee.name} ${data.data.employee.lastName}`
-      },
-      headerName: 'Administrador',
-      sortable: true,
-      filter: true,
-      resizable: true,
+    resizable: true
+    // width: 150,
+    // sort: 'desc'
+  },
+  {
+    field: 'regional.name',
+    headerName: 'Regional',
+    sortable: true,
+    filter: true,
+    resizable: true,
 
-      // width: 200
+  },
+  {
+    field: '',
+    valueGetter: data => {
+      return `${data.data.employee.name} ${data.data.employee.lastName}`
+    },
+    headerName: 'Administrador',
+    sortable: true,
+    filter: true,
+    resizable: true,
 
-    },
-    {
-      valueGetter: data => {
-        return new Date(data.data.startDate)
-      },
-      valueFormatter: params => {
-        return `${params.value.toLocaleDateString('es-ES')}`
-      },
-      headerName: 'Fecha inicio',
-      sortable: true,
-      filter: 'agDateColumnFilter',
-      resizable: true
-    },
-    {
-      valueGetter: data => {
-        return new Date(data.data.endDate)
-      },
-      valueFormatter: params => {
-        return `${params.value.toLocaleDateString('es-ES')}`
-      },
-      headerName: 'Fecha fin',
-      sortable: true,
-      filter: 'agDateColumnFilter',
-      resizable: true
-    },
-    {
-      field: 'amount',
-      valueGetter: data => {
-        return Number(data.data.amount)
-      },
-      valueFormatter: params => {
-        return `${params.value.toFixed(2)} Bs`
-      },
-      headerName: 'Monto Bs.',
-      sortable: true,
-      filter: 'agNumberColumnFilter',
-      resizable: true,
+    // width: 200
 
+  },
+  {
+    valueGetter: data => {
+      return new Date(data.data.startDate)
     },
-    {
-      field: '',
-      valueGetter: data => {
-        return new Date(data.data.deliveryDate)
-      },
-      valueFormatter: params => {
-        return `${params.value.toLocaleDateString('es-ES')}`
-      },
-      headerName: 'Fecha limite',
-      sortable: true,
-      filter: 'agDateColumnFilter',
-      resizable: true
-      // width: 150
+    valueFormatter: params => {
+      return `${params.value.toLocaleDateString('es-ES')}`
     },
-    {
-      field: '',
-      // field: 'status',
-      headerName: ' Estado',
-      sortable: true,
-      // filter: true,
-      cellRenderer: StatusBadge,
-      resizable: true,
-      valueGetter: data => {
-        return data.data.status
-      },
-      cellStyle: {
-        overflow: 'visible',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      },
-      filter: 'agMultiColumnFilter'
-      // width: 130
+    headerName: 'Fecha inicio',
+    sortable: true,
+    filter: 'agDateColumnFilter',
+    resizable: true
+  },
+  {
+    valueGetter: data => {
+      return new Date(data.data.endDate)
     },
-    {
-      field: 'revitionStatus',
-      headerName: 'Revisión',
-      sortable: true,
-      filter: true,
-      cellRenderer: RevisionStatusBadge,
-      resizable: true,
-      valueGetter: data => {
-        return data.data.revitionStatus
-      },
-      cellStyle: {
-        overflow: 'visible',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }
-      // width: 170
+    valueFormatter: params => {
+      return `${params.value.toLocaleDateString('es-ES')}`
     },
-    {
-      headerName: 'Orden',
-      resizable: true,
-      cellRenderer: ViewDocument,
-      cellStyle: {
-        overflow: 'visible',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      },  
-      width: 80
+    headerName: 'Fecha fin',
+    sortable: true,
+    filter: 'agDateColumnFilter',
+    resizable: true
+  },
+  {
+    field: 'amount',
+    valueGetter: data => {
+      return Number(data.data.amount)
     },
-    {
-      headerName: 'Informe',
- 
-      resizable: true,
-      width: 100
+    valueFormatter: params => {
+      return `${params.value.toFixed(2)} Bs`
     },
-    {
-      // width: 100,
+    headerName: 'Monto Bs.',
+    sortable: true,
+    filter: 'agNumberColumnFilter',
+    resizable: true,
 
-      resizable: false,
-      // pinned: 'right',
-      cellStyle: {
-        overflow: 'visible',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      },
-      cellRenderer: ReviewDepositOrder,
- 
-      maxWidth: 70
+  },
+  {
+    field: '',
+    valueGetter: data => {
+      return new Date(data.data.deliveryDate)
     },
-    {
- 
-      maxWidth: 70,
-      resizable: false,
-      cellStyle: {
-        overflow: 'visible',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      },
-      // pinned: 'right',
-      cellRenderer: CancelDepositOrder
+    valueFormatter: params => {
+      return `${params.value.toLocaleDateString('es-ES')}`
+    },
+    headerName: 'Fecha limite',
+    sortable: true,
+    filter: 'agDateColumnFilter',
+    resizable: true
+    // width: 150
+  },
+  {
+    field: '',
+    // field: 'status',
+    headerName: ' Estado',
+    sortable: true,
+    // filter: true,
+    cellRenderer: StatusBadge,
+    resizable: true,
+    valueGetter: data => {
+      return data.data.status
+    },
+    cellStyle: {
+      overflow: 'visible',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    filter: 'agMultiColumnFilter'
+    // width: 130
+  },
+  {
+    field: 'revitionStatus',
+    headerName: 'Revisión',
+    sortable: true,
+    filter: true,
+    cellRenderer: RevisionStatusBadge,
+    resizable: true,
+    valueGetter: data => {
+      return data.data.revitionStatus
+    },
+    cellStyle: {
+      overflow: 'visible',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     }
-  ])
+    // width: 170
+  },
+  {
+    headerName: 'Orden',
+    resizable: true,
+    cellRenderer: ViewDocument,
+    cellStyle: {
+      overflow: 'visible',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },  
+    width: 80
+  },
+  {
+    headerName: 'Informe',
+
+    resizable: true,
+    width: 100
+  },
+  {
+    // width: 100,
+
+    resizable: false,
+    // pinned: 'right',
+    cellStyle: {
+      overflow: 'visible',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    cellRenderer: ReviewDepositOrder,
+
+    maxWidth: 70
+  },
+  {
+
+    maxWidth: 70,
+    resizable: false,
+    cellStyle: {
+      overflow: 'visible',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    // pinned: 'right',
+    cellRenderer: CancelDepositOrder
+  }]), [])
+
 
   // const gridRef = useRef<AgGridReact<DepositOrderInterface>>(null)
 

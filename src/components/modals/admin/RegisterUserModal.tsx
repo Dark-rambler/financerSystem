@@ -1,6 +1,5 @@
 import { Modal, Button } from '@mantine/core'
 import { TextInput } from '@mantine/core'
-import { PasswordInput } from '@mantine/core'
 import { Select } from '@mantine/core'
 
 import { SimpleGrid } from '@mantine/core'

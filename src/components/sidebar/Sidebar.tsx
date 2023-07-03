@@ -6,8 +6,7 @@ import {
   TbUsers,
   TbHome,
   TbListDetails,
-  TbList,
-  TbMapPin
+  TbList
 } from 'react-icons/tb'
 
 import { NavLink, useLocation } from 'react-router-dom'
