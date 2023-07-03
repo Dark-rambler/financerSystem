@@ -12,7 +12,7 @@ const ViewUploadReport = ({url}: ViewAndUploadReportProps) => {
         className='bg-gray-100 hover:bg-gray-200'
         onClick={() => {
           window.open(
-            `https://pub-32a96368cbbd4a5583b6334c5bc7fe4a.r2.dev/TECHOBOL/ODF4-24.pdf`
+            `${url}`
           )
         }}
       >
