@@ -18,7 +18,7 @@ const RegisterDepositOrder = () => {
           <div className='pr-24 py-16 space-y-10'>
             <div className='relative flex'>
               <ActionIcon
-                className='absolute left-[-50px]'
+                className='absolute left-[-50px] bg-gray-100 hover:bg-gray-200'
                 size={'md'}
                 onClick={() => {
                   navigate('/deposit-order')
