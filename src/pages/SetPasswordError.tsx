@@ -6,8 +6,9 @@ const SetPasswordError = () => {
           El link para crear tu contraseña ha expirado o no es válido
         </h1>
         <h1 className=' text-2xl text-center'>
-          Ponte en contacto con el administrador para solicitar uno nuevo 🐘
+          Ponte en contacto con el administrador para solicitar uno nuevo <span className=" text-4xl">🐘</span>
         </h1>
+        
       </div>
     </div>
   )

@@ -18,6 +18,8 @@ import SetPasswordError from './pages/SetPasswordError'
 
 function App () {
   const { isLoggedIn, role } = useLoginStore()
+
+  
   return (
     <Routes>
       <Route path='*' element={<Navigate to={'/login'} />} />

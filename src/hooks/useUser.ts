@@ -16,6 +16,7 @@ import { getAllRoles } from '../services/Roles'
 import { Role } from '../models/Roles'
 import { RegionalOfficeInterface } from '../models/RegionalOffice'
 import { errorToast, succesToast } from '../services/toasts'
+import socket from '../services/SocketIOConnection'
 
 interface SelectFormat {
   label: string
@@ -97,6 +98,22 @@ export const useUser = () => {
     getRegionals()
   }, [])
 
+  useEffect(() => {
+    socket.on('newEmployee', (data: EmployeeInterface) => {
+      setUsers(users => [...users, data])
+    })
+
+    socket.on('deletedEmployee', (data: EmployeeInterface) => {
+      setUsers(users => users.filter(user => user.id !== data.id))
+    })
+
+    return () => 
+    {
+      socket.off('newEmployee')
+      socket.off('deletedEmployee')
+    }
+  }, [])
+
   const registerUser = async () => {
     setIsLoading(true)
     const body: EmployeeInterface = {
@@ -119,6 +136,8 @@ export const useUser = () => {
     form.reset()
     succesToast('Usuario creado correctamente')
     setIsLoading(false)
+
+    socket.emit('createEmployee', data)
   }
 
   const onFilterTextBoxChanged = () => {
@@ -136,7 +155,6 @@ export const useUser = () => {
   const onDeleteUser = async () => {
     setIsLoading(true)
     const data = await deleteEmployee(token, actualUserId)
-    console.log(data)
     if (!data) {
       errorToast('Error al eliminar el usuario')
       setIsLoading(false)
@@ -146,8 +164,8 @@ export const useUser = () => {
     handlersDelete.close()
     setIsLoading(false)
     succesToast('Usuario eliminado correctamente')
+    socket.emit('deleteEmployee', data)
   }
-
 
   return {
     opened,
