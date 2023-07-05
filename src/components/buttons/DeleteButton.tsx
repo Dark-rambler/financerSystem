@@ -3,7 +3,6 @@ import { TbTrash } from 'react-icons/tb'
 
 interface DeleteButtonProps {
   onClick: () => void
- 
 }
 
 const DeleteButton = ({ onClick }: DeleteButtonProps) => {

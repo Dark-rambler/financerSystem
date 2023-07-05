@@ -4,16 +4,18 @@ import { RegionalOfficeInterface } from "./RegionalOffice"
 export interface DepositOrderInterface {
     amount: number
     deliveryDate: Date
-    employee: EmployeeInterface
+    employeeId?: number
+    employee?: EmployeeInterface
     endDate: Date
-    id: number
+    id?: number
     orderNumber: string
-    regional: RegionalOfficeInterface
-    revitionStatus: string
+    regionalId?: number
+    regional?: RegionalOfficeInterface
+    revitionStatus?: string
     solitudeDate: Date
     startDate: Date
-    status: string
-    documentUrl: string
+    status?: string
+    documentUrl?: string
     [key: string]: any
   }
   

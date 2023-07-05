@@ -9,8 +9,9 @@ interface Store {
   setRole: (role: string) => void
   changeLogInState: () => void
   token: string
-setToken: (token: string) => void
+  setToken: (token: string) => void
 }
+
 export const useLoginStore = create<Store>()(
   persist(
     (set, get) => ({
