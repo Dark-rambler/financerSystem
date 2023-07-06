@@ -51,12 +51,10 @@ export const useAccount = () => {
 
   useEffect(() => {
     socket.on('newAccount', (data: IAccount) => {
-      console.log(data)
       setAccounts(accounts => [...accounts, data])
     })
 
     socket.on('deletedAccount', (data: IAccount) => {
-      console.log(data)
       setAccounts(accounts => accounts.filter(account => account.id !== data.id))
     })
 

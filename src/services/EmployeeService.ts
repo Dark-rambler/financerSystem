@@ -46,7 +46,6 @@ export const createEmployee = async (
 
     return response.json()
   } catch {
-    console.log('Something went wrong')
     return null
   }
 }

@@ -17,7 +17,6 @@ const GenerateDepositOrderReport = ({ data }: GenerateDepositOrderReport) => {
 
   const handleOnClick = () => {
     navigate('/techobol/create-deposit-order-report')
-    console.log(data)
     setDepositOrder(data)
   }
 

@@ -6,13 +6,13 @@ export interface IExpense {
     id?: number
     documentType: string
     documentNumber: string
-    date: string
+    date: Date | null
     branchOfficeId: number
     branchOffice?: IBranchModel
-    amount: number
+    amount: number | string
     description: string
-    accountId: string
+    accountId: number
     account?: IAccount
-    subAccountId: string
+    subAccountId: number
     subAccount?: ISubAccount
 }
