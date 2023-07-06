@@ -1,11 +1,12 @@
 import { Button, Input } from '@mantine/core'
 
 import { useNavigate } from 'react-router-dom'
-import { TbPlus, TbSearch  } from 'react-icons/tb'
+import { TbPlus, TbSearch } from 'react-icons/tb'
 import { useEffect } from 'react'
 import { useLoginStore } from '../../components/store/loginStore'
 import { useState, useRef, useCallback } from 'react'
 
+import { Roles } from '../../enums/Roles'
 import { DepositOrderInterface } from '../../models/DepositOrder'
 import { getAllDepositOrders } from '../../services/DepositOrderService'
 import { errorToast } from '../../services/toasts'
@@ -15,7 +16,7 @@ import { AgGridReact } from 'ag-grid-react'
 
 const DepositOrder = () => {
   const navigate = useNavigate()
-  const { token } = useLoginStore()
+  const { token, role } = useLoginStore()
   const [depositOrderData, setDepositOrderData] = useState<
     DepositOrderInterface[]
   >([])
@@ -63,20 +64,22 @@ const DepositOrder = () => {
               className='w-72'
               onChange={onFilterTextBoxChanged}
             />
-            <Button
-              leftIcon={<TbPlus />}
-              size='sm'
-              variant='filled'
-              color='blue'
-              radius={'sm'}
-              className='bg-blue-600 hover:bg-blue-700'
-              // onClick={open}
-              onClick={() => {
-                navigate('/techobol/register-deposit-order')
-              }}
-            >
-              Emitir nueva orden de depósito
-            </Button>
+            {role === Roles.FINANCIAL_MANAGER && (
+              <Button
+                leftIcon={<TbPlus />}
+                size='sm'
+                variant='filled'
+                color='blue'
+                radius={'sm'}
+                className='bg-blue-600 hover:bg-blue-700'
+                // onClick={open}
+                onClick={() => {
+                  navigate('/techobol/register-deposit-order')
+                }}
+              >
+                Emitir nueva orden de depósito
+              </Button>
+            )}
           </div>
         </div>
 

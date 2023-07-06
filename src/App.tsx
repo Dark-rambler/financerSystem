@@ -12,6 +12,7 @@ import Users from './pages/Admin/Users'
 import BranchOffices from './pages/Admin/BranchOffices'
 import Accounts from './pages/Admin/Accounts'
 import SubAccounts from './pages/Admin/SubAccounts'
+import CreateDepositOrderReport from './pages/Techobol/CreateDepositOrderReport'
 
 import SetPassword from './pages/SetPassword'
 import SetPasswordError from './pages/SetPasswordError'
@@ -45,6 +46,7 @@ function App () {
               path='/techobol/register-deposit-order'
               element={<RegisterDepositOrder />}
             />
+            <Route path='/techobol/create-deposit-order-report' element={<CreateDepositOrderReport />}/>
             <Route
               path='/megadis/deposit-order'
               element={
