@@ -18,7 +18,6 @@ export const getAllAccounts = async (token: string) => {
 
     return response.json()
   } catch {
-    console.log('Something went wrong')
     return null
   }
 }
@@ -41,7 +40,6 @@ export const createAccount = async (token: string, body: IAccount) => {
 
     return response.json()
   } catch {
-    console.log('Something went wrong')
     return null
   }
 }
@@ -62,7 +60,6 @@ export const deleteAccount = async (token: string, id: number) => {
 
     return response.json()
   } catch {
-    console.log('Something went wrong')
     return null
   }
 }

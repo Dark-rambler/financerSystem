@@ -30,7 +30,6 @@ const SetPassword = () => {
   }, [])
 
   const validateToken = async () => {
-    console.log(token)
     const status = await ValidateTokenBackend(token as string)
     if (!status) {
       setIsTokenValid(false)

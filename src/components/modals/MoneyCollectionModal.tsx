@@ -34,7 +34,8 @@ const MoneyCollectionModal = ({
     >
       <form
         onSubmit={moneyCollection.form.onSubmit(() => {
-          moneyCollection.onSubmit()
+          if (moneyCollection.isEditing) moneyCollection.onSubmitEdit()
+          else moneyCollection.onSubmit()
         })}
         className='space-y-7 h-full'
       >
@@ -42,9 +43,10 @@ const MoneyCollectionModal = ({
           <Select
             data={moneyCollection.branchOffices}
             withAsterisk
-            placeholder='Sucursales'
-            label={'Sucursales'}
-                        {...moneyCollection.form.getInputProps('branchOfficeId')}
+            placeholder='Sucursal'
+            label={'Sucursal'}
+            {...moneyCollection.form.getInputProps('branchOfficeId')}
+            searchable
           />
           <DatePickerInput
             withAsterisk

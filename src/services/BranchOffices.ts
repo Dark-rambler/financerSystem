@@ -48,7 +48,6 @@ export const getAllBranchOffices = async (token: string) => {
       return response.json()
 
     } catch {
-      console.log('Something went wrong')
       return null
     }
   }
@@ -73,7 +72,6 @@ export const getAllBranchOffices = async (token: string) => {
       return response.json()
     }
     catch{
-      console.log('Something went wrong')
       return null
     }
  

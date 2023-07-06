@@ -11,6 +11,7 @@ import ExpenseModal from '../../components/modals/ExpenseModal'
 import DeleteModal from '../../components/modals/DeleteModal'
 
 import DeleteButton from '../../components/buttons/DeleteButton'
+import EditButton from '../../components/buttons/EditButton'
 
 const CreateDepositOrderReport = () => {
   const { depositOrder, setDepositOrder } = useDepositOrderStore()
@@ -24,7 +25,7 @@ const CreateDepositOrderReport = () => {
         <h1 className='text-center text-md font-bold'>
           INFORME ORDEN DE DEPOSITO
         </h1>
-        <div className='w-full rounded-md border border-gray-300 '>
+        <div className='w-full rounded-sm border border-gray-300 '>
           <Table verticalSpacing={'sm'}>
             <thead className='bg-slate-200'>
               <tr>
@@ -72,7 +73,7 @@ const CreateDepositOrderReport = () => {
           </Button>
         </div>
 
-        <div className='w-full rounded-md border border-gray-300 '>
+        <div className='w-full rounded-sm border border-gray-300 '>
           <Table verticalSpacing={'sm'} withColumnBorders>
             <thead className='bg-[#D3E9DD]'>
               <tr>
@@ -81,6 +82,7 @@ const CreateDepositOrderReport = () => {
                 <th>Monto</th>
                 <th>Entregado por</th>
                 <th>Recibido por</th>
+                <th></th>
                 <th></th>
               </tr>
             </thead>
@@ -91,14 +93,26 @@ const CreateDepositOrderReport = () => {
                   <td>
                     {new Date(collection.date as Date).toLocaleDateString()}
                   </td>
-                  <td>{collection.amount}</td>
+                  <td>{collection.amount} Bs.</td>
                   <td>{collection.deliveredBy}</td>
                   <td>
                     {collection.receivedBy?.name}{' '}
                     {collection.receivedBy?.lastName}
                   </td>
+                  <td>
+                    <EditButton
+                      onClick={() => {
+                        moneyCollection.onClickEdit(index)
+                      }}
+                    />
+                  </td>
                   <td className='max-w-10'>
-                    <DeleteButton onClick={moneyCollection.moneyCollectionOpenedDeleteHandler.open}/>
+                    <DeleteButton
+                      onClick={() => {
+                        moneyCollection.setActualId(index)
+                        moneyCollection.moneyCollectionOpenedDeleteHandler.open()
+                      }}
+                    />
                   </td>
                 </tr>
               ))}
@@ -118,8 +132,8 @@ const CreateDepositOrderReport = () => {
           </Button>
         </div>
 
-        <div className='w-full rounded-md border border-gray-300 '>
-          <Table verticalSpacing={'sm'} withColumnBorders>
+        {/* <div className='w-full rounded-sm border border-gray-300 '> */}
+          <Table verticalSpacing={'sm'} withColumnBorders withBorder>
             <thead className='bg-[#FBE9D9]'>
               <tr>
                 <th>Documento</th>
@@ -130,25 +144,41 @@ const CreateDepositOrderReport = () => {
                 <th>Descripcion</th>
                 <th>Cuenta financiera</th>
                 <th>Subcuenta financiera</th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                {expense.expenses.map(expense => (
-                  <>
-                    <td>{expense.documentType}</td>
-                    <td>{expense.documentNumber}</td>
-                    <td>{expense.date}</td>
-                    <td>{expense.amount}</td>
-                    <td>{expense.description}</td>
-                    <td>{expense.account?.name}</td>
-                    <td>{expense.subAccount?.name}</td>
-                  </>
-                ))}
-              </tr>
+              {expense.expenses.map((element, index) => (
+                <tr key={`expense-key-${index}`}>
+                  <td>{element.documentType}</td>
+                  <td>{element.documentNumber}</td>
+                  <td>{new Date(element.date as Date).toLocaleDateString()}</td>
+                  <td>{element.branchOffice?.name}</td>
+                  <td>{element.amount} Bs.</td>
+                  <td>{element.description}</td>
+                  <td>{element.account?.name}</td>
+                  <td>{element.subAccount?.name}</td>
+                  <td>
+                    <EditButton
+                      onClick={() => {
+                        expense.onClickEdit(index)
+                      }}
+                    />
+                  </td>
+                  <td className='max-w-10'>
+                    <DeleteButton
+                      onClick={() => {
+                        moneyCollection.setActualId(index)
+                        moneyCollection.moneyCollectionOpenedDeleteHandler.open()
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </Table>
-        </div>
+        {/* </div> */}
       </section>
 
       <section className='space-y-2'>
@@ -161,7 +191,7 @@ const CreateDepositOrderReport = () => {
             +
           </Button>
         </div>
-        <div className='w-full rounded-md border border-gray-300 '>
+        <div className='w-full rounded-sm border border-gray-300 '>
           <Table verticalSpacing={'sm'} withColumnBorders>
             <thead className='bg-[#D2E5F3]'>
               <tr>
@@ -190,16 +220,15 @@ const CreateDepositOrderReport = () => {
         moneyCollection={moneyCollection}
       />
       <DeleteModal
-        label={'Quitar recaudación'}
-        onDelete={() => {
-          console.log('a')
-        }}
+        label={'Recaudación'}
+        onDelete={moneyCollection.onDelete}
         close={moneyCollection.moneyCollectionOpenedDeleteHandler.close}
         opened={moneyCollection.moneyCollectionOpenedDelete}
       />
       <ExpenseModal
         opened={expense.expenseOpened}
-        close={expense.expenseOpenedHandler.close}
+        close={expense.onClose}
+        expense={expense}
       />
       <DepositModal
         opened={deposit.depositOpened}

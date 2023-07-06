@@ -20,11 +20,13 @@ export const useMoneyCollection = () => {
 
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
   const [moneyCollectionOpened, moneyCollectionOpenedHandler] = useDisclosure()
-  const [moneyCollectionOpenedEdit, moneyCollectionOpenedEditHandler] = useDisclosure()
-  const [moneyCollectionOpenedDelete, moneyCollectionOpenedDeleteHandler] = useDisclosure()
+  const [moneyCollectionOpenedDelete, moneyCollectionOpenedDeleteHandler] =
+    useDisclosure()
   const [moneyCollections, setMoneyCollections] = useState<IMoneyCollection[]>(
     []
   )
+  const [actualId, setActualId] = useState<number>(0)
+  const [isEditing, setIsEditing] = useState(false)
 
   const form = useForm<IMoneyCollection>({
     initialValues: {
@@ -71,8 +73,7 @@ export const useMoneyCollection = () => {
     form.reset()
   }
 
-
-  const onSubmit = () => {
+  const getNewMoneyCollection = () => {
     const newMoneyCollection = {
       date: form.values.date,
       branchOfficeId: form.values.branchOfficeId,
@@ -96,8 +97,46 @@ export const useMoneyCollection = () => {
         regionalOfficeId: depositOrder.regional?.id as number
       }
     }
+    return newMoneyCollection
+  }
+
+  const onSubmit = () => {
     moneyCollectionOpenedHandler.close()
+    const newMoneyCollection = getNewMoneyCollection()
     setMoneyCollections([...moneyCollections, newMoneyCollection])
+    form.reset()
+  }
+
+  const onSubmitEdit = () => {
+    const newMoneyCollection = getNewMoneyCollection()
+    moneyCollections[actualId] = newMoneyCollection
+    moneyCollectionOpenedHandler.close()
+    setIsEditing(false)
+    form.reset()
+  }
+
+  const onClickEdit = (id: number) => {
+    moneyCollectionOpenedHandler.open()
+    setIsEditing(true)
+    setActualId(id)
+    const moneyCollection = moneyCollections[id]
+
+    form.setFieldValue('date', moneyCollection?.date as Date)
+    form.setFieldValue(
+      'branchOfficeId',
+      moneyCollection?.branchOfficeId as number
+    )
+    form.setFieldValue('amount', moneyCollection?.amount as string)
+    form.setFieldValue('deliveredBy', moneyCollection?.deliveredBy as string)
+    form.setFieldValue('receivedById', moneyCollection?.receivedById as number)
+  }
+
+  const onDelete = () => {
+    moneyCollections.splice(actualId, 1)
+    moneyCollectionOpenedHandler.close()
+    setIsEditing(false)
+    moneyCollectionOpenedDeleteHandler.close()
+    form.reset()
   }
 
   return {
@@ -111,6 +150,11 @@ export const useMoneyCollection = () => {
     form,
     adminName: `${depositOrder.employee?.name} ${depositOrder.employee?.lastName}`,
     onSubmit,
-    onClose
+    onClickEdit,
+    onClose,
+    isEditing,
+    onSubmitEdit,
+    setActualId,
+    onDelete
   }
 }
