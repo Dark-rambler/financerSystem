@@ -1,5 +1,5 @@
 import { RiMoneyCnyBoxFill } from 'react-icons/ri'
-import { TbMoon } from 'react-icons/tb'
+// import { TbMoon } from 'react-icons/tb'
 
 import { RxHamburgerMenu } from 'react-icons/rx'
 
@@ -42,9 +42,9 @@ const Navbar = ({ onClickSidebarButton }: NavbarProps) => {
         </div>
 
         <div className='absolute right-1 flex space-x-5'>
-          <div className='hover:shadow-md bg-slate-100 select-none w-9 h-9 border transition border-slate-300 rounded-md flex items-center justify-center hover:cursor-pointer hover:bg-white '>
+          {/* <div className='hover:shadow-md bg-slate-100 select-none w-9 h-9 border transition border-slate-300 rounded-md flex items-center justify-center hover:cursor-pointer hover:bg-white '>
             <TbMoon className='text-slate-900 text-xl ' />
-          </div>
+          </div> */}
           {isLoggedIn && <UserMenu />}
         </div>
       </div>

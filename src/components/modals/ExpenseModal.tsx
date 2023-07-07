@@ -94,7 +94,7 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
           searchable
           {...expense.form.getInputProps('accountId')}
           
-          onSelect={(e) => expense.onSelectAccount(e.currentTarget.value)}
+          // onSelect={(e) => expense.onSelectAccount(e.currentTarget.value)}
         />
         <Select
           data={expense.filteredSubAccounts}
@@ -102,7 +102,7 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
           placeholder={'Subcuenta financiera'}
           label={'Subcuenta financiera'}
           searchable
-          disabled={expense.form.values.accountId === 0}
+          // disabled={expense.form.values.accountId === 0}
           {...expense.form.getInputProps('subAccountId')}
         />
         </SimpleGrid>

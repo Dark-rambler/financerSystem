@@ -8,13 +8,13 @@ import { useMoneyCollection } from '../../hooks/useMoneyCollection'
 import DepositModal from '../../components/modals/DepositModal'
 import MoneyCollectionModal from '../../components/modals/MoneyCollectionModal'
 import ExpenseModal from '../../components/modals/ExpenseModal'
-import DeleteModal from '../../components/modals/DeleteModal'
 
-import DeleteButton from '../../components/buttons/DeleteButton'
-import EditButton from '../../components/buttons/EditButton'
+import ExpenseTable from '../../components/table/ExpenseTable'
+import MoneyCollectionTable from '../../components/table/MoneyCollectionTable'
+import DepositTable from '../../components/table/DepositTable'
 
 const CreateDepositOrderReport = () => {
-  const { depositOrder, setDepositOrder } = useDepositOrderStore()
+  const { depositOrder } = useDepositOrderStore()
   const deposit = useDeposit()
   const expense = useExpense()
   const moneyCollection = useMoneyCollection()
@@ -72,53 +72,7 @@ const CreateDepositOrderReport = () => {
             +
           </Button>
         </div>
-
-        <div className='w-full rounded-sm border border-gray-300 '>
-          <Table verticalSpacing={'sm'} withColumnBorders>
-            <thead className='bg-[#D3E9DD]'>
-              <tr>
-                <th>Sucursal</th>
-                <th>Fecha de recaudación</th>
-                <th>Monto</th>
-                <th>Entregado por</th>
-                <th>Recibido por</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {moneyCollection.moneyCollections.map((collection, index) => (
-                <tr key={`money-collection-${index}`}>
-                  <td>{collection.branchOffice?.name}</td>
-                  <td>
-                    {new Date(collection.date as Date).toLocaleDateString()}
-                  </td>
-                  <td>{collection.amount} Bs.</td>
-                  <td>{collection.deliveredBy}</td>
-                  <td>
-                    {collection.receivedBy?.name}{' '}
-                    {collection.receivedBy?.lastName}
-                  </td>
-                  <td>
-                    <EditButton
-                      onClick={() => {
-                        moneyCollection.onClickEdit(index)
-                      }}
-                    />
-                  </td>
-                  <td className='max-w-10'>
-                    <DeleteButton
-                      onClick={() => {
-                        moneyCollection.setActualId(index)
-                        moneyCollection.moneyCollectionOpenedDeleteHandler.open()
-                      }}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
+        <MoneyCollectionTable moneyCollection={moneyCollection} />
       </section>
 
       <section className='space-y-2'>
@@ -132,52 +86,7 @@ const CreateDepositOrderReport = () => {
           </Button>
         </div>
 
-        {/* <div className='w-full rounded-sm border border-gray-300 '> */}
-          <Table verticalSpacing={'sm'} withColumnBorders withBorder>
-            <thead className='bg-[#FBE9D9]'>
-              <tr>
-                <th>Documento</th>
-                <th>Nº documento</th>
-                <th>Fecha</th>
-                <th>Sucursal</th>
-                <th>Monto</th>
-                <th>Descripcion</th>
-                <th>Cuenta financiera</th>
-                <th>Subcuenta financiera</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {expense.expenses.map((element, index) => (
-                <tr key={`expense-key-${index}`}>
-                  <td>{element.documentType}</td>
-                  <td>{element.documentNumber}</td>
-                  <td>{new Date(element.date as Date).toLocaleDateString()}</td>
-                  <td>{element.branchOffice?.name}</td>
-                  <td>{element.amount} Bs.</td>
-                  <td>{element.description}</td>
-                  <td>{element.account?.name}</td>
-                  <td>{element.subAccount?.name}</td>
-                  <td>
-                    <EditButton
-                      onClick={() => {
-                        expense.onClickEdit(index)
-                      }}
-                    />
-                  </td>
-                  <td className='max-w-10'>
-                    <DeleteButton
-                      onClick={() => {
-                        moneyCollection.setActualId(index)
-                        moneyCollection.moneyCollectionOpenedDeleteHandler.open()
-                      }}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+        <ExpenseTable expense={expense} />
         {/* </div> */}
       </section>
 
@@ -186,53 +95,29 @@ const CreateDepositOrderReport = () => {
           <h1 className='font-bold'>Depósitos</h1>
           <Button
             className='bg-blue-600 hover:bg-blue-700 text-xl px-3'
-            onClick={deposit.depositOpenedHandler.open}
+            onClick={deposit.modalHandler.open}
           >
             +
           </Button>
         </div>
-        <div className='w-full rounded-sm border border-gray-300 '>
-          <Table verticalSpacing={'sm'} withColumnBorders>
-            <thead className='bg-[#D2E5F3]'>
-              <tr>
-                <th>Nº Voucher</th>
-                <th>Monto</th>
-                <th>Observaciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                {deposit.deposits.map(deposit => (
-                  <>
-                    <td>{deposit.voucherNumber}</td>
-                    <td>{deposit.amount}</td>
-                    <td>{deposit.description}</td>
-                  </>
-                ))}
-              </tr>
-            </tbody>
-          </Table>
-        </div>
+
+        <DepositTable deposit={deposit} />
       </section>
       <MoneyCollectionModal
         opened={moneyCollection.moneyCollectionOpened}
         close={moneyCollection.onClose}
         moneyCollection={moneyCollection}
       />
-      <DeleteModal
-        label={'Recaudación'}
-        onDelete={moneyCollection.onDelete}
-        close={moneyCollection.moneyCollectionOpenedDeleteHandler.close}
-        opened={moneyCollection.moneyCollectionOpenedDelete}
-      />
+
       <ExpenseModal
         opened={expense.expenseOpened}
         close={expense.onClose}
         expense={expense}
       />
       <DepositModal
-        opened={deposit.depositOpened}
-        close={deposit.depositOpenedHandler.close}
+        opened={deposit.opened}
+        close={deposit.onClose}
+        deposit={deposit}
       />
     </div>
   )
