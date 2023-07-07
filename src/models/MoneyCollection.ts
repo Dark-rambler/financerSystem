@@ -1,5 +1,5 @@
 import { IBranchModel } from './BranchOffice'
-import EmployeeInterface from './Employee'
+import { EmployeeInterface } from './Employee'
 
 export interface IMoneyCollection {
   id?: number

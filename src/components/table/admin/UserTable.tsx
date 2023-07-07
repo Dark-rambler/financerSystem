@@ -5,7 +5,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css'
 import { ColDef, GridOptions, ICellRendererParams } from 'ag-grid-community'
 import { AG_GRID_LOCALE_ES } from '../../../locale/locale.es'
 
-import EmployeeInterface from '../../../models/Employee'
+import { EmployeeInterface } from '../../../models/Employee'
 import DeleteButton from '../../buttons/DeleteButton'
 import { useUser } from '../../../hooks/useUser'
 
@@ -26,64 +26,65 @@ const UserTable = ({ user, gridRef }: UserTableProps) => {
     setRowData(user.users)
   }, [user.users])
 
-  const columnDefs = useMemo<ColDef[]>(() => ([
-    {
-      field: 'name',
-      headerName: 'Nombre',
-      sortable: true,
-      filter: false,
-      resizable: true
-    },
-    {
-      field: 'lastName',
-      headerName: 'Apellidos',
-      sortable: true,
-      filter: false,
-      resizable: true,
-      sort: 'asc'
-    },
-    {
-      field: 'email',
-      headerName: 'Correo',
-      sortable: true,
-      filter: false,
-      resizable: true
-    },
-    {
-      field: 'role.name',
-      headerName: 'Rol',
-      sortable: true,
-      filter: false,
-      resizable: true,
-      width: 270
-    },
-    {
-      field: 'regionalOffice.name',
-      headerName: 'Regional',
-      sortable: true,
-      resizable: true
-    },
-    {
-      headerName: 'Eliminar',
-      resizable: false,
-      width: 100,
-      cellRenderer: DeleteButton,
-      cellRendererParams: (params: ICellRendererParams )  => ({
-        onClick: () => {
-          user.handlersDelete.open()
-          user.setActualUserId(params.data.id)
+  const columnDefs = useMemo<ColDef[]>(
+    () => [
+      {
+        field: 'name',
+        headerName: 'Nombre',
+        sortable: true,
+        filter: false,
+        resizable: true
+      },
+      {
+        field: 'lastName',
+        headerName: 'Apellidos',
+        sortable: true,
+        filter: false,
+        resizable: true,
+        sort: 'asc'
+      },
+      {
+        field: 'email',
+        headerName: 'Correo',
+        sortable: true,
+        filter: false,
+        resizable: true
+      },
+      {
+        field: 'role.name',
+        headerName: 'Rol',
+        sortable: true,
+        filter: false,
+        resizable: true,
+        width: 270
+      },
+      {
+        field: 'regionalOffice.name',
+        headerName: 'Regional',
+        sortable: true,
+        resizable: true
+      },
+      {
+        headerName: 'Eliminar',
+        resizable: false,
+        width: 100,
+        cellRenderer: DeleteButton,
+        cellRendererParams: (params: ICellRendererParams) => ({
+          onClick: () => {
+            user.handlersDelete.open()
+            user.setActualUserId(params.data.id)
+          }
+        }),
+        cellStyle: {
+          overflow: 'visible',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }
-      }),
-      cellStyle: {
-        overflow: 'visible',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
       }
-    }
-  ]), [])
-
-
+    ],
+    []
+  )
 
   const gridOptions = useMemo<GridOptions>(
     () => ({

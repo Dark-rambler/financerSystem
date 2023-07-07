@@ -1,4 +1,4 @@
-import EmployeeInterface from "./Employee"
+import { EmployeeInterface } from "./Employee"
 import { RegionalOfficeInterface } from "./RegionalOffice"
 
 export interface DepositOrderInterface {

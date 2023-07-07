@@ -1,4 +1,4 @@
-import EmployeeInterface from '../models/Employee'
+import { EmployeeInterface } from '../models/Employee'
 
 export const getAllEmployeesWithRoles = async (token: string) => {
   try {
