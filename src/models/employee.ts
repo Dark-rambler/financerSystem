@@ -1,7 +1,7 @@
 import { Role } from "./Roles"
 import { RegionalOfficeInterface } from "./RegionalOffice"
 
-interface EmployeeInterface {
+export interface EmployeeInterface {
   id? : number
   name: string
   lastName: string
@@ -13,4 +13,4 @@ interface EmployeeInterface {
   regionalOffice?: RegionalOfficeInterface
 }
 
-export default EmployeeInterface
+

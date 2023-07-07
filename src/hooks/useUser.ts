@@ -11,7 +11,7 @@ import {
 import { getAllRegionals } from '../services/RegionalService'
 
 import { useLoginStore } from '../components/store/loginStore'
-import EmployeeInterface from '../models/Employee'
+import { EmployeeInterface } from '../models/Employee'
 import { getAllRoles } from '../services/Roles'
 import { Role } from '../models/Roles'
 import { RegionalOfficeInterface } from '../models/RegionalOffice'
@@ -50,10 +50,10 @@ export const useUser = () => {
       lastName: isNotEmpty('Ingrese un apellido'),
       email: isEmail('Ingrese un correo válido'),
       password: isNotEmpty('Ingrese una contraseña'),
-      roleId: value => {
+      roleId: (value: number)=> {
         if (value === 0) return 'Seleccione un rol'
       },
-      regionalOfficeId: value => {
+      regionalOfficeId: (value: number) => {
         if (value === 0) return 'Seleccione una regional'
       }
     }
