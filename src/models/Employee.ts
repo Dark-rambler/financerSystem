@@ -1,8 +1,8 @@
-import { Role } from "./Roles"
-import { RegionalOfficeInterface } from "./RegionalOffice"
+import { Role } from './Roles'
+import { RegionalOfficeInterface } from './RegionalOffice'
 
 export interface EmployeeInterface {
-  id? : number
+  id?: number
   name: string
   lastName: string
   email: string
@@ -12,5 +12,3 @@ export interface EmployeeInterface {
   regionalOfficeId: number
   regionalOffice?: RegionalOfficeInterface
 }
-
-
