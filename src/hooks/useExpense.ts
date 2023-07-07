@@ -191,7 +191,7 @@ export const useExpense = () => {
   }
 
   const onSelectAccount = (value: string) => {
-
+    console.log(value)
     const filterSubAccounts = subAccounts.filter(subAccount => {
       if (Number(subAccount.accountId) === form.values.accountId) return true
     })
@@ -203,6 +203,13 @@ export const useExpense = () => {
 
     console.log(formatedSubAccounts)
     setFilteredSubAccounts(formatedSubAccounts)    
+  }
+
+  const onDelete = () => {
+    expenses.splice(actualId, 1)
+    expenseOpenedDeleteHandler.close()
+    setIsEditing(false)
+    form.reset()
   }
 
   return {
@@ -222,6 +229,8 @@ export const useExpense = () => {
     onSelectAccount,
     onClickEdit,
     onSubmitEdit,
-    onClose
+    onClose,
+    setActualId,
+    onDelete
   }
 }

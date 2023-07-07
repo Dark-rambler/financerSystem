@@ -6,13 +6,13 @@ const StatusBadge = ({ data }: { data: DepositOrderInterface }) => {
   const Status = data.status
   return (
     <>
-      {Status.toUpperCase() === StatusEnum.EMITTED && (
+      {Status?.toUpperCase() === StatusEnum.EMITTED && (
         <Badge color='blue'>{Status}</Badge>
       )}
-      {Status.toUpperCase() === StatusEnum.RECEIVED && (
+      {Status?.toUpperCase() === StatusEnum.RECEIVED && (
         <Badge color='green'>{Status}</Badge>
       )}
-      {Status.toUpperCase() === StatusEnum.CANCELED && (
+      {Status?.toUpperCase() === StatusEnum.CANCELED && (
         <Badge color='red'>{Status}</Badge>
       )}
     </>
