@@ -91,8 +91,6 @@ export const useMoneyCollection = () => {
       receivedBy: {
         name: depositOrder.employee?.name as string,
         lastName: depositOrder.employee?.lastName as string,
-        email: '',
-        password: '',
         roleId: 0,
         regionalOfficeId: depositOrder.regional?.id as number
       }

@@ -20,19 +20,18 @@ import SetPasswordError from './pages/SetPasswordError'
 function App () {
   const { isLoggedIn, role } = useLoginStore()
 
-  
   return (
     <Routes>
       <Route path='*' element={<Navigate to={'/login'} />} />
       <Route path='/set-password-error' element={<SetPasswordError />} />
       <Route element={<MainLayout />}>
-        <Route
+      <Route
           path='/login'
           element={
             isLoggedIn ? <Navigate to={'/techobol/deposit-order'} /> : <Login />
           }
-        />
-        <Route path='/set-password/:token' element={<SetPassword />} />
+      />
+      <Route path='/set-password/:token' element={<SetPassword />} />
 
         {isLoggedIn && (
           <>
@@ -46,7 +45,10 @@ function App () {
               path='/techobol/register-deposit-order'
               element={<RegisterDepositOrder />}
             />
-            <Route path='/techobol/create-deposit-order-report' element={<CreateDepositOrderReport />}/>
+            <Route
+              path='/techobol/create-deposit-order-report'
+              element={<CreateDepositOrderReport />}
+            />
             <Route
               path='/megadis/deposit-order'
               element={

@@ -1,72 +1,78 @@
 import { Table } from '@mantine/core'
 
-import { useExpense } from '../../hooks/useExpense'
 import EditButton from '../buttons/EditButton'
 import DeleteButton from '../buttons/DeleteButton'
 import DeleteModal from '../modals/DeleteModal'
 
-interface ExpenseTableProps {
-  expense: ReturnType<typeof useExpense>
+import { useEnvelope } from '../../hooks/useEnvelope'
+
+interface EnvelopeTableProps {
+  envelope: ReturnType<typeof useEnvelope>
 }
 
-const ExpenseTable = ({ expense }: ExpenseTableProps) => {
+const EnvelopeTable = ({ envelope }: EnvelopeTableProps) => {
   return (
     <>
       <Table verticalSpacing={'sm'} withColumnBorders withBorder>
         <thead className='bg-[#FBE9D9]'>
           <tr>
-            <th>Documento</th>
-            <th>Nº documento</th>
+            <th>De Sucursal</th>
+            <th>A Sucursal</th>
             <th>Fecha</th>
-            <th>Sucursal</th>
-            <th>Tipo de salida</th>
             <th>Monto</th>
             <th>Descripcion</th>
-            <th>Cuenta financiera</th>
-            <th>Subcuenta financiera</th>
             <th></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {expense.expenses.map((element, index) => (
+          {envelope.envelopes.map((element, index) => (
             <tr key={`expense-key-${index}`}>
-              <td>{element.documentType}</td>
-              <td>{element.documentNumber}</td>
+              <td>{element.fromBranchOffice?.name}</td>
+              <td>{element.toBranchOffice?.name}</td>
               <td>{new Date(element.date as Date).toLocaleDateString()}</td>
-              <td>{element.branchOffice?.name}</td>
-              <td>{element.expenseType}</td>
               <td>{element.amount} Bs.</td>
               <td>{element.description}</td>
-              <td>{element.account?.name}</td>
-              <td>{element.subAccount?.name}</td>
+
               <td>
                 <EditButton
                   onClick={() => {
-                    expense.onClickEdit(index)
+                    envelope.onClickEdit(index)
                   }}
                 />
               </td>
               <td className='max-w-10'>
                 <DeleteButton
                   onClick={() => {
-                    expense.setActualId(index)
-                    expense.expenseOpenedDeleteHandler.open()
+                    envelope.setActualId(index)
+                    envelope.modalDeleteHandler.open()
                   }}
                 />
               </td>
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <th></th>
+          <th></th>
+          <th>Total</th>
+          {/* TOTAL SUMATORY OF AMOUNTS */}
+          <th>
+500 Bs.
+          </th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tfoot>
       </Table>
       <DeleteModal
-        label={'Gasto'}
-        opened={expense.expenseOpenedDelete}
-        close={expense.expenseOpenedDeleteHandler.close}
-        onDelete={expense.onDelete}
+        label={'Sobre'}
+        opened={envelope.openedDelete}
+        close={envelope.modalDeleteHandler.close}
+        onDelete={envelope.onDelete}
       />
     </>
   )
 }
 
-export default ExpenseTable
+export default EnvelopeTable

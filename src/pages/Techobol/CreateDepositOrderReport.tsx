@@ -1,23 +1,32 @@
+import {useEffect} from 'react'
 import { Table, Button } from '@mantine/core'
 
 import { useDepositOrderStore } from '../../components/store/depositOrderStore'
 import { useExpense } from '../../hooks/useExpense'
 import { useDeposit } from '../../hooks/useDeposit'
+import { useEnvelope } from '../../hooks/useEnvelope'
 import { useMoneyCollection } from '../../hooks/useMoneyCollection'
 
 import DepositModal from '../../components/modals/DepositModal'
 import MoneyCollectionModal from '../../components/modals/MoneyCollectionModal'
 import ExpenseModal from '../../components/modals/ExpenseModal'
+import EnvelopeModal from '../../components/modals/EnvelopeModal'
 
 import ExpenseTable from '../../components/table/ExpenseTable'
 import MoneyCollectionTable from '../../components/table/MoneyCollectionTable'
 import DepositTable from '../../components/table/DepositTable'
+import EnvelopeTable from '../../components/table/EnvelopeTable'
 
 const CreateDepositOrderReport = () => {
   const { depositOrder } = useDepositOrderStore()
+  const moneyCollection = useMoneyCollection()
   const deposit = useDeposit()
   const expense = useExpense()
-  const moneyCollection = useMoneyCollection()
+  const envelope = useEnvelope()
+
+  useEffect(() => {
+    envelope.setBranchOffices(moneyCollection.branchOffices)
+  }, [moneyCollection.branchOffices])
 
   return (
     <div className='px-16 py-12 space-y-10'>
@@ -77,7 +86,7 @@ const CreateDepositOrderReport = () => {
 
       <section className='space-y-2'>
         <div className='flex items-end justify-between'>
-          <h1 className='font-bold'>Costos y gastos</h1>
+          <h1 className='font-bold'>Salidas</h1>
           <Button
             className='bg-blue-600 hover:bg-blue-700 text-xl px-3'
             onClick={expense.expenseOpenedHandler.open}
@@ -92,6 +101,19 @@ const CreateDepositOrderReport = () => {
 
       <section className='space-y-2'>
         <div className='flex items-end justify-between'>
+          <h1 className='font-bold'>Sobres</h1>
+          <Button
+            className='bg-blue-600 hover:bg-blue-700 text-xl px-3'
+            onClick={envelope.modalHandler.open}
+          >
+            +
+          </Button>
+        </div>
+        <EnvelopeTable envelope={envelope} />
+      </section>
+
+      <section className='space-y-2'>
+        <div className='flex items-end justify-between'>
           <h1 className='font-bold'>Depósitos</h1>
           <Button
             className='bg-blue-600 hover:bg-blue-700 text-xl px-3'
@@ -100,9 +122,11 @@ const CreateDepositOrderReport = () => {
             +
           </Button>
         </div>
-
         <DepositTable deposit={deposit} />
       </section>
+
+ 
+
       <MoneyCollectionModal
         opened={moneyCollection.moneyCollectionOpened}
         close={moneyCollection.onClose}
@@ -118,6 +142,11 @@ const CreateDepositOrderReport = () => {
         opened={deposit.opened}
         close={deposit.onClose}
         deposit={deposit}
+      />
+      <EnvelopeModal
+        opened={envelope.opened}
+        close={envelope.onClose}
+        envelope={envelope}
       />
     </div>
   )

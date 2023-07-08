@@ -22,7 +22,7 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
     <Modal
       opened={opened}
       onClose={close}
-      title={'Costos y gastos'}
+      title={'Salidas'}
       styles={{
         title: { fontSize: '18px', fontWeight: 'bold' },
         body: { padding: '20px' }
@@ -68,17 +68,26 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
             searchable
             {...expense.form.getInputProps('branchOfficeId')}
           />
+          <Select
+            data={expense.expenseTypes}
+            withAsterisk
+            placeholder='Tipo de salida'
+            label={'Tipo de salida'}
+            searchable
+            {...expense.form.getInputProps('expenseType')}
+          />
+          <NumberInput
+            withAsterisk
+            label={'Monto'}
+            placeholder='Monto'
+            stepHoldDelay={600}
+            stepHoldInterval={100}
+            precision={2}
+            min={0}
+            {...expense.form.getInputProps('amount')}
+          />
         </SimpleGrid>
-        <NumberInput
-          withAsterisk
-          label={'Monto'}
-          placeholder='Monto'
-          stepHoldDelay={600}
-          stepHoldInterval={100}
-          precision={2}
-          min={0}
-          {...expense.form.getInputProps('amount')}
-        />
+
         <Textarea
           withAsterisk
           label={'Descripción'}
@@ -86,27 +95,27 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
           {...expense.form.getInputProps('description')}
         />
         <SimpleGrid cols={2}>
-        <Select
-          data={expense.accounts}
-          withAsterisk
-          placeholder='Cuenta financiera'
-          label={'Cuenta financiera'}
-          searchable
-          {...expense.form.getInputProps('accountId')}
-          
-          // onSelect={(e) => expense.onSelectAccount(e.currentTarget.value)}
-        />
-        <Select
-          data={expense.filteredSubAccounts}
-          withAsterisk
-          placeholder={'Subcuenta financiera'}
-          label={'Subcuenta financiera'}
-          searchable
-          // disabled={expense.form.values.accountId === 0}
-          {...expense.form.getInputProps('subAccountId')}
-        />
+          <Select
+            data={expense.accounts}
+            withAsterisk
+            placeholder='Cuenta financiera'
+            label={'Cuenta financiera'}
+            searchable
+            {...expense.form.getInputProps('accountId')}
+
+            // onSelect={(e) => expense.onSelectAccount(e.currentTarget.value)}
+          />
+          <Select
+            data={expense.filteredSubAccounts}
+            withAsterisk
+            placeholder={'Subcuenta financiera'}
+            label={'Subcuenta financiera'}
+            searchable
+            // disabled={expense.form.values.accountId === 0}
+            {...expense.form.getInputProps('subAccountId')}
+          />
         </SimpleGrid>
-     
+
         <div className='flex justify-end'>
           <Button type={'submit'} className='bg-blue-600 hover:bg-blue-700'>
             Guardar
