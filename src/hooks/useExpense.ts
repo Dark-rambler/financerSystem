@@ -41,8 +41,13 @@ export const useExpense = () => {
 
   const documentTypes = [
     { value: 'Recibo', label: 'Recibo' },
-    { value: 'Factura', label: 'Factura' },
-    { value: 'Ticket', label: 'Ticket' }
+    { value: 'Factura', label: 'Factura' }
+  ]
+
+  const expenseTypes = [
+    { value: 'Gasto', label: 'Gasto' },
+    { value: 'Activo', label: 'Activo' },
+    { value: 'Importación', label: 'Importación' }
   ]
 
   const form = useForm<IExpense>({
@@ -51,6 +56,7 @@ export const useExpense = () => {
       documentNumber: '',
       date: null,
       branchOfficeId: 0,
+      expenseType: '',
       amount: '',
       description: '',
       accountId: 0,
@@ -62,6 +68,7 @@ export const useExpense = () => {
       date: isNotEmpty('Seleccione una fecha'),
       branchOfficeId: value => value === 0 && 'Seleccione una sucursal',
       amount: isNotEmpty('Ingrese un monto'),
+      expenseType: isNotEmpty('Seleccione un tipo de gasto'),
       description: isNotEmpty('Ingrese una descripción'),
       accountId: value => value === 0 && 'Seleccione una cuenta',
       subAccountId: value => value === 0 && 'Seleccione una subcuenta'
@@ -139,6 +146,7 @@ export const useExpense = () => {
         address: '',
         regionalOfficeId: depositOrder.regional?.id as number
       },
+      expenseType: form.values.expenseType,
       amount: form.values.amount,
       description: form.values.description,
       accountId: form.values.accountId,
@@ -184,6 +192,7 @@ export const useExpense = () => {
     form.setFieldValue('documentNumber', expense.documentNumber)
     form.setFieldValue('date', expense.date)
     form.setFieldValue('branchOfficeId', expense.branchOfficeId)
+    form.setFieldValue('expenseType', expense.expenseType)
     form.setFieldValue('amount', expense.amount)
     form.setFieldValue('description', expense.description)
     form.setFieldValue('accountId', expense.accountId)
@@ -231,6 +240,7 @@ export const useExpense = () => {
     onSubmitEdit,
     onClose,
     setActualId,
-    onDelete
+    onDelete,
+    expenseTypes
   }
 }

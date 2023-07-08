@@ -8,7 +8,8 @@ export interface IExpense {
     documentNumber: string
     date: Date | null
     branchOfficeId: number
-    branchOffice?: IBranchModel
+    branchOffice?: IBranchModel,
+    expenseType: string
     amount: number | string
     description: string
     accountId: number

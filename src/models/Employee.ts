@@ -5,8 +5,8 @@ export interface EmployeeInterface {
   id?: number
   name: string
   lastName: string
-  email: string
-  password: string
+  email?: string
+  password?: string
   roleId: number
   role?: Role
   regionalOfficeId: number
