@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 import { Table, Button } from '@mantine/core'
 
 import { useDepositOrderStore } from '../../components/store/depositOrderStore'
@@ -6,16 +6,19 @@ import { useExpense } from '../../hooks/useExpense'
 import { useDeposit } from '../../hooks/useDeposit'
 import { useEnvelope } from '../../hooks/useEnvelope'
 import { useMoneyCollection } from '../../hooks/useMoneyCollection'
+import { useDolar } from '../../hooks/useDolar'
 
 import DepositModal from '../../components/modals/DepositModal'
 import MoneyCollectionModal from '../../components/modals/MoneyCollectionModal'
 import ExpenseModal from '../../components/modals/ExpenseModal'
 import EnvelopeModal from '../../components/modals/EnvelopeModal'
+import DolarModal from '../../components/modals/DolarModal'
 
 import ExpenseTable from '../../components/table/ExpenseTable'
 import MoneyCollectionTable from '../../components/table/MoneyCollectionTable'
 import DepositTable from '../../components/table/DepositTable'
 import EnvelopeTable from '../../components/table/EnvelopeTable'
+import DolarTable from '../../components/table/DolarTable'
 
 const CreateDepositOrderReport = () => {
   const { depositOrder } = useDepositOrderStore()
@@ -23,18 +26,20 @@ const CreateDepositOrderReport = () => {
   const deposit = useDeposit()
   const expense = useExpense()
   const envelope = useEnvelope()
+  const dolar = useDolar()
 
   useEffect(() => {
     envelope.setBranchOffices(moneyCollection.branchOffices)
+    dolar.setBranchOffices(moneyCollection.branchOffices)
   }, [moneyCollection.branchOffices])
 
   return (
-    <div className='px-16 py-12 space-y-10'>
+    <div className='px-16 py-12 space-y-16'>
       <section className='space-y-7'>
         <h1 className='text-center text-md font-bold'>
           INFORME ORDEN DE DEPOSITO
         </h1>
-        <div className='w-full rounded-sm border border-gray-300 '>
+        <div className='w-full rounded-md border border-gray-300 '>
           <Table verticalSpacing={'sm'}>
             <thead className='bg-slate-200'>
               <tr>
@@ -73,7 +78,11 @@ const CreateDepositOrderReport = () => {
 
       <section className='space-y-2'>
         <div className='flex items-end justify-between'>
-          <h1 className='font-bold'>Recaudación</h1>
+          <div className='flex items-center space-x-2'>
+            <div className='w-4 h-4 bg-green-500 rounded-sm'></div>
+            <h1 className='font-bold'>Recaudaciones</h1>
+          </div>
+
           <Button
             className='bg-blue-600 hover:bg-blue-700 text-xl px-3'
             onClick={moneyCollection.moneyCollectionOpenedHandler.open}
@@ -86,7 +95,10 @@ const CreateDepositOrderReport = () => {
 
       <section className='space-y-2'>
         <div className='flex items-end justify-between'>
-          <h1 className='font-bold'>Salidas</h1>
+          <div className='flex items-center space-x-2'>
+            <div className='w-4 h-4 bg-amber-500 rounded-sm'></div>
+            <h1 className='font-bold'>Salidas</h1>
+          </div>
           <Button
             className='bg-blue-600 hover:bg-blue-700 text-xl px-3'
             onClick={expense.expenseOpenedHandler.open}
@@ -101,7 +113,28 @@ const CreateDepositOrderReport = () => {
 
       <section className='space-y-2'>
         <div className='flex items-end justify-between'>
-          <h1 className='font-bold'>Sobres</h1>
+          <div className='flex items-center space-x-2'>
+            <div className='w-4 h-4 bg-amber-500 rounded-sm'></div>
+            <h1 className='font-bold'>Dólares</h1>
+          </div>
+
+          <Button
+            className='bg-blue-600 hover:bg-blue-700 text-xl px-3'
+            onClick={dolar.modalHandler.open}
+          >
+            +
+          </Button>
+        </div>
+        <DolarTable dolar={dolar} />
+      </section>
+
+      <section className='space-y-2'>
+        <div className='flex items-end justify-between'>
+          <div className='flex items-center space-x-2'>
+            <div className='w-4 h-4 bg-amber-500 rounded-sm'></div>
+            <h1 className='font-bold'>Sobres</h1>
+          </div>
+
           <Button
             className='bg-blue-600 hover:bg-blue-700 text-xl px-3'
             onClick={envelope.modalHandler.open}
@@ -114,7 +147,11 @@ const CreateDepositOrderReport = () => {
 
       <section className='space-y-2'>
         <div className='flex items-end justify-between'>
-          <h1 className='font-bold'>Depósitos</h1>
+          <div className='flex items-center space-x-2'>
+            <div className='w-4 h-4 bg-blue-500 rounded-sm'></div>
+            <h1 className='font-bold'>Depósitos</h1>
+          </div>
+
           <Button
             className='bg-blue-600 hover:bg-blue-700 text-xl px-3'
             onClick={deposit.modalHandler.open}
@@ -124,8 +161,6 @@ const CreateDepositOrderReport = () => {
         </div>
         <DepositTable deposit={deposit} />
       </section>
-
- 
 
       <MoneyCollectionModal
         opened={moneyCollection.moneyCollectionOpened}
@@ -148,6 +183,7 @@ const CreateDepositOrderReport = () => {
         close={envelope.onClose}
         envelope={envelope}
       />
+      <DolarModal opened={dolar.opened} close={dolar.onClose} dolar={dolar} />
     </div>
   )
 }

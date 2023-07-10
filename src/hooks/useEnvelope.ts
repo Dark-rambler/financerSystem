@@ -15,6 +15,7 @@ export const useEnvelope = () => {
   const [openedDelete, modalDeleteHandler] = useDisclosure()
   const [actualId, setActualId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState(false)
+  const [totalAmount, setTotalAmount] = useState<number>(0)
 
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
 
@@ -35,8 +36,20 @@ export const useEnvelope = () => {
     }
   })
 
+  const calculateAmount = () => {
+    const totalAmount = envelopes.reduce((accumulator, currentValue) => {
+      const amount =
+        typeof currentValue.amount === 'string'
+          ? parseInt(currentValue.amount)
+          : currentValue.amount
+      return accumulator + amount
+    }, 0)
+    setTotalAmount(() => totalAmount)
+  }
+
   const onClose = () => {
     modalHandler.close()
+    setIsEditing(false)
     form.reset()
   }
 
@@ -68,20 +81,20 @@ export const useEnvelope = () => {
   }
 
   const onSubmit = () => {
-    console.log('bella notee')
     modalHandler.close()
     const newEnvelope = getNewEnvelope()
-    setEnvelopes([...envelopes, newEnvelope])
+    envelopes.push(newEnvelope)
     form.reset()
+    calculateAmount()
   }
 
   const onSubmitEdit = () => {
-    console.log('no bella notte')
     const newEnvelop = getNewEnvelope()
     envelopes[actualId] = newEnvelop
     modalHandler.close()
     setIsEditing(false)
     form.reset()
+    calculateAmount()
   }
 
   const onClickEdit = (id: number) => {
@@ -109,6 +122,7 @@ export const useEnvelope = () => {
     setIsEditing(false)
     modalDeleteHandler.close()
     form.reset()
+    calculateAmount()
   }
 
   return {
@@ -128,6 +142,7 @@ export const useEnvelope = () => {
     setActualId,
     onDelete,
     setBranchOffices,
-    branchOffices
+    branchOffices,
+    totalAmount
   }
 }

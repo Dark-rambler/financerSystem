@@ -32,16 +32,16 @@ const EnvelopeModal = ({ opened, close, envelope }: EnvelopeModalProps) => {
           <Select
             data={envelope.branchOffices}
             withAsterisk
-            placeholder='Sucursal'
-            label={'Sucursal'}
+            placeholder='De sucursal'
+            label={'De sucursal'}
             {...envelope.form.getInputProps('fromBranchOfficeId')}
             searchable
           />
           <Select
             data={envelope.branchOffices}
             withAsterisk
-            placeholder='Sucursal'
-            label={'Sucursal'}
+            placeholder='A sucursal'
+            label={'A sucursal'}
             {...envelope.form.getInputProps('toBranchOfficeId')}
             searchable
           />

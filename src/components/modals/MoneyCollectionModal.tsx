@@ -37,7 +37,7 @@ const MoneyCollectionModal = ({
           if (moneyCollection.isEditing) moneyCollection.onSubmitEdit()
           else moneyCollection.onSubmit()
         })}
-        className='space-y-7 h-full'
+        className='space-y-4 h-full'
       >
         <SimpleGrid cols={2}>
           <Select
@@ -57,16 +57,7 @@ const MoneyCollectionModal = ({
             clearable
             {...moneyCollection.form.getInputProps('date')}
           />
-          <NumberInput
-            withAsterisk
-            label={'Monto'}
-            placeholder='Monto'
-            stepHoldDelay={600}
-            stepHoldInterval={100}
-            precision={2}
-            min={0}
-            {...moneyCollection.form.getInputProps('amount')}
-          />
+
           <TextInput
             withAsterisk
             label={'Entregado por'}
@@ -81,6 +72,16 @@ const MoneyCollectionModal = ({
             value={moneyCollection.adminName}
           />
         </SimpleGrid>
+        <NumberInput
+          withAsterisk
+          label={'Monto'}
+          placeholder='Monto'
+          stepHoldDelay={600}
+          stepHoldInterval={100}
+          precision={2}
+          min={0}
+          {...moneyCollection.form.getInputProps('amount')}
+        />
         <div className='flex justify-end'>
           <Button type={'submit'} className='bg-blue-600 hover:bg-blue-700'>
             Guardar

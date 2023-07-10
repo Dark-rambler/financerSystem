@@ -37,7 +37,7 @@ export const useExpense = () => {
   const [expenses, setExpenses] = useState<IExpense[]>([])
   const [isEditing, setIsEditing] = useState(false)
   const [actualId, setActualId] = useState<number>(0)
-
+  const [totalAmount, setTotalAmount] = useState<number>(0)
 
   const documentTypes = [
     { value: 'Recibo', label: 'Recibo' },
@@ -81,9 +81,20 @@ export const useExpense = () => {
     getAllBranchOffices()
   }, [])
 
+  const calculateAmount = () => {
+    const totalAmount = expenses.reduce((accumulator, currentValue) => {
+      const amount =
+        typeof currentValue.amount === 'string'
+          ? parseInt(currentValue.amount)
+          : currentValue.amount
+      return accumulator + amount
+    }, 0)
+    setTotalAmount(() => totalAmount)
+  }
 
   const onClose = () => {
     expenseOpenedHandler.close()
+    setIsEditing(false)
     form.reset()
   }
 
@@ -168,9 +179,11 @@ export const useExpense = () => {
 
   const onSubmit = () => {
     const newExpense = getNewExpense()
-    setExpenses([...expenses, newExpense])
+    expenses.push(newExpense)
+    // setExpenses([...expenses, newExpense])
     expenseOpenedHandler.close()
     form.reset()
+    calculateAmount()
   }
 
   const onSubmitEdit = () => {
@@ -179,6 +192,7 @@ export const useExpense = () => {
     expenseOpenedHandler.close()
     setIsEditing(false)
     form.reset()
+    calculateAmount()
   }
 
   const onClickEdit = (id: number) => {
@@ -210,7 +224,6 @@ export const useExpense = () => {
       label: subAccount.name
     }))
 
-    console.log(formatedSubAccounts)
     setFilteredSubAccounts(formatedSubAccounts)    
   }
 
@@ -219,6 +232,7 @@ export const useExpense = () => {
     expenseOpenedDeleteHandler.close()
     setIsEditing(false)
     form.reset()
+    calculateAmount()
   }
 
   return {
@@ -241,6 +255,7 @@ export const useExpense = () => {
     onClose,
     setActualId,
     onDelete,
-    expenseTypes
+    expenseTypes,
+    totalAmount
   }
 }

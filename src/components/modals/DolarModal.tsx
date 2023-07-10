@@ -1,28 +1,28 @@
 import {
   Modal,
-  TextInput,
-  NumberInput,
-  Textarea,
   SimpleGrid,
   Button,
-  Select
+  Select,
+  NumberInput,
+  Textarea
 } from '@mantine/core'
+
 import { DatePickerInput } from '@mantine/dates'
 
-import { useDeposit } from '../../hooks/useDeposit'
+import { useDolar } from '../../hooks/useDolar'
 
-interface DepositModalProps {
+interface DolarModalProps {
   opened: boolean
   close: () => void
-  deposit: ReturnType<typeof useDeposit>
+  dolar: ReturnType<typeof useDolar>
 }
 
-const DepositModal = ({ opened, close, deposit }: DepositModalProps) => {
+const DolarModal = ({ opened, close, dolar }: DolarModalProps) => {
   return (
     <Modal
       opened={opened}
       onClose={close}
-      title={'Depósitos'}
+      title={'Sobre'}
       styles={{
         title: { fontSize: '18px', fontWeight: 'bold' },
         body: { padding: '20px' }
@@ -30,54 +30,57 @@ const DepositModal = ({ opened, close, deposit }: DepositModalProps) => {
       size={'xl'}
     >
       <form
-        onSubmit={deposit.form.onSubmit(() => {
-          if (deposit.isEditing) deposit.onSubmitEdit()
-          else deposit.onSubmit()
+        onSubmit={dolar.form.onSubmit(() => {
+          if (dolar.isEditing) dolar.onSubmitEdit()
+          else dolar.onSubmit()
         })}
         className='space-y-7 h-full'
       >
         <SimpleGrid cols={2}>
-          <TextInput
-            withAsterisk
-            label={'Nº de voucher'}
-            placeholder={'Nº de voucher'}
-            {...deposit.form.getInputProps('voucherNumber')}
-          />
           <Select
-            maxDropdownHeight={160}
-            height={40}
-            data={deposit.banks}
+            data={dolar.branchOffices}
             withAsterisk
-            placeholder='Banco'
-            label={'Banco'}
-            {...deposit.form.getInputProps('bank')}
+            placeholder='Sucursal'
+            label={'Sucursal'}
+            {...dolar.form.getInputProps('branchOfficeId')}
             searchable
           />
+
           <DatePickerInput
             withAsterisk
             valueFormat='DD MMM YYYY'
-            placeholder='Fecha de depósito'
-            label={'Fecha de depósito'}
+            placeholder='Fecha de cobro'
+            label={'Fecha de cobro'}
             dropdownType='modal'
             clearable
-            {...deposit.form.getInputProps('date')}
+            {...dolar.form.getInputProps('date')}
           />
           <NumberInput
             withAsterisk
-            label={'Monto'}
-            placeholder='Monto'
+            label={'Monto en USD'}
+            placeholder='Monto en USD'
             stepHoldDelay={600}
             stepHoldInterval={100}
             precision={2}
             min={0}
-            {...deposit.form.getInputProps('amount')}
+            {...dolar.form.getInputProps('amount')}
+          />
+          <NumberInput
+            withAsterisk
+            label={'Monto en Bs.'}
+            placeholder='Monto en Bs.'
+            stepHoldDelay={600}
+            stepHoldInterval={100}
+            precision={2}
+            min={0}
+            {...dolar.form.getInputProps('amountBs')}
           />
         </SimpleGrid>
         <Textarea
           withAsterisk
           label={'Observaciones'}
           placeholder={'Observaciones'}
-          {...deposit.form.getInputProps('description')}
+          {...dolar.form.getInputProps('description')}
         />
         <div className='flex justify-end'>
           <Button type={'submit'} className='bg-blue-600 hover:bg-blue-700'>
@@ -89,4 +92,4 @@ const DepositModal = ({ opened, close, deposit }: DepositModalProps) => {
   )
 }
 
-export default DepositModal
+export default DolarModal
