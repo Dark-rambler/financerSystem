@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { isNotEmpty, useForm } from '@mantine/form'
 
@@ -15,18 +15,21 @@ export const useDeposit = () => {
   const [openedDelete, modalDeleteHandler] = useDisclosure()
   const [actualId, setActualId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState(false)
+  const [totalAmount, setTotalAmount] = useState<number>(0)
 
   const [banks, setBanks] = useState<SelectFormat[]>([
-    
     { value: 'Banco de credito BCP', label: 'Banco de credito BCP' },
     { value: 'Banco Bisa', label: 'Banco Bisa' },
     { value: 'Banco Fie', label: 'Banco Fie' },
     { value: 'Banco Ganadero', label: 'Banco Ganadero' },
-    { value: 'Banco Mercantil Santa Cruz', label: 'Banco Mercantil Santa Cruz' },
+    {
+      value: 'Banco Mercantil Santa Cruz',
+      label: 'Banco Mercantil Santa Cruz'
+    },
     { value: 'Banco Nacional de Bolivia', label: 'Banco Nacional de Bolivia' },
     { value: 'Banco Unión', label: 'Banco Unión' },
     { value: 'BancoSol', label: 'BancoSol' },
-    { value: 'Otro', label: 'Otro' },
+    { value: 'Otro', label: 'Otro' }
   ])
 
   const form = useForm<IDeposit>({
@@ -42,12 +45,25 @@ export const useDeposit = () => {
       amount: isNotEmpty('Ingrese un monto'),
       date: isNotEmpty('Ingrese una fecha'),
       bank: isNotEmpty('Ingrese un banco'),
-      description: isNotEmpty('Ingrese una descripción'),
+      description: isNotEmpty('Ingrese una descripción')
     }
   })
 
+
+  const calculateAmount = () => {
+    const totalAmount = deposits.reduce((accumulator, currentValue) => {
+      const amount =
+        typeof currentValue.amount === 'string'
+          ? parseInt(currentValue.amount)
+          : currentValue.amount
+      return accumulator + amount
+    }, 0)
+    setTotalAmount(() => totalAmount)
+  }
+
   const onClose = () => {
     modalHandler.close()
+    setIsEditing(false)
     form.reset()
   }
 
@@ -65,8 +81,10 @@ export const useDeposit = () => {
   const onSubmit = () => {
     modalHandler.close()
     const newDeposit = getNewDeposit()
-    setDeposits([...deposits, newDeposit])
+    deposits.push(newDeposit)
+
     form.reset()
+    calculateAmount()
   }
 
   const onSubmitEdit = () => {
@@ -75,6 +93,7 @@ export const useDeposit = () => {
     modalHandler.close()
     setIsEditing(false)
     form.reset()
+    calculateAmount()
   }
 
   const onClickEdit = (id: number) => {
@@ -99,6 +118,7 @@ export const useDeposit = () => {
     setIsEditing(false)
     modalDeleteHandler.close()
     form.reset()
+    calculateAmount()
   }
 
   return {
@@ -118,6 +138,7 @@ export const useDeposit = () => {
     setActualId,
     onDelete,
     banks,
-    setBanks
+    setBanks,
+    totalAmount
   }
 }

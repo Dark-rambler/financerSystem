@@ -41,7 +41,7 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
             data={expense.documentTypes}
             withAsterisk
             placeholder='Tipo de documento'
-            label={'Sucursales'}
+            label={'Tipo de documento'}
             searchable
             {...expense.form.getInputProps('documentType')}
           />
@@ -88,12 +88,7 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
           />
         </SimpleGrid>
 
-        <Textarea
-          withAsterisk
-          label={'Descripción'}
-          placeholder={'Descripción'}
-          {...expense.form.getInputProps('description')}
-        />
+    
         <SimpleGrid cols={2}>
           <Select
             data={expense.accounts}
@@ -115,7 +110,12 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
             {...expense.form.getInputProps('subAccountId')}
           />
         </SimpleGrid>
-
+        <Textarea
+          withAsterisk
+          label={'Descripción'}
+          placeholder={'Descripción'}
+          {...expense.form.getInputProps('description')}
+        />
         <div className='flex justify-end'>
           <Button type={'submit'} className='bg-blue-600 hover:bg-blue-700'>
             Guardar

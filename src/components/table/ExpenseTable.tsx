@@ -11,21 +11,21 @@ interface ExpenseTableProps {
 
 const ExpenseTable = ({ expense }: ExpenseTableProps) => {
   return (
-    <>
-      <Table verticalSpacing={'sm'} withColumnBorders withBorder>
-        <thead className='bg-[#FBE9D9]'>
+    <div className='rounded-md border border-gray-200'>
+      <Table striped highlightOnHover fontSize={'sm'} withColumnBorders>
+        <thead>
           <tr>
-            <th>Documento</th>
-            <th>Nº documento</th>
-            <th>Fecha</th>
-            <th>Sucursal</th>
-            <th>Tipo de salida</th>
-            <th>Monto</th>
-            <th>Descripcion</th>
-            <th>Cuenta financiera</th>
-            <th>Subcuenta financiera</th>
-            <th></th>
-            <th></th>
+            <th className='w-[150px]'>Documento</th>
+            <th className='w-[170px]'>Nº documento</th>
+            <th className='w-[150px]'>Fecha</th>
+            <th className='w-[150px]'>Sucursal</th>
+            <th className='w-[150px]'>Tipo de salida</th>
+            <th className='w-[150px]'>Monto</th>
+            <th className='w-[180px]'>Cuenta financiera</th>
+            <th className='w-[180px]'>Subcuenta financiera</th>
+            <th className='w-[400px]'>Descripción</th>
+            <th className='w-12'></th>
+            <th className='w-12'></th>
           </tr>
         </thead>
         <tbody>
@@ -36,10 +36,13 @@ const ExpenseTable = ({ expense }: ExpenseTableProps) => {
               <td>{new Date(element.date as Date).toLocaleDateString()}</td>
               <td>{element.branchOffice?.name}</td>
               <td>{element.expenseType}</td>
-              <td>{element.amount} Bs.</td>
-              <td>{element.description}</td>
+              <td className='text-left'>
+                {Number(element.amount).toFixed(2)} Bs.
+              </td>
+       
               <td>{element.account?.name}</td>
               <td>{element.subAccount?.name}</td>
+              <td>{element.description}</td>
               <td>
                 <EditButton
                   onClick={() => {
@@ -58,6 +61,17 @@ const ExpenseTable = ({ expense }: ExpenseTableProps) => {
             </tr>
           ))}
         </tbody>
+        <tfoot className='border-t border-t-slate-200'>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th className='font-semibold text-xs text-left py-2 px-3'>
+          Σ {expense.totalAmount.toFixed(2)} Bs.
+          </th>
+          <th></th>
+        </tfoot>
       </Table>
       <DeleteModal
         label={'Gasto'}
@@ -65,7 +79,7 @@ const ExpenseTable = ({ expense }: ExpenseTableProps) => {
         close={expense.expenseOpenedDeleteHandler.close}
         onDelete={expense.onDelete}
       />
-    </>
+    </div>
   )
 }
 

@@ -12,17 +12,17 @@ interface EnvelopeTableProps {
 
 const EnvelopeTable = ({ envelope }: EnvelopeTableProps) => {
   return (
-    <>
-      <Table verticalSpacing={'sm'} withColumnBorders withBorder>
-        <thead className='bg-[#FBE9D9]'>
+    <div className='border border-gray-200 rounded-md'>
+      <Table striped highlightOnHover fontSize={'sm'} withColumnBorders>
+        <thead>
           <tr>
-            <th>De Sucursal</th>
-            <th>A Sucursal</th>
-            <th>Fecha</th>
-            <th>Monto</th>
-            <th>Descripcion</th>
-            <th></th>
-            <th></th>
+            <th className='w-[300px]'>De Sucursal</th>
+            <th className='w-[300px]'>A Sucursal</th>
+            <th className='w-[200px]'>Fecha</th>
+            <th className='w-[200px]'>Monto</th>
+            <th className='w-[500px]'>Descripción</th>
+            <th className='w-12'></th>
+            <th className='w-12'></th>
           </tr>
         </thead>
         <tbody>
@@ -31,7 +31,9 @@ const EnvelopeTable = ({ envelope }: EnvelopeTableProps) => {
               <td>{element.fromBranchOffice?.name}</td>
               <td>{element.toBranchOffice?.name}</td>
               <td>{new Date(element.date as Date).toLocaleDateString()}</td>
-              <td>{element.amount} Bs.</td>
+              <td className='text-left'>
+                {Number(element.amount).toFixed(2)} Bs.
+              </td>
               <td>{element.description}</td>
 
               <td>
@@ -52,13 +54,12 @@ const EnvelopeTable = ({ envelope }: EnvelopeTableProps) => {
             </tr>
           ))}
         </tbody>
-        <tfoot>
+        <tfoot className='border-t border-t-slate-200'>
           <th></th>
           <th></th>
-          <th>Total</th>
-          {/* TOTAL SUMATORY OF AMOUNTS */}
-          <th>
-500 Bs.
+          <th></th>
+          <th className='font-semibold text-xs text-left py-2 px-3'>
+          Σ {envelope.totalAmount.toFixed(2)} Bs.
           </th>
           <th></th>
           <th></th>
@@ -71,7 +72,7 @@ const EnvelopeTable = ({ envelope }: EnvelopeTableProps) => {
         close={envelope.modalDeleteHandler.close}
         onDelete={envelope.onDelete}
       />
-    </>
+    </div>
   )
 }
 

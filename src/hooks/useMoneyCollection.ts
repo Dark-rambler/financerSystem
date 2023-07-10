@@ -27,6 +27,7 @@ export const useMoneyCollection = () => {
   )
   const [actualId, setActualId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState(false)
+  const [totalAmount, setTotalAmount] = useState<number>(0)
 
   const form = useForm<IMoneyCollection>({
     initialValues: {
@@ -68,8 +69,20 @@ export const useMoneyCollection = () => {
     getAllBranchOffices()
   }, [])
 
+  const calculateAmount = () => {
+    const totalAmount = moneyCollections.reduce((accumulator, currentValue) => {
+      const amount =
+        typeof currentValue.amount === 'string'
+          ? parseInt(currentValue.amount)
+          : currentValue.amount
+      return accumulator + amount
+    }, 0)
+    setTotalAmount(() => totalAmount)
+  }
+
   const onClose = () => {
     moneyCollectionOpenedHandler.close()
+    setIsEditing(false)
     form.reset()
   }
 
@@ -101,8 +114,10 @@ export const useMoneyCollection = () => {
   const onSubmit = () => {
     moneyCollectionOpenedHandler.close()
     const newMoneyCollection = getNewMoneyCollection()
-    setMoneyCollections([...moneyCollections, newMoneyCollection])
+    moneyCollections.push(newMoneyCollection)
+    // setMoneyCollections([...moneyCollections, newMoneyCollection])
     form.reset()
+    calculateAmount()
   }
 
   const onSubmitEdit = () => {
@@ -111,6 +126,7 @@ export const useMoneyCollection = () => {
     moneyCollectionOpenedHandler.close()
     setIsEditing(false)
     form.reset()
+    calculateAmount()
   }
 
   const onClickEdit = (id: number) => {
@@ -135,6 +151,7 @@ export const useMoneyCollection = () => {
     setIsEditing(false)
     moneyCollectionOpenedDeleteHandler.close()
     form.reset()
+    calculateAmount()
   }
 
   return {
@@ -153,6 +170,7 @@ export const useMoneyCollection = () => {
     isEditing,
     onSubmitEdit,
     setActualId,
-    onDelete
+    onDelete,
+    totalAmount
   }
 }
