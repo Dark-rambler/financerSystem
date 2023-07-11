@@ -20,7 +20,7 @@ const ExpenseTable = ({ expense }: ExpenseTableProps) => {
             <th className='w-[150px]'>Fecha</th>
             <th className='w-[150px]'>Sucursal</th>
             <th className='w-[150px]'>Tipo de salida</th>
-            <th className='w-[150px]'>Monto</th>
+            <th className='w-[130px]'>Monto</th>
             <th className='w-[180px]'>Cuenta financiera</th>
             <th className='w-[180px]'>Subcuenta financiera</th>
             <th className='w-[400px]'>Descripción</th>

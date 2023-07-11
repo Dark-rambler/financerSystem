@@ -1,5 +1,8 @@
 import { useEffect } from 'react'
-import { Table, Button } from '@mantine/core'
+import { Table, Button, Group, Text } from '@mantine/core'
+import { Dropzone, PDF_MIME_TYPE } from '@mantine/dropzone'
+import { TbFileUpload, TbFileCheck, TbFileX } from 'react-icons/tb'
+import { BsFillFileEarmarkPdfFill } from 'react-icons/bs'
 
 import { useDepositOrderStore } from '../../components/store/depositOrderStore'
 import { useExpense } from '../../hooks/useExpense'
@@ -7,6 +10,7 @@ import { useDeposit } from '../../hooks/useDeposit'
 import { useEnvelope } from '../../hooks/useEnvelope'
 import { useMoneyCollection } from '../../hooks/useMoneyCollection'
 import { useDolar } from '../../hooks/useDolar'
+import { useDepositOrderReport } from '../../hooks/useDepositOrderReport'
 
 import DepositModal from '../../components/modals/DepositModal'
 import MoneyCollectionModal from '../../components/modals/MoneyCollectionModal'
@@ -27,6 +31,8 @@ const CreateDepositOrderReport = () => {
   const expense = useExpense()
   const envelope = useEnvelope()
   const dolar = useDolar()
+
+  const depositOrderReport = useDepositOrderReport()
 
   useEffect(() => {
     envelope.setBranchOffices(moneyCollection.branchOffices)
@@ -66,7 +72,9 @@ const CreateDepositOrderReport = () => {
                 </td>
                 <td>{new Date(depositOrder.startDate).toLocaleDateString()}</td>
                 <td>{new Date(depositOrder.endDate).toLocaleDateString()}</td>
-                <td>{depositOrder.amount} Bs.</td>
+                <td className='font-semibold'>
+                  {Number(depositOrder.amount).toFixed(2)} Bs.
+                </td>
                 <td>
                   {new Date(depositOrder.deliveryDate).toLocaleDateString()}
                 </td>
@@ -162,12 +170,87 @@ const CreateDepositOrderReport = () => {
         <DepositTable deposit={deposit} />
       </section>
 
+      <section className='space-y-2'>
+        <div className='flex items-end justify-between'>
+          <div className='flex items-center space-x-2'>
+            {/* <div className='w-4 h-4 bg-blue-500 rounded-sm'></div> */}
+            <h1 className='font-bold'>Documento</h1>
+          </div>
+        </div>
+        <Dropzone
+          onDrop={files => {
+            depositOrderReport.setFile(files[0])
+          }}
+          onReject={files => {
+            console.log(files)
+            depositOrderReport.setFile(null)
+          }}
+          maxSize={50 * 1024 ** 2}
+          accept={PDF_MIME_TYPE}
+          //num of files 1
+          maxFiles={1}
+          // {...props}
+        >
+          <Group
+            position='center'
+            spacing='xl'
+            style={{ minHeight: '110px', pointerEvents: 'none' }}
+          >
+            <Dropzone.Accept>
+              <TbFileCheck size={50} color={'#2563eb'} className={'stroke-1'} />
+            </Dropzone.Accept>
+            <Dropzone.Reject>
+              <TbFileX size={50} color={'#dc2626'} className={'stroke-1'} />
+            </Dropzone.Reject>
+            <Dropzone.Idle>
+              {depositOrderReport.file ? (
+                <>
+                  <BsFillFileEarmarkPdfFill size={40} color={'#dc2626'} />
+                </>
+              ) : (
+                <TbFileUpload
+                  size={50}
+                  color={'#374151'}
+                  className={'stroke-1'}
+                />
+              )}
+            </Dropzone.Idle>
+
+            {depositOrderReport.file ? (
+              <div>
+                <Text size='xl' inline>
+                  {depositOrderReport.file.name}
+                </Text>
+                <Text size='sm' color='dimmed' inline mt={7}>
+                  {Number(depositOrderReport.file.size / 1024 / 1024).toFixed(3)} MB
+                </Text>
+              </div>
+            ) : (
+              <div>
+                <Text size='xl' inline>
+                  Arrastre el documento aqui o haga click para seleccionar
+                </Text>
+                <Text size='sm' color='dimmed' inline mt={7}>
+                  Solo se permite subir un documento en formato PDF, el
+                  documento no debe exceder los 50 mb.
+                </Text>
+              </div>
+            )}
+          </Group>
+        </Dropzone>
+      </section>
+
+      <section className='flex justify-end'>
+        <Button className='bg-blue-600 hover:bg-blue-700'>
+          Enviar informe
+        </Button>
+      </section>
+
       <MoneyCollectionModal
         opened={moneyCollection.moneyCollectionOpened}
         close={moneyCollection.onClose}
         moneyCollection={moneyCollection}
       />
-
       <ExpenseModal
         opened={expense.expenseOpened}
         close={expense.onClose}
