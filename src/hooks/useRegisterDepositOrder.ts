@@ -8,6 +8,8 @@ import { useAmazonS3 } from './useAmazonS3'
 
 import { getAllEmployeesWithRoles } from '../services/EmployeeService'
 import { getAllRegionals } from '../services/RegionalService'
+import { getAllBranchOffices } from '../services/BranchOffices'
+import { IBranchModel } from '../models/BranchOffice'
 
 interface RegionalOffice {
   id: number
@@ -29,7 +31,7 @@ interface EmployeeData {
   role: Role
 }
 
-interface SelectManineData {
+interface SelectMantineData {
   value: string
   label: string
 }
@@ -72,7 +74,10 @@ export const useRegisterDepositOrder = () => {
   const [employeesData, setEmployeesData] = useState<EmployeeData[]>([])
   const [regionalData, setRegionalData] = useState<RegionalOffice[]>([])
   const [isDocumentGenerated, setIsDocumentGenerated] = useState(false)
-  const [data, setData] = useState<SelectManineData[]>([])
+  const [data, setData] = useState<SelectMantineData[]>([])
+  const [branchOfficeData, setBranchOfficeData] = useState<SelectMantineData[]>(
+    []
+  )
   const [pdfDoc, setPdfDoc] = useState<string | undefined>(undefined)
   const [pdfFile, setPdfFile] = useState<File | undefined>(undefined)
 
@@ -109,6 +114,22 @@ export const useRegisterDepositOrder = () => {
       return
     }
     setEmployeesData(data)
+  }
+
+  const fetchBranchOfficeData = async () => {
+    const response = await getAllBranchOffices(token)
+
+    if (!response) {
+      errorToast('Error al cargar los datos')
+      return
+    }
+    const branchOfficesFormated = response.map((element: IBranchModel) => {
+      return {
+        value: element.id,
+        label: element.name
+      }
+    })
+    setBranchOfficeData(branchOfficesFormated)
   }
 
   const onSelectRegional = async (regionalSelected: string) => {
@@ -188,6 +209,7 @@ export const useRegisterDepositOrder = () => {
   useEffect(() => {
     fetchRegionalData()
     fetchEmployeesWithRoles()
+    fetchBranchOfficeData()
   }, [])
 
   return {
@@ -201,6 +223,8 @@ export const useRegisterDepositOrder = () => {
     setPdfDoc,
     onCreateDepositOrder,
     pdfFile,
-    setPdfFile
+    setPdfFile,
+    branchOfficeData,
+    setBranchOfficeData
   }
 }

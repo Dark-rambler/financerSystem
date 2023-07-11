@@ -5,7 +5,8 @@ import {
   Box,
   NumberInput,
   Select,
-  Divider
+  Divider,
+  MultiSelect
 } from '@mantine/core'
 import { DatePickerInput } from '@mantine/dates'
 import {
