@@ -12,10 +12,10 @@ const RegisterDepositOrder = () => {
   const navigate = useNavigate()
   const registerOrder = useRegisterDepositOrder()
   return (
-    <div className='h-full min-w-[1200px] flex justify-center'>
+    <div className='h-full min-w-[1300px] flex justify-center'>
 
-        <div className=' grid grid-cols-2 h-full'>
-          <div className='pr-24 py-16 space-y-10'>
+        <div className=' grid grid-cols-2 h-full w-[1300px] p-5'>
+          <Stack className='pr-16 py-9 space-y-4 h-full'>
             <div className='relative flex'>
               <ActionIcon
                 className='absolute left-[-50px] bg-gray-100 hover:bg-gray-200'
@@ -31,8 +31,8 @@ const RegisterDepositOrder = () => {
               </h1>
             </div>
             <RegisterDepositOrderForm depositOrder={registerOrder} />
-          </div>
-          <Stack className='  border-gray-300 h-full py-9' spacing={20}>
+          </Stack>
+          <Stack className=' pl-16 border-gray-300 h-full py-9' spacing={20}>
             <div className='border border-gray-300 h-full rounded-md border-dashed '>
               {/* {registerOrder.isDocumentGenerated && <PDFVisualizer />} */}
               <PDFVisualizer depositOrder={registerOrder} />

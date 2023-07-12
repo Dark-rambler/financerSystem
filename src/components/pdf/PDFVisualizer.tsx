@@ -22,10 +22,10 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
   )
 
   const financeTechical = depositOrder.employeesData.find(
-    employee => employee.role.name === 'Técnico de finanzas'
+    employee => employee.role?.name === 'Técnico de finanzas'
   )
   const financeBoss = depositOrder.employeesData.find(
-    employee => employee.role.name === 'Jefe de finanzas'
+    employee => employee.role?.name === 'Jefe de finanzas'
   )
 
   firstPage.drawText(
@@ -157,7 +157,6 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
       color: rgb(0, 0, 0)
     }
   )
-
   //save document as File and store it in a variable in orden to be able to send it to the aws s3 bucket
   const pdfBytes = await pdfDoc.save()
   const pdfFile = new File([pdfBytes], 'DEPOSIT_ORDER_DOCUMENT.pdf', {
