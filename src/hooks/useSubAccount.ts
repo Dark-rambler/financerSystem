@@ -36,6 +36,7 @@ export const useSubAccount = () => {
   const [accounts, setAccounts] = useState<SelectFormat[]>([])
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isRepeatedError, setIsRepeatedError] = useState<boolean>(false)
 
   const form = useForm<ISubAccount>({
     initialValues: {
@@ -43,8 +44,10 @@ export const useSubAccount = () => {
       accountId: 0
     },
     validate: {
-      name: isNotEmpty('Ingrese una sucursal'),
-
+      name: value => {
+        if (value === '') return 'Ingrese una subcuenta financiera'
+        if (isRepeatedError) return 'Ya existe una subcuenta con este nombre'
+      },
       accountId: value => {
         if (value === 0) return 'Seleccione una regional'
       }
@@ -93,6 +96,16 @@ export const useSubAccount = () => {
   }, [])
 
   const registerSubAccount = async () => {
+    const isRepeated = subAccounts.find(
+      subAccount => subAccount.name === form.values.name
+    )
+
+    if (isRepeated) {
+      setIsRepeatedError(() => true)
+      return null
+    }
+
+    setIsRepeatedError(() => false)
     setIsLoading(true)
     const body: ISubAccount = {
       name: form.values.name,

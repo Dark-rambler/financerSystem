@@ -215,17 +215,19 @@ export const useRegisterDepositOrder = () => {
     setAmount(actualSucursalAndAmount.amount)
     setBranchOffice(actualSucursalAndAmount.branchOffice.value)
     setActualBranchOfficeAndAmountIndex(() => index)
-    console.log('editado')
   }
 
   const onSaveEditBranchOfficesAndAmounts = () => {
+    const branchOfficeInfo = branchOfficeEntireData.find(
+      element => element.id === Number(branchOffice)
+    )
     const newBranchOfficesAndAmounts = branchOfficesAndAmounts.map(
       (element, index) => {
         if (index === actualBranchOfficeAndAmountIndex) {
           return {
             branchOffice: {
               value: branchOffice as string,
-              label: branchOffice as string
+              label: branchOfficeInfo?.name as string
             },
             amount: amount as number
           }
@@ -242,14 +244,16 @@ export const useRegisterDepositOrder = () => {
   }
 
   const onAddBranchOfficesAndAmounts = () => {
+    const branchOfficeInfo = branchOfficeEntireData.find(
+      element => element.id === Number(branchOffice)
+    )
     const newBranchOfficesAndAmounts = {
       branchOffice: {
         value: branchOffice as string,
-        label: branchOffice as string
+        label: branchOfficeInfo?.name as string
       },
       amount: amount as number
     }
-
     setBranchOfficesAndAmounts(branchOfficesAndAmounts => [
       ...branchOfficesAndAmounts,
       newBranchOfficesAndAmounts
@@ -268,7 +272,6 @@ export const useRegisterDepositOrder = () => {
     )
     setBranchOfficesAndAmounts(() => newBranchOfficesAndAmounts)
     calculateTotalAmount()
-    console.log('eliminado')
   }
 
   const onCreateDepositOrder = async () => {
