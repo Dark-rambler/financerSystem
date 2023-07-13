@@ -1,4 +1,4 @@
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+import { PDFDocument, StandardFonts, rgb, degrees, grayscale } from 'pdf-lib'
 import { useRegisterDepositOrder } from '../../hooks/useRegisterDepositOrder'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es-us'
@@ -20,6 +20,7 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
   const helveticaItalicFont = await pdfDoc.embedFont(
     StandardFonts.HelveticaOblique
   )
+  const helveticaBoldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
 
   const financeTechical = depositOrder.employeesData.find(
     employee => employee.role?.name === 'Técnico de finanzas'
@@ -28,34 +29,28 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
     employee => employee.role?.name === 'Jefe de finanzas'
   )
 
-  firstPage.drawText(
-    `${financeTechical?.name.toUpperCase()} ${financeTechical?.lastName.toUpperCase()}`,
-    {
-      x: 359,
-      y: height - 602,
-      size: 10,
-      font: helveticaFont,
-      color: rgb(0, 0, 0)
-    }
-  )
+  firstPage.drawText(`${financeTechical?.name.toUpperCase()} ${financeTechical?.lastName.toUpperCase()}`, {
+    x: 365,
+    y: height - 635,
+    size: 10,
+    font: helveticaFont,
+    color: rgb(0, 0, 0)
+  })
+
+  firstPage.drawText(`${financeBoss?.name.toUpperCase()} ${financeBoss?.lastName.toUpperCase()}`, {
+    x: 137,
+    y: height - 635,
+    size: 10,
+    font: helveticaFont,
+    color: rgb(0, 0, 0)
+  })
 
   firstPage.drawText(
-    `${financeBoss?.name.toUpperCase()} ${financeBoss?.lastName.toUpperCase()}`,
+    `${dayjs(depositOrder.form.values.orderDate)
+      .locale('es-us')
+      .format('DD MMMM YYYY').toUpperCase()}`,
     {
-      x: 110,
-      y: height - 602,
-      size: 10,
-      font: helveticaFont,
-      color: rgb(0, 0, 0)
-    }
-  )
-
-  // const newDate: string = depositOrder.form.values.orderDate
-
-  firstPage.drawText(
-    `${depositOrder.form.values.orderDate?.toLocaleDateString()}`,
-    {
-      x: 112,
+      x: 104,
       y: height - 162,
       size: 10,
       font: helveticaFont,
@@ -63,19 +58,16 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
     }
   )
 
-  firstPage.drawText(
-    `${depositOrder.form.values.administrator.toUpperCase()}`,
-    {
-      x: 155,
-      y: height - 206,
-      size: 10,
-      font: helveticaFont,
-      color: rgb(0, 0, 0)
-    }
-  )
+  firstPage.drawText(`${depositOrder.form.values.administrator.toUpperCase()}`, {
+    x: 141,
+    y: height - 206,
+    size: 10,
+    font: helveticaFont,
+    color: rgb(0, 0, 0)
+  })
 
   firstPage.drawText(`${depositOrder.form.values.regional.toUpperCase()}`, {
-    x: 130,
+    x: 124,
     y: height - 184,
     size: 10,
     font: helveticaFont,
@@ -93,65 +85,120 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
   firstPage.drawText(
     `${dayjs(depositOrder.form.values.orderRange[0])
       .locale('es-us')
-      .format('DD MMMM YYYY')} - ${dayjs(depositOrder.form.values.orderRange[1])
+      .format('DD MMMM YYYY').toUpperCase()} - ${dayjs(depositOrder.form.values.orderRange[1])
       .locale('es-us')
-      .format('DD MMMM YYYY')}`,
+      .format('DD MMMM YYYY').toUpperCase()}`,
     {
-      x: 196,
-      y: height - 272,
+      x: 180,
+      y: height - 273,
       size: 10,
       font: helveticaFont,
       color: rgb(0, 0, 0)
     }
   )
 
-  firstPage.drawText(`${depositOrder.form.values.amount} BS.`, {
-    x: 187,
-    y: height - 304,
-    size: 10,
-    font: helveticaFont,
+  // firstPage.drawText(`${depositOrder.form.values.amount} BS.`, {
+  //   x: 187,
+  //   y: height - 304,
+  //   size: 10,
+  //   font: helveticaFont,
+  //   color: rgb(0, 0, 0)
+  // })
+
+  // firstPage.drawText(`${depositOrder.form.values.amount} BS.`, {
+  //   x: 370,
+  //   y: height - 365,
+  //   size: 8,
+  //   font: helveticaFont,
+  //   color: rgb(0, 0, 0)
+  // })
+
+  // firstPage.drawText(`0 BS.`, {
+  //   x: 370,
+  //   y: height - 400,
+  //   size: 8,
+  //   font: helveticaFont,
+  //   color: rgb(0, 0, 0)
+  // })
+
+  // firstPage.drawText(`0 BS.`, {
+  //   x: 370,
+  //   y: height - 435,
+  //   size: 8,
+  //   font: helveticaFont,
+  //   color: rgb(0, 0, 0)
+  // })
+
+  // firstPage.drawText(`0 BS.`, {
+  //   x: 370,
+  //   y: height - 470,
+  //   size: 8,
+  //   font: helveticaFont,
+  //   color: rgb(0, 0, 0)
+  // })
+
+  depositOrder.branchOfficesAndAmounts.map((branchOffice, index) => {
+    firstPage.drawRectangle({
+      x: 191,
+      y: height - 340 - index * 25,
+      width: 229,
+      height: 22,
+      borderWidth: 0.5,
+      borderColor: rgb(0, 0, 0),
+      // opacity: 0.5,
+      borderOpacity: 1
+    })
+
+    firstPage.drawText(`${branchOffice.branchOffice.label.toUpperCase()}`, {
+      x: 204,
+      y: height - 332 - index * 25,
+      size: 10,
+      font: helveticaFont,
+      color: rgb(0, 0, 0)
+    })
+    firstPage.drawText(`${branchOffice.amount.toFixed(2)} BS.`, {
+      x: 345,
+      y: height - 332 - index * 25,
+      size: 10,
+      font: helveticaFont,
+      color: rgb(0, 0, 0)
+    })
+  })
+
+  firstPage.drawRectangle({
+    x: 191,
+    y: height - 340 - depositOrder.branchOfficesAndAmounts.length * 25,
+    width: 229,
+    height: 22,
+    borderWidth: 0.5,
+    borderColor: rgb(0, 0, 0),
+    // opacity: 0.5,
+    borderOpacity: 1
+  })
+
+  firstPage.drawText(`TOTAL A DEPOSITAR: `, {
+    x: 204,
+    y: height - 332 - depositOrder.branchOfficesAndAmounts.length * 25,
+    size: 9,
+    font: helveticaBoldFont,
     color: rgb(0, 0, 0)
   })
 
-  firstPage.drawText(`${depositOrder.form.values.amount} BS.`, {
-    x: 370,
-    y: height - 365,
-    size: 8,
-    font: helveticaFont,
-    color: rgb(0, 0, 0)
-  })
-
-  firstPage.drawText(`0 BS.`, {
-    x: 370,
-    y: height - 400,
-    size: 8,
-    font: helveticaFont,
-    color: rgb(0, 0, 0)
-  })
-
-  firstPage.drawText(`0 BS.`, {
-    x: 370,
-    y: height - 435,
-    size: 8,
-    font: helveticaFont,
-    color: rgb(0, 0, 0)
-  })
-
-  firstPage.drawText(`0 BS.`, {
-    x: 370,
-    y: height - 470,
-    size: 8,
-    font: helveticaFont,
+  firstPage.drawText(`${depositOrder.totalAmount.toFixed(2)} BS.`, {
+    x: 345,
+    y: height - 332 - depositOrder.branchOfficesAndAmounts.length * 25,
+    size: 9,
+    font: helveticaBoldFont,
     color: rgb(0, 0, 0)
   })
 
   firstPage.drawText(
-    `${dayjs(depositOrder.form.values.limitedDate)
+    `Fecha límite de entrega: ${dayjs(depositOrder.form.values.limitedDate)
       .locale('es-us')
       .format('DD MMMM YYYY')}`,
     {
-      x: 274,
-      y: height - 502,
+      x: 195,
+      y: height - 332 - (depositOrder.branchOfficesAndAmounts.length + 1) * 25,
       size: 8,
       font: helveticaItalicFont,
       color: rgb(0, 0, 0)

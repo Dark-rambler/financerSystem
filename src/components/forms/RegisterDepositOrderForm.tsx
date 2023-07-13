@@ -158,6 +158,7 @@ const RegisterDepositOrderForm = ({
           </thead>
           <tbody className=' overflow-y-auto'>
             {depositOrder.branchOfficesAndAmounts.map((element, index) => {
+
               return (
                 <tr className='h-5' key={`key-t-${index}`}>
                   <td>{element.branchOffice.label}</td>
@@ -190,7 +191,7 @@ const RegisterDepositOrderForm = ({
                   ? 'Sucursal'
                   : 'Sucursales'}
               </th>
-              <th className='!font-semibold'>{Number(depositOrder.totalAmount).toFixed(2)} Bs.</th>
+              <th className='!font-semibold'>Σ {Number(depositOrder.totalAmount).toFixed(2)} Bs.</th>
               <th></th>
               <th> </th>
             </tr>
