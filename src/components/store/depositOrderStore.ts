@@ -1,9 +1,12 @@
 import { create } from 'zustand'
 import { DepositOrderInterface } from '../../models/DepositOrder'
+import { IDepositOrderBranchOffice } from '../../models/DepositOrderBranchOffice'
 
 interface Store {
   depositOrder: DepositOrderInterface
   setDepositOrder: (depositOrder: DepositOrderInterface) => void
+  depositBranchOffice: IDepositOrderBranchOffice[]
+  setDepositBranchOffice: (depositBranchOffice: IDepositOrderBranchOffice[]) => void
 }
 
 export const useDepositOrderStore = create<Store>()(set => ({
@@ -15,9 +18,12 @@ export const useDepositOrderStore = create<Store>()(set => ({
     orderNumber: '',
     solitudeDate: new Date(),
     startDate: new Date(),
-    endDate: new Date(),
-    documentUrl: ''
+    endDate: new Date()
   },
   setDepositOrder: (depositOrder: DepositOrderInterface) =>
-    set({ depositOrder: depositOrder })
+    set({ depositOrder: depositOrder }),
+  depositBranchOffice: [],
+  setDepositBranchOffice: (depositBranchOffice: IDepositOrderBranchOffice[]) =>
+    set({ depositBranchOffice: depositBranchOffice })
+
 }))

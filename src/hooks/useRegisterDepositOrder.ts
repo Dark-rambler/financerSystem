@@ -14,6 +14,8 @@ import { RegionalOfficeInterface } from '../models/RegionalOffice'
 import { EmployeeInterface } from '../models/Employee'
 import { useDisclosure } from '@mantine/hooks'
 
+import { createDepositOrder } from '../services/DepositOrderService'
+
 interface SelectMantineData {
   value: string
   label: string
@@ -274,48 +276,41 @@ export const useRegisterDepositOrder = () => {
   }
 
   const onCreateDepositOrder = async () => {
-    console.log(pdfFile)
-    try {
-      s3.uploadDepositOrderFileOfTechoBol(
-        pdfFile as File,
-        form.values.orderNumber
-      )
-      fetch(
-        `${import.meta.env.VITE_API_DOMAIN}/deposit-order/create-deposit-order`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': token
-          },
-          body: JSON.stringify({
-            orderNumber: form.values.orderNumber,
-            startDate: form.values.orderRange[0],
-            endDate: form.values.orderRange[1],
-            solitudeDate: form.values.orderDate,
-            amount: form.values.amount,
-            deliveryDate: form.values.limitedDate,
-            regionalId: regionalId,
-            employeeId: administratorId,
-            documentUrl: `${
-              import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN
-            }/TECHOBOL/DEPOSIT_ORDER/${form.values.orderNumber}.pdf`
-          })
-        }
-      )
-        .then(res => {
-          return res.json()
-        })
-        .then(() => {
-          succesToast('Orden de depósito enviada con éxito')
-          navigate('/deposit-order')
-        })
-        .catch(() => {
-          errorToast('Error al crear la orden de depósito')
-        })
-    } catch (err) {
-      console.log(err)
+    const depositOrderBody = {
+      orderNumber: form.values.orderNumber,
+      startDate: form.values.orderRange[0] as Date,
+      endDate: form.values.orderRange[1] as Date,
+      solitudeDate: form.values.orderDate as Date,
+      amount: Number(form.values.amount),
+      deliveryDate: form.values.limitedDate as Date,
+      regionalId: regionalId,
+      employeeId: administratorId,
+      documentUrl: `${
+        import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN
+      }/TECHOBOL/DEPOSIT_ORDER/${form.values.orderNumber}.pdf`
     }
+
+    const deposiOrderBranchOfficeBody = branchOfficesAndAmounts.map(element => (
+      {
+        branchOfficeId: element.branchOffice.value,
+        amount: element.amount
+      }
+    ))
+
+    s3.uploadDepositOrderFileOfTechoBol(
+      pdfFile as File,
+      form.values.orderNumber
+    )
+
+    const response = createDepositOrder(depositOrderBody, deposiOrderBranchOfficeBody, token)
+
+    if (!response) {
+      errorToast('Error al crear la orden de depósito')
+      return
+    }
+
+    succesToast('Orden de depósito enviada con éxito')
+    navigate('/deposit-order')
   }
 
   useEffect(() => {

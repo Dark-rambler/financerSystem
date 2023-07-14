@@ -18,6 +18,8 @@ import ExpenseModal from '../../components/modals/ExpenseModal'
 import EnvelopeModal from '../../components/modals/EnvelopeModal'
 import DolarModal from '../../components/modals/DolarModal'
 
+import BranchOfficePopover from '../../components/popovers/BranchOfficePopover'
+
 import ExpenseTable from '../../components/table/ExpenseTable'
 import MoneyCollectionTable from '../../components/table/MoneyCollectionTable'
 import DepositTable from '../../components/table/DepositTable'
@@ -65,7 +67,10 @@ const CreateDepositOrderReport = () => {
                 <td>
                   {new Date(depositOrder.solitudeDate).toLocaleDateString()}
                 </td>
-                <td>{depositOrder.regional?.name}</td>
+                <td className='flex items-center space-x-1'>
+             
+                  <p>     {depositOrder.regional?.name} </p>
+                  <BranchOfficePopover/> </td>
                 <td>
                   {depositOrder.employee?.name}{' '}
                   {depositOrder.employee?.lastName}
@@ -82,6 +87,7 @@ const CreateDepositOrderReport = () => {
             </tbody>
           </Table>
         </div>
+
       </section>
 
       <section className='space-y-2'>
