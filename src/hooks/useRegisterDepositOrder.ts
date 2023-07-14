@@ -12,6 +12,7 @@ import { getAllBranchOffices } from '../services/BranchOffices'
 import { IBranchModel } from '../models/BranchOffice'
 import { RegionalOfficeInterface } from '../models/RegionalOffice'
 import { EmployeeInterface } from '../models/Employee'
+import { useDisclosure } from '@mantine/hooks'
 
 interface SelectMantineData {
   value: string
@@ -65,19 +66,15 @@ export const useRegisterDepositOrder = () => {
   const [regionalData, setRegionalData] = useState<RegionalOfficeInterface[]>(
     []
   )
-  const [isDocumentGenerated, setIsDocumentGenerated] = useState(false)
   const [data, setData] = useState<SelectMantineData[]>([])
   const [branchOfficeData, setBranchOfficeData] = useState<SelectMantineData[]>(
     []
   )
-  const [pdfDoc, setPdfDoc] = useState<string | undefined>(undefined)
   const [pdfFile, setPdfFile] = useState<File | undefined>(undefined)
-
   const [regionalId, setRegionalId] = useState<number | undefined>(undefined)
   const [administratorId, setAdministratorId] = useState<number | undefined>(
     undefined
   )
-  const [regional, setRegional] = useState<string | null>(null)
 
   const [branchOfficesAndAmounts, setBranchOfficesAndAmounts] = useState<
     branchOfficesAndAmount[]
@@ -92,6 +89,8 @@ export const useRegisterDepositOrder = () => {
     actualBranchOfficeAndAmountIndex,
     setActualBranchOfficeAndAmountIndex
   ] = useState<number | null>(null)
+
+  const [opened, { open, close }] = useDisclosure()
 
   const { token } = useLoginStore()
   const navigate = useNavigate()
@@ -275,6 +274,7 @@ export const useRegisterDepositOrder = () => {
   }
 
   const onCreateDepositOrder = async () => {
+    console.log(pdfFile)
     try {
       s3.uploadDepositOrderFileOfTechoBol(
         pdfFile as File,
@@ -329,10 +329,6 @@ export const useRegisterDepositOrder = () => {
     onSelectRegional,
     form,
     employeesData,
-    isDocumentGenerated,
-    setIsDocumentGenerated,
-    pdfDoc,
-    setPdfDoc,
     onCreateDepositOrder,
     pdfFile,
     setPdfFile,
@@ -352,6 +348,8 @@ export const useRegisterDepositOrder = () => {
     branchOffice,
     setBranchOffice,
     onSaveEditBranchOfficesAndAmounts,
-    setRegional
+    opened,
+    close,
+    open
   }
 }
