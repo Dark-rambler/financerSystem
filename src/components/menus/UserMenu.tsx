@@ -14,13 +14,13 @@ const UserMenu = () => {
         <>
           <Menu.Button>
             {' '}
-            <button
+            <div
               className={`${
                 open ? 'bg-blue-700 text-white' : ' border-blue-600'
               } hover:shadow-md focus:bg-blue-800 hover:bg-blue-700 bg-blue-600 transition ease-in-out rounded-lg w-9 h-9 flex items-center justify-center text-white font-bold hover:cursor-pointer select-none`}
             >
               {fullName.charAt(0).toUpperCase()}
-            </button>
+            </div>
           </Menu.Button>
           <Transition
             as={Fragment}

@@ -23,16 +23,29 @@ interface RegisterDepositOrderFormProps {
 const RegisterDepositOrderForm = ({
   depositOrder
 }: RegisterDepositOrderFormProps) => {
+
+  const handleOnSubmit = async () => {
+        await PDFModifier({ depositOrder })
+    depositOrder.open()
+
+  }
+
   return (
     <Box
       component='form'
       className='space-y-6 h-full max-h-full'
-      onSubmit={depositOrder.form.onSubmit(() => {
-        PDFModifier({ depositOrder })
-      })}
+      onSubmit={depositOrder.form.onSubmit(handleOnSubmit)}
     >
       {' '}
       <SimpleGrid cols={2}>
+      <DatePickerInput
+          withAsterisk
+          valueFormat='DD MMM YYYY'
+          clearable
+          label={'Fecha de orden'}
+          placeholder='Fecha de orden'
+          {...depositOrder.form.getInputProps('orderDate')}
+        />
         <Select
           withAsterisk
           placeholder='Regional'
@@ -40,16 +53,8 @@ const RegisterDepositOrderForm = ({
           data={depositOrder.data}
           onSelect={e => depositOrder.onSelectRegional(e.currentTarget.value)}
           {...depositOrder.form.getInputProps('regional')}
-          // value={depositOrder.regional}
-          // onChange={depositOrder.onSelectRegional}
         />
-        <TextInput
-          withAsterisk
-          placeholder='Administrador'
-          label={'Administrador'}
-          disabled
-          {...depositOrder.form.getInputProps('administrator')}
-        />
+
       </SimpleGrid>
       <SimpleGrid cols={2}>
         <TextInput
@@ -59,13 +64,12 @@ const RegisterDepositOrderForm = ({
           {...depositOrder.form.getInputProps('orderNumber')}
           disabled
         />
-        <DatePickerInput
+         <TextInput
           withAsterisk
-          valueFormat='DD MMM YYYY'
-          clearable
-          label={'Fecha de orden'}
-          placeholder='Fecha de orden'
-          {...depositOrder.form.getInputProps('orderDate')}
+          placeholder='Administrador'
+          label={'Administrador'}
+          disabled
+          {...depositOrder.form.getInputProps('administrator')}
         />
       </SimpleGrid>
       <SimpleGrid cols={2}>
@@ -115,7 +119,9 @@ const RegisterDepositOrderForm = ({
           <Button
             className='p-2 w-10 font-bold text-xl bg-blue-600 hover:bg-blue-700'
             disabled={
-              depositOrder.amount === '' || depositOrder.branchOffice === null || depositOrder.amount === 0
+              depositOrder.amount === '' ||
+              depositOrder.branchOffice === null ||
+              depositOrder.amount === 0
             }
             onClick={
               depositOrder.isBranchOfficeAndAmountsEditing
@@ -148,7 +154,7 @@ const RegisterDepositOrderForm = ({
           highlightOnHover
           horizontalSpacing={'xl'}
         >
-          <thead className='bg-gray-50 text-sm sticky' >
+          <thead className='bg-gray-50 text-sm sticky'>
             <tr>
               <th className='w-[200px] !font-semibold'>Sucursal</th>
               <th className='w-[200px] !font-semibold'>Monto</th>
@@ -158,7 +164,6 @@ const RegisterDepositOrderForm = ({
           </thead>
           <tbody className=' overflow-y-auto'>
             {depositOrder.branchOfficesAndAmounts.map((element, index) => {
-
               return (
                 <tr className='h-5' key={`key-t-${index}`}>
                   <td>{element.branchOffice.label}</td>
@@ -191,7 +196,9 @@ const RegisterDepositOrderForm = ({
                   ? 'Sucursal'
                   : 'Sucursales'}
               </th>
-              <th className='!font-semibold'>Σ {Number(depositOrder.totalAmount).toFixed(2)} Bs.</th>
+              <th className='!font-semibold'>
+                Σ {Number(depositOrder.totalAmount).toFixed(2)} Bs.
+              </th>
               <th></th>
               <th> </th>
             </tr>
@@ -199,9 +206,7 @@ const RegisterDepositOrderForm = ({
         </Table>
       </div>
       <Button className='w-full bg-blue-600 hover:bg-blue-700' type='submit'>
-        {depositOrder.isDocumentGenerated
-          ? 'Editar orden de depósito'
-          : 'Generar orden de depósito'}
+        Emitir orden de depósito
       </Button>
     </Box>
   )

@@ -5,18 +5,23 @@ import { useNavigate } from 'react-router-dom'
 import { useDepositOrderStore } from '../../store/depositOrderStore'
 import { DepositOrderInterface } from '../../../models/DepositOrder'
 import Status from '../../../enums/Status'
+import { getAllDepositOrderBranchOfficeGivenAnId } from '../../../services/DepositOrderBranchOffice'
+import { useLoginStore } from '../../store/loginStore'
 
 interface GenerateDepositOrderReport {
   data: DepositOrderInterface
 }
 
 const GenerateDepositOrderReport = ({ data }: GenerateDepositOrderReport) => {
-  const { setDepositOrder } = useDepositOrderStore()
+  const { setDepositOrder, setDepositBranchOffice } = useDepositOrderStore()
+  const { token } = useLoginStore()
   const isAvailable = data.status?.toUpperCase() === Status.EMITTED
   const navigate = useNavigate()
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
+    const response = await getAllDepositOrderBranchOfficeGivenAnId(Number(data.id), token)
     navigate('/techobol/create-deposit-order-report')
+    setDepositBranchOffice(response)
     setDepositOrder(data)
   }
 

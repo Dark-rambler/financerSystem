@@ -6,7 +6,6 @@ interface EnterpriseMenuProps {
   isTechoBol: boolean
 }
 
-
 const EnterpriseMenu = ({ isTechoBol }: EnterpriseMenuProps) => {
   const navigate = useNavigate()
   return (
