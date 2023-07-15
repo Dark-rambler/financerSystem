@@ -44,7 +44,7 @@ export const useDolar = () => {
   }
 
   const getNewDolars = () => {
-    const newDeposit = {
+    const newDolars = {
       date: form.values.date,
       amount: form.values.amount,
       branchOffice: {
@@ -59,7 +59,7 @@ export const useDolar = () => {
       amountBs: form.values.amountBs,
       description: form.values.description
     }
-    return newDeposit
+    return newDolars
   }
 
   const calculateAmount = () => {

@@ -42,7 +42,7 @@ const DepositTable = ({ deposit }: DepositTableProps) => {
                   }}
                 />
               </td>
-              <td >
+              <td>
                 <DeleteButton
                   onClick={() => {
                     deposit.setActualId(index)
@@ -54,15 +54,17 @@ const DepositTable = ({ deposit }: DepositTableProps) => {
           ))}
         </tbody>
         <tfoot className='border-t border-t-slate-200'>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th className='font-semibold text-xs text-left py-2 px-3'>
-            Σ {deposit.totalAmount.toFixed(2)} Bs.
-          </th>
-          <th></th>
-          <th></th>
-          <th></th>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th className='font-semibold text-xs text-left py-2 px-3'>
+              Σ {deposit.totalAmount.toFixed(2)} Bs.
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
         </tfoot>
       </Table>
       <DeleteModal

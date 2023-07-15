@@ -12,7 +12,7 @@ interface DolarsTableProps {
 const DolarTable = ({ dolar }: DolarsTableProps) => {
   return (
     <div className='border border-gray-200 rounded-md'>
-      <Table striped highlightOnHover fontSize={'sm'} withColumnBorders >
+      <Table striped highlightOnHover fontSize={'sm'} withColumnBorders>
         <thead>
           <tr>
             <th className='w-[300px]'>Sucursal</th>
@@ -51,19 +51,21 @@ const DolarTable = ({ dolar }: DolarsTableProps) => {
           ))}
         </tbody>
         <tfoot className='border-t border-t-slate-200 '>
-          <th></th>
-          <th></th>
-          <th className='font-semibold text-xs text-left py-3 px-3'>
-            {' '}
-            Σ {dolar.totalAmount.toFixed(2)} USD.
-          </th>
-          <th className='font-semibold text-xs text-left py-3 px-3'>
-            {' '}
-            Σ {dolar.totalAmountBs.toFixed(2)} Bs.
-          </th>
-          <th></th>
-          <th></th>
-          <th></th>
+          <tr>
+            <th></th>
+            <th></th>
+            <th className='font-semibold text-xs text-left py-3 px-3'>
+              {' '}
+              Σ {dolar.totalAmount.toFixed(2)} USD.
+            </th>
+            <th className='font-semibold text-xs text-left py-3 px-3'>
+              {' '}
+              Σ {dolar.totalAmountBs.toFixed(2)} Bs.
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
         </tfoot>
       </Table>
       <DeleteModal

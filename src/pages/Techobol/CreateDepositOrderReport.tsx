@@ -19,6 +19,7 @@ import EnvelopeModal from '../../components/modals/EnvelopeModal'
 import DolarModal from '../../components/modals/DolarModal'
 
 import BranchOfficePopover from '../../components/popovers/BranchOfficePopover'
+import BranchOfficeAmountPopover from '../../components/popovers/BranchOfficeAmountPopover'
 
 import ExpenseTable from '../../components/table/ExpenseTable'
 import MoneyCollectionTable from '../../components/table/MoneyCollectionTable'
@@ -27,19 +28,30 @@ import EnvelopeTable from '../../components/table/EnvelopeTable'
 import DolarTable from '../../components/table/DolarTable'
 
 const CreateDepositOrderReport = () => {
-  const { depositOrder } = useDepositOrderStore()
+  const depositOrderReport = useDepositOrderReport()
+  const { depositOrder, depositBranchOffice } = useDepositOrderStore()
+
   const moneyCollection = useMoneyCollection()
   const deposit = useDeposit()
   const expense = useExpense()
   const envelope = useEnvelope()
   const dolar = useDolar()
 
-  const depositOrderReport = useDepositOrderReport()
+  const setBranchOffices = () => {
+    const branchOffices = depositBranchOffice.map(element => ({
+      label: element.branchOffice?.name as string,
+      value: element.branchOffice?.id?.toString() as string
+    }))
+
+    moneyCollection.setBranchOffices(branchOffices)
+    expense.setBranchOffices(branchOffices)
+    envelope.setBranchOffices(branchOffices)
+    dolar.setBranchOffices(branchOffices)
+  }
 
   useEffect(() => {
-    envelope.setBranchOffices(moneyCollection.branchOffices)
-    dolar.setBranchOffices(moneyCollection.branchOffices)
-  }, [moneyCollection.branchOffices])
+    setBranchOffices()
+  }, [depositBranchOffice])
 
   return (
     <div className='px-16 py-12 space-y-16'>
@@ -68,17 +80,18 @@ const CreateDepositOrderReport = () => {
                   {new Date(depositOrder.solitudeDate).toLocaleDateString()}
                 </td>
                 <td className='flex items-center space-x-1'>
-             
-                  <p>     {depositOrder.regional?.name} </p>
-                  <BranchOfficePopover/> </td>
+                  <p> {depositOrder.regional?.name} </p>
+                  <BranchOfficePopover />{' '}
+                </td>
                 <td>
                   {depositOrder.employee?.name}{' '}
                   {depositOrder.employee?.lastName}
                 </td>
                 <td>{new Date(depositOrder.startDate).toLocaleDateString()}</td>
                 <td>{new Date(depositOrder.endDate).toLocaleDateString()}</td>
-                <td className='font-semibold'>
-                  {Number(depositOrder.amount).toFixed(2)} Bs.
+                <td className='flex items-center space-x-1'>
+                  <p> {Number(depositOrder.amount).toFixed(2)} Bs. </p>
+                  <BranchOfficeAmountPopover />{' '}
                 </td>
                 <td>
                   {new Date(depositOrder.deliveryDate).toLocaleDateString()}
@@ -87,7 +100,6 @@ const CreateDepositOrderReport = () => {
             </tbody>
           </Table>
         </div>
-
       </section>
 
       <section className='space-y-2'>
@@ -228,7 +240,10 @@ const CreateDepositOrderReport = () => {
                   {depositOrderReport.file.name}
                 </Text>
                 <Text size='sm' color='dimmed' inline mt={7}>
-                  {Number(depositOrderReport.file.size / 1024 / 1024).toFixed(3)} MB
+                  {Number(depositOrderReport.file.size / 1024 / 1024).toFixed(
+                    3
+                  )}{' '}
+                  MB
                 </Text>
               </div>
             ) : (

@@ -5,6 +5,5 @@ export interface IDepositOrderBranchOffice {
   depositOrderId: number
   branchOfficeId: number
   amount: number
-
   branchOffice?: IBranchModel
 }

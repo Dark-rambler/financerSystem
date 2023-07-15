@@ -78,7 +78,7 @@ export const useExpense = () => {
   useEffect(() => {
     getAllAccounts()
     getAllSubAccounts()
-    getAllBranchOffices()
+    // getAllBranchOffices()
   }, [])
 
   const calculateAmount = () => {
@@ -98,24 +98,24 @@ export const useExpense = () => {
     form.reset()
   }
 
-  const getAllBranchOffices = async () => {
-    const response = await getAllBranchOfficesService(token)
-    if (!response) {
-      return null
-    }
+  // const getAllBranchOffices = async () => {
+  //   const response = await getAllBranchOfficesService(token)
+  //   if (!response) {
+  //     return null
+  //   }
 
-    const branchOfficesFiltered = response
-      .filter((branchOffice: IBranchModel) => {
-        if (branchOffice.regionalOffice?.id == depositOrder.regional?.id) {
-          return true
-        }
-      })
-      .map((branchOffice: IBranchModel) => {
-        return { value: branchOffice.id, label: branchOffice.name }
-      })
+  //   const branchOfficesFiltered = response
+  //     .filter((branchOffice: IBranchModel) => {
+  //       if (branchOffice.regionalOffice?.id == depositOrder.regional?.id) {
+  //         return true
+  //       }
+  //     })
+  //     .map((branchOffice: IBranchModel) => {
+  //       return { value: branchOffice.id, label: branchOffice.name }
+  //     })
 
-    setBranchOffices(branchOfficesFiltered)
-  }
+  //   setBranchOffices(branchOfficesFiltered)
+  // }
 
   const getAllAccounts = async () => {
     const response = await getAllAccountsService(token)
@@ -256,6 +256,7 @@ export const useExpense = () => {
     setActualId,
     onDelete,
     expenseTypes,
-    totalAmount
+    totalAmount,
+    setBranchOffices
   }
 }

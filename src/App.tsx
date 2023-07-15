@@ -25,13 +25,13 @@ function App () {
       <Route path='*' element={<Navigate to={'/login'} />} />
       <Route path='/set-password-error' element={<SetPasswordError />} />
       <Route element={<MainLayout />}>
-      <Route
+        <Route
           path='/login'
           element={
             isLoggedIn ? <Navigate to={'/techobol/deposit-order'} /> : <Login />
           }
-      />
-      <Route path='/set-password/:token' element={<SetPassword />} />
+        />
+        <Route path='/set-password/:token' element={<SetPassword />} />
 
         {isLoggedIn && (
           <>
@@ -46,7 +46,7 @@ function App () {
               element={<RegisterDepositOrder />}
             />
             <Route
-              path='/techobol/create-deposit-order-report'
+              path='/techobol/create-deposit-order-report/:id'
               element={<CreateDepositOrderReport />}
             />
             <Route

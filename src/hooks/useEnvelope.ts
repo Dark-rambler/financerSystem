@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm, isNotEmpty } from '@mantine/form'
 import { useDisclosure } from '@mantine/hooks'
 
 import { IEnvelope } from '../models/Envelope'
+import { IBranchModel } from '../models/BranchOffice'
+
+import { getAllBranchOffices as getAllBranchOfficesService } from '../services/BranchOffices'
+import { useLoginStore } from '../components/store/loginStore'
 
 interface FormSelectOption {
   value: string
@@ -10,6 +14,7 @@ interface FormSelectOption {
 }
 
 export const useEnvelope = () => {
+  const { token } = useLoginStore()
   const [envelopes, setEnvelopes] = useState<IEnvelope[]>([])
   const [opened, modalHandler] = useDisclosure()
   const [openedDelete, modalDeleteHandler] = useDisclosure()
@@ -18,6 +23,7 @@ export const useEnvelope = () => {
   const [totalAmount, setTotalAmount] = useState<number>(0)
 
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
+  const [toBranchOffices, setToBranchOffices] = useState<FormSelectOption[]>([])
 
   const form = useForm<IEnvelope>({
     initialValues: {
@@ -35,6 +41,22 @@ export const useEnvelope = () => {
       description: isNotEmpty('Ingrese una descripción')
     }
   })
+
+  useEffect(() => {
+    getAllBranchOffices()
+  }, [])
+
+  const getAllBranchOffices = async () => {
+    const response = await getAllBranchOfficesService(token)
+    if (!response) return null
+
+    const branchOfficesFormatted = response.map((branchOffice: IBranchModel) => ({
+      value: branchOffice.id,
+      label: branchOffice.name
+    }))
+
+    setToBranchOffices(branchOfficesFormatted)
+  }
 
   const calculateAmount = () => {
     const totalAmount = envelopes.reduce((accumulator, currentValue) => {
@@ -66,7 +88,7 @@ export const useEnvelope = () => {
         regionalOfficeId: 0
       },
       toBranchOffice: {
-        name: branchOffices.find(
+        name: toBranchOffices.find(
           branchOffice =>
             Number(branchOffice.value) === form.values.toBranchOfficeId
         )?.label as string,
@@ -143,6 +165,7 @@ export const useEnvelope = () => {
     onDelete,
     setBranchOffices,
     branchOffices,
-    totalAmount
+    totalAmount,
+    toBranchOffices
   }
 }
