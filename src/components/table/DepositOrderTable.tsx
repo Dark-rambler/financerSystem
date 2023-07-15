@@ -5,6 +5,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css'
 import { ColDef, GridOptions } from 'ag-grid-community'
 
 import { DepositOrderInterface } from '../../models/DepositOrder'
+
 import StatusBadge from '../badges/StatusBadge'
 import RevisionStatusBadge from '../badges/RevisionStatusBadge'
 import ReviewDepositOrder from '../buttons/depositOrder/ReviewDepositOrder'
@@ -12,8 +13,9 @@ import CancelDepositOrder from '../buttons/depositOrder/CancelDepositOrder'
 import ViewDocument from '../buttons/depositOrder/ViewDocument'
 import ViewDepositOrderReport from '../buttons/depositOrder/ViewDepositOrderReport'
 import GenerateDepositOrderReport from '../buttons/depositOrder/GenerateDepositOrderReport'
-import { AG_GRID_LOCALE_ES } from '../../locale/locale.es'
 
+
+import { AG_GRID_LOCALE_ES } from '../../locale/locale.es'
 import { useLoginStore } from '../store/loginStore'
 import { Roles } from '../../enums/Roles'
 
@@ -22,13 +24,17 @@ interface DepositOrderTableProps {
   gridRef: React.MutableRefObject<AgGridReact<DepositOrderInterface> | null>
 }
 
-const Table = ({ depositOrderData, gridRef }: DepositOrderTableProps) => {
+const Table = ({
+  depositOrderData,
+  gridRef
+}: DepositOrderTableProps) => {
   const [rowData, setRowData] =
     useState<DepositOrderInterface[]>(depositOrderData)
   const containerStyle = useMemo(
     () => ({ width: '100%', height: '100%', minWidth: '1500px' }),
     []
   )
+
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), [])
   const { role } = useLoginStore()
 
@@ -53,7 +59,6 @@ const Table = ({ depositOrderData, gridRef }: DepositOrderTableProps) => {
         resizable: true,
         flex: 1
       },
-
       {
         field: 'solitudeDate',
         valueGetter: data => {
@@ -167,7 +172,6 @@ const Table = ({ depositOrderData, gridRef }: DepositOrderTableProps) => {
           justifyContent: 'left'
         }
       },
-
       {
         headerName: 'Orden',
         resizable: true,
@@ -180,7 +184,6 @@ const Table = ({ depositOrderData, gridRef }: DepositOrderTableProps) => {
         },
         width: 80
       },
-
       {
         headerName: 'Informe',
         resizable: true,

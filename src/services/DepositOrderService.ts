@@ -1,6 +1,6 @@
 import { DepositOrderInterface } from '../models/DepositOrder'
 
-interface deposiOrderBranchOfficeBody { 
+interface deposiOrderBranchOfficeBody {
   branchOfficeId: string
   amount: number
 }
@@ -28,7 +28,11 @@ export const getAllDepositOrders = async (token: string) => {
   }
 }
 
-export const createDepositOrder = async (depositOrderBody: DepositOrderInterface, deposiOrderBranchOfficeBody: deposiOrderBranchOfficeBody[], token: string) => {
+export const createDepositOrder = async (
+  depositOrderBody: DepositOrderInterface,
+  deposiOrderBranchOfficeBody: deposiOrderBranchOfficeBody[],
+  token: string
+) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_API_DOMAIN}/deposit-order/create-deposit-order`,
@@ -38,7 +42,7 @@ export const createDepositOrder = async (depositOrderBody: DepositOrderInterface
           'Content-Type': 'application/json',
           'x-access-token': token
         },
-        body: JSON.stringify({depositOrderBody, deposiOrderBranchOfficeBody})
+        body: JSON.stringify({ depositOrderBody, deposiOrderBranchOfficeBody })
       }
     )
 
@@ -49,5 +53,26 @@ export const createDepositOrder = async (depositOrderBody: DepositOrderInterface
     return response.json()
   } catch (err) {
     console.log(err)
+  }
+}
+
+export const getOneDepositOrder = async (id: number, token: string) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_DOMAIN}/deposit-order/deposit-order/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        }
+      }
+    )
+
+    if (!response.ok) return null
+
+    return response.json()
+  } catch {
+    return null
   }
 }

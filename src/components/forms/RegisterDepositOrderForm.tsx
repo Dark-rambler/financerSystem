@@ -23,11 +23,9 @@ interface RegisterDepositOrderFormProps {
 const RegisterDepositOrderForm = ({
   depositOrder
 }: RegisterDepositOrderFormProps) => {
-
   const handleOnSubmit = async () => {
-        await PDFModifier({ depositOrder })
+    await PDFModifier({ depositOrder })
     depositOrder.open()
-
   }
 
   return (
@@ -38,7 +36,7 @@ const RegisterDepositOrderForm = ({
     >
       {' '}
       <SimpleGrid cols={2}>
-      <DatePickerInput
+        <DatePickerInput
           withAsterisk
           valueFormat='DD MMM YYYY'
           clearable
@@ -54,7 +52,6 @@ const RegisterDepositOrderForm = ({
           onSelect={e => depositOrder.onSelectRegional(e.currentTarget.value)}
           {...depositOrder.form.getInputProps('regional')}
         />
-
       </SimpleGrid>
       <SimpleGrid cols={2}>
         <TextInput
@@ -64,7 +61,7 @@ const RegisterDepositOrderForm = ({
           {...depositOrder.form.getInputProps('orderNumber')}
           disabled
         />
-         <TextInput
+        <TextInput
           withAsterisk
           placeholder='Administrador'
           label={'Administrador'}

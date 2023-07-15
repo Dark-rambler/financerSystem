@@ -38,7 +38,7 @@ const EnvelopeModal = ({ opened, close, envelope }: EnvelopeModalProps) => {
             searchable
           />
           <Select
-            data={envelope.branchOffices}
+            data={envelope.toBranchOffices}
             withAsterisk
             placeholder='A sucursal'
             label={'A sucursal'}

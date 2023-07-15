@@ -84,7 +84,10 @@ const DepositOrder = () => {
         </div>
 
         <div className='h-[calc(100%-46px)]'>
-          <Table depositOrderData={depositOrderData} gridRef={gridRef} />
+          <Table
+            depositOrderData={depositOrderData}
+            gridRef={gridRef}
+          />
         </div>
       </div>
     </>

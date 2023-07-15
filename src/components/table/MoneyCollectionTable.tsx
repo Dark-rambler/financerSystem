@@ -54,15 +54,17 @@ const MoneyCollectionTable = ({ moneyCollection }: ExpenseTableProps) => {
           ))}
         </tbody>
         <tfoot className='border-t border-t-slate-200'>
-          <th></th>
-          <th></th>
-          <th className='text-xs font-semibold text-left py-2 px-3'>
-            Σ {moneyCollection.totalAmount.toFixed(2)} Bs.
-          </th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
+          <tr>
+            <th></th>
+            <th></th>
+            <th className='text-xs font-semibold text-left py-2 px-3'>
+              Σ {moneyCollection.totalAmount.toFixed(2)} Bs.
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
         </tfoot>
       </Table>
       <DeleteModal

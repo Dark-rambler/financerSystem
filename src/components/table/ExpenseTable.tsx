@@ -39,7 +39,7 @@ const ExpenseTable = ({ expense }: ExpenseTableProps) => {
               <td className='text-left'>
                 {Number(element.amount).toFixed(2)} Bs.
               </td>
-       
+
               <td>{element.account?.name}</td>
               <td>{element.subAccount?.name}</td>
               <td>{element.description}</td>
@@ -62,15 +62,17 @@ const ExpenseTable = ({ expense }: ExpenseTableProps) => {
           ))}
         </tbody>
         <tfoot className='border-t border-t-slate-200'>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th className='font-semibold text-xs text-left py-2 px-3'>
-          Σ {expense.totalAmount.toFixed(2)} Bs.
-          </th>
-          <th></th>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th className='font-semibold text-xs text-left py-2 px-3'>
+              Σ {expense.totalAmount.toFixed(2)} Bs.
+            </th>
+            <th></th>
+          </tr>
         </tfoot>
       </Table>
       <DeleteModal

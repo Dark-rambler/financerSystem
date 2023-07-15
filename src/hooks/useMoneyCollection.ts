@@ -46,28 +46,28 @@ export const useMoneyCollection = () => {
     }
   })
 
-  const getAllBranchOffices = async () => {
-    const response = await getAllBranchOfficesService(token)
-    if (!response) {
-      return null
-    }
+  // const getAllBranchOffices = async () => {
+  //   const response = await getAllBranchOfficesService(token)
+  //   if (!response) {
+  //     return null
+  //   }
 
-    const branchOfficesFiltered = response
-      .filter((branchOffice: IBranchModel) => {
-        if (branchOffice.regionalOffice?.id == depositOrder.regional?.id) {
-          return true
-        }
-      })
-      .map((branchOffice: IBranchModel) => {
-        return { value: branchOffice.id, label: branchOffice.name }
-      })
+  //   const branchOfficesFiltered = response
+  //     .filter((branchOffice: IBranchModel) => {
+  //       if (branchOffice.regionalOffice?.id == depositOrder.regional?.id) {
+  //         return true
+  //       }
+  //     })
+  //     .map((branchOffice: IBranchModel) => {
+  //       return { value: branchOffice.id, label: branchOffice.name }
+  //     })
 
-    setBranchOffices(branchOfficesFiltered)
-  }
+  //   setBranchOffices(branchOfficesFiltered)
+  // }
 
-  useEffect(() => {
-    getAllBranchOffices()
-  }, [])
+  // useEffect(() => {
+  //   getAllBranchOffices()
+  // }, [])
 
   const calculateAmount = () => {
     const totalAmount = moneyCollections.reduce((accumulator, currentValue) => {
@@ -171,6 +171,7 @@ export const useMoneyCollection = () => {
     onSubmitEdit,
     setActualId,
     onDelete,
-    totalAmount
+    totalAmount,
+    setBranchOffices
   }
 }
