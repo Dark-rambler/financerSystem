@@ -82,7 +82,7 @@ export const useEnvelope = () => {
       fromBranchOffice: {
         name: branchOffices.find(
           branchOffice =>
-            Number(branchOffice.value) === form.values.fromBranchOfficeId
+            Number(branchOffice.value) === Number(form.values.fromBranchOfficeId)
         )?.label as string,
         address: '',
         regionalOfficeId: 0
@@ -90,7 +90,7 @@ export const useEnvelope = () => {
       toBranchOffice: {
         name: toBranchOffices.find(
           branchOffice =>
-            Number(branchOffice.value) === form.values.toBranchOfficeId
+            Number(branchOffice.value) === Number(form.values.toBranchOfficeId)
         )?.label as string,
         address: '',
         regionalOfficeId: 0

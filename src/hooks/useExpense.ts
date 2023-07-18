@@ -152,7 +152,7 @@ export const useExpense = () => {
       branchOffice: {
         name: branchOffices.find(
           branchOffice =>
-            Number(branchOffice.value) === form.values.branchOfficeId
+            Number(branchOffice.value) === Number(form.values.branchOfficeId)
         )?.label as string,
         address: '',
         regionalOfficeId: depositOrder.regional?.id as number
