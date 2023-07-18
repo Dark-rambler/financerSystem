@@ -50,7 +50,7 @@ export const useDolar = () => {
       branchOffice: {
         name: branchOffices.find(
           branchOffice =>
-            Number(branchOffice.value) === form.values.branchOfficeId
+            Number(branchOffice.value) === Number(form.values.branchOfficeId)
         )?.label as string,
         address: '',
         regionalOfficeId: 0

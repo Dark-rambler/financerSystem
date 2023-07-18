@@ -1,7 +1,14 @@
 import { useEffect } from 'react'
 import { Table, Button, Group, Text } from '@mantine/core'
 import { Dropzone, PDF_MIME_TYPE } from '@mantine/dropzone'
-import { TbFileUpload, TbFileCheck, TbFileX } from 'react-icons/tb'
+import {
+  TbFileUpload,
+  TbFileCheck,
+  TbFileX,
+  // TbCircleCheck,
+  TbCircleCheckFilled,
+  TbAlertCircleFilled
+} from 'react-icons/tb'
 import { BsFillFileEarmarkPdfFill } from 'react-icons/bs'
 
 import { useDepositOrderStore } from '../../components/store/depositOrderStore'
@@ -43,6 +50,7 @@ const CreateDepositOrderReport = () => {
       value: element.branchOffice?.id?.toString() as string
     }))
 
+
     moneyCollection.setBranchOffices(branchOffices)
     expense.setBranchOffices(branchOffices)
     envelope.setBranchOffices(branchOffices)
@@ -52,6 +60,16 @@ const CreateDepositOrderReport = () => {
   useEffect(() => {
     setBranchOffices()
   }, [depositBranchOffice])
+
+  useEffect(() => {
+console.log('depositame esta')
+  }, [
+    moneyCollection.totalAmount,
+    deposit.totalAmount,
+    expense.totalAmount,
+    envelope.totalAmount,
+    dolar.totalAmount
+  ])
 
   return (
     <div className='px-16 py-12 space-y-16'>
@@ -203,11 +221,14 @@ const CreateDepositOrderReport = () => {
             console.log(files)
             depositOrderReport.setFile(null)
           }}
+          className={`${
+            depositOrderReport.isSubmited && !depositOrderReport.file
+              ? 'border-red-500'
+              : ''
+          }`}
           maxSize={50 * 1024 ** 2}
           accept={PDF_MIME_TYPE}
-          //num of files 1
           maxFiles={1}
-          // {...props}
         >
           <Group
             position='center'
@@ -259,10 +280,32 @@ const CreateDepositOrderReport = () => {
             )}
           </Group>
         </Dropzone>
+        {depositOrderReport.isSubmited && !depositOrderReport.file ? (
+          <p className='text-red-500'>Este campo es obligatorio</p>
+        ) : null}
       </section>
 
-      <section className='flex justify-end'>
-        <Button className='bg-blue-600 hover:bg-blue-700'>
+      <section className='flex justify-end space-x-2'>
+        <Button
+          className={`${
+            depositOrderReport.isReportValid
+              ? 'bg-emerald-600 hover:bg-emerald-700'
+              : 'bg-red-600 hover:bg-red-700'
+          } w-9 p-0 h-9`}
+        >
+          {depositOrderReport.isReportValid ? (
+            <TbCircleCheckFilled size={19} />
+          ) : (
+            <TbAlertCircleFilled size={19} className={'stroke-2'} />
+          )}
+        </Button>
+        <Button
+          className='bg-blue-600 hover:bg-blue-700'
+          onClick={() => {
+            depositOrderReport.verifyDepositOrderReport()
+            console.log('enviado')
+          }}
+        >
           Enviar informe
         </Button>
       </section>

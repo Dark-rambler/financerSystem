@@ -61,6 +61,7 @@ const DolarModal = ({ opened, close, dolar }: DolarModalProps) => {
             placeholder='Monto en USD'
             stepHoldDelay={600}
             stepHoldInterval={100}
+            // description=''
             precision={2}
             min={0}
             {...dolar.form.getInputProps('amount')}
@@ -68,7 +69,7 @@ const DolarModal = ({ opened, close, dolar }: DolarModalProps) => {
           <NumberInput
             withAsterisk
             label={'Monto en Bs.'}
-            placeholder='Monto en Bs.'
+            placeholder={`Monto: ${(Number(dolar.form.values.amount) * 6.96).toFixed(2) } Bs.`}
             stepHoldDelay={600}
             stepHoldInterval={100}
             precision={2}

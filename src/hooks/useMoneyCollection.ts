@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { isNotEmpty, useForm } from '@mantine/form'
 
-import { IBranchModel } from '../models/BranchOffice'
 import { IMoneyCollection } from '../models/MoneyCollection'
-import { useLoginStore } from '../components/store/loginStore'
 
-import { getAllBranchOffices as getAllBranchOfficesService } from '../services/BranchOffices'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
 
 interface FormSelectOption {
@@ -15,16 +12,20 @@ interface FormSelectOption {
 }
 
 export const useMoneyCollection = () => {
-  const { token } = useLoginStore()
   const { depositOrder } = useDepositOrderStore()
 
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
+  const [selectedBranchOffices, setSelectedBranchOffices] = useState<
+    FormSelectOption[]
+  >([])
+
   const [moneyCollectionOpened, moneyCollectionOpenedHandler] = useDisclosure()
   const [moneyCollectionOpenedDelete, moneyCollectionOpenedDeleteHandler] =
     useDisclosure()
   const [moneyCollections, setMoneyCollections] = useState<IMoneyCollection[]>(
     []
   )
+
   const [actualId, setActualId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState(false)
   const [totalAmount, setTotalAmount] = useState<number>(0)
@@ -38,36 +39,24 @@ export const useMoneyCollection = () => {
       receivedById: depositOrder.employee?.id as number
     },
     validate: {
-      branchOfficeId: value => value === 0 && 'Seleccione una sucursal',
+      branchOfficeId: value => {
+        if (value === 0) return 'Seleccione una sucursal'
+        if (
+          selectedBranchOffices.find(
+            branchOffice =>
+              Number(branchOffice.value) === Number(value) &&
+              Number(moneyCollections[actualId].branchOfficeId) !==
+                Number(value)
+          )
+        )
+          return 'Esta sucursal ya fue seleccionada'
+      },
       date: isNotEmpty('Seleccione una fecha'),
       amount: isNotEmpty('Ingrese un monto'),
-      deliveredBy: isNotEmpty('Ingrese un nombre'),
-      receivedById: isNotEmpty('Seleccione un empleado')
+      deliveredBy: isNotEmpty('Ingrese un nombre')
+      // receivedById: isNotEmpty('Seleccione un empleado')
     }
   })
-
-  // const getAllBranchOffices = async () => {
-  //   const response = await getAllBranchOfficesService(token)
-  //   if (!response) {
-  //     return null
-  //   }
-
-  //   const branchOfficesFiltered = response
-  //     .filter((branchOffice: IBranchModel) => {
-  //       if (branchOffice.regionalOffice?.id == depositOrder.regional?.id) {
-  //         return true
-  //       }
-  //     })
-  //     .map((branchOffice: IBranchModel) => {
-  //       return { value: branchOffice.id, label: branchOffice.name }
-  //     })
-
-  //   setBranchOffices(branchOfficesFiltered)
-  // }
-
-  // useEffect(() => {
-  //   getAllBranchOffices()
-  // }, [])
 
   const calculateAmount = () => {
     const totalAmount = moneyCollections.reduce((accumulator, currentValue) => {
@@ -93,7 +82,7 @@ export const useMoneyCollection = () => {
       branchOffice: {
         name: branchOffices.find(
           branchOffice =>
-            Number(branchOffice.value) === form.values.branchOfficeId
+            Number(branchOffice.value) === Number(form.values.branchOfficeId)
         )?.label as string,
         address: '',
         regionalOfficeId: depositOrder.regional?.id as number
@@ -115,7 +104,15 @@ export const useMoneyCollection = () => {
     moneyCollectionOpenedHandler.close()
     const newMoneyCollection = getNewMoneyCollection()
     moneyCollections.push(newMoneyCollection)
-    // setMoneyCollections([...moneyCollections, newMoneyCollection])
+    const branchOfficeIndex = branchOffices.findIndex(
+      branchOffice =>
+        Number(branchOffice.value) === Number(form.values.branchOfficeId)
+    )
+    setSelectedBranchOffices(prevState => [
+      ...prevState,
+      branchOffices[branchOfficeIndex]
+    ])
+
     form.reset()
     calculateAmount()
   }
@@ -150,6 +147,9 @@ export const useMoneyCollection = () => {
     moneyCollectionOpenedHandler.close()
     setIsEditing(false)
     moneyCollectionOpenedDeleteHandler.close()
+
+    selectedBranchOffices.splice(actualId, 1)
+
     form.reset()
     calculateAmount()
   }
