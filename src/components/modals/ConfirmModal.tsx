@@ -8,6 +8,7 @@ interface ConfirmModalProps {
   title: string
   description: string
   buttonText: string
+  isLoading: boolean
 }
 
 const ConfirmModal = ({
@@ -17,7 +18,8 @@ const ConfirmModal = ({
   primaryColor,
   title,
   description,
-  buttonText
+  buttonText,
+  isLoading
 }: ConfirmModalProps) => {
   return (
     <Modal
@@ -41,6 +43,7 @@ const ConfirmModal = ({
           <Button
             className={`bg-${primaryColor}-600 text-white hover:bg-${primaryColor}-700`}
             onClick={onClick}
+            loading={isLoading}
           >
             {buttonText}
           </Button>

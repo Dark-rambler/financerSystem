@@ -3,6 +3,7 @@ import { EmployeeInterface } from './Employee'
 
 export interface IMoneyCollection {
   id?: number
+  depositOrderId?:  number
   date: Date | null
   branchOfficeId: number
   branchOffice?: IBranchModel

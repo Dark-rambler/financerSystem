@@ -1,10 +1,10 @@
 import { Table } from '@mantine/core'
 
-import EditButton from '../buttons/EditButton'
-import DeleteButton from '../buttons/DeleteButton'
-import DeleteModal from '../modals/DeleteModal'
+import EditButton from '../../buttons/EditButton'
+import DeleteButton from '../../buttons/DeleteButton'
+import DeleteModal from '../../modals/DeleteModal'
 
-import { useEnvelope } from '../../hooks/useEnvelope'
+import { useEnvelope } from '../../../hooks/useEnvelope'
 
 interface EnvelopeTableProps {
   envelope: ReturnType<typeof useEnvelope>

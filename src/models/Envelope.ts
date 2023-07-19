@@ -2,6 +2,7 @@ import { IBranchModel } from "./BranchOffice"
 
 export interface IEnvelope {
   id?: number
+  depositOrderId?: number
   fromBranchOfficeId: number
   fromBranchOffice?: IBranchModel
   toBranchOfficeId: number

@@ -3,6 +3,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { isNotEmpty, useForm } from '@mantine/form'
 
 import { IDolar } from '../models/Dolar'
+import { useDepositOrderStore } from '../components/store/depositOrderStore'
 
 interface FormSelectOption {
   value: string
@@ -10,6 +11,7 @@ interface FormSelectOption {
 }
 
 export const useDolar = () => {
+  const { depositOrder } = useDepositOrderStore()
   const [dolars, setDolars] = useState<IDolar[]>([])
   const [opened, modalHandler] = useDisclosure()
   const [openedDelete, modalDeleteHandler] = useDisclosure()
@@ -123,6 +125,18 @@ export const useDolar = () => {
     calculateAmount()
   }
 
+  const getFormattedDolars = () => {
+    const formattedDolars = dolars.map(dolar => ({
+      depositOrderId: depositOrder.id,
+      branchOfficeId: Number(dolar.branchOfficeId),
+      date: dolar.date,
+      amount: Number(dolar.amount),
+      amountBs: Number(dolar.amountBs),
+      description: dolar.description
+    }))
+    return formattedDolars
+  }
+
   return {
     opened,
     modalHandler,
@@ -142,6 +156,7 @@ export const useDolar = () => {
     branchOffices,
     setBranchOffices,
     totalAmount,
-    totalAmountBs
+    totalAmountBs,
+    getFormattedDolars
   }
 }

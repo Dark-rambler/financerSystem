@@ -93,6 +93,7 @@ export const useRegisterDepositOrder = () => {
   ] = useState<number | null>(null)
 
   const [opened, { open, close }] = useDisclosure()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { token } = useLoginStore()
   const navigate = useNavigate()
@@ -276,6 +277,7 @@ export const useRegisterDepositOrder = () => {
   }
 
   const onCreateDepositOrder = async () => {
+    setIsLoading(() => true)
     const depositOrderBody = {
       orderNumber: form.values.orderNumber,
       startDate: form.values.orderRange[0] as Date,
@@ -290,27 +292,33 @@ export const useRegisterDepositOrder = () => {
       }/TECHOBOL/DEPOSIT_ORDER/${form.values.orderNumber}.pdf`
     }
 
-    const deposiOrderBranchOfficeBody = branchOfficesAndAmounts.map(element => (
-      {
+    const deposiOrderBranchOfficeBody = branchOfficesAndAmounts.map(
+      element => ({
         branchOfficeId: element.branchOffice.value,
         amount: element.amount
-      }
-    ))
+      })
+    )
 
     s3.uploadDepositOrderFileOfTechoBol(
       pdfFile as File,
       form.values.orderNumber
     )
 
-    const response = createDepositOrder(depositOrderBody, deposiOrderBranchOfficeBody, token)
+    const response = createDepositOrder(
+      depositOrderBody,
+      deposiOrderBranchOfficeBody,
+      token
+    )
 
     if (!response) {
       errorToast('Error al crear la orden de depósito')
+      setIsLoading(() => false)
       return
     }
 
     succesToast('Orden de depósito enviada con éxito')
     navigate('/deposit-order')
+    setIsLoading(() => false)
   }
 
   useEffect(() => {
@@ -345,6 +353,8 @@ export const useRegisterDepositOrder = () => {
     onSaveEditBranchOfficesAndAmounts,
     opened,
     close,
-    open
+    open,
+    isLoading,
+    setIsLoading
   }
 }

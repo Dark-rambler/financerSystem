@@ -54,6 +54,7 @@ const RegisterDepositOrder = () => {
         title='Emitir orden de deposito'
         description='Esta orden de deposito no puede ser modificada una vez emitida'
         buttonText='Emitir'
+        isLoading={registerOrder.isLoading}
       />
     </>
   )
