@@ -4,6 +4,7 @@ import { ISubAccount } from "./SubAccount"
 
 export interface IExpense {
     id?: number
+    depositOrderId?: number
     documentType: string
     documentNumber: string
     date: Date | null

@@ -17,6 +17,12 @@ import CreateDepositOrderReport from './pages/Techobol/CreateDepositOrderReport'
 import SetPassword from './pages/SetPassword'
 import SetPasswordError from './pages/SetPasswordError'
 
+import Envelopes from './pages/Techobol/Envelopes'
+import Dolars from './pages/Techobol/Dolars'
+import Deposits from './pages/Techobol/Deposits'
+import Expenses from './pages/Techobol/Expenses'
+import MoneyCollections from './pages/Techobol/MoneyCollections'
+
 function App () {
   const { isLoggedIn, role } = useLoginStore()
 
@@ -49,6 +55,15 @@ function App () {
               path='/techobol/create-deposit-order-report/:id'
               element={<CreateDepositOrderReport />}
             />
+            <Route
+              path='/techobol/money-collections'
+              element={<MoneyCollections />}
+            />
+            <Route path='/techobol/expenses' element={<Expenses />} />
+            <Route path='/techobol/dolars' element={<Dolars />} />
+            <Route path='/techobol/envelopes' element={<Envelopes />} />
+            <Route path='/techobol/deposits' element={<Deposits />} />
+            
             <Route
               path='/megadis/deposit-order'
               element={

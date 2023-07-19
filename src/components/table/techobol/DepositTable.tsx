@@ -1,9 +1,9 @@
 import { Table } from '@mantine/core'
 
-import { useDeposit } from '../../hooks/useDeposit'
-import EditButton from '../buttons/EditButton'
-import DeleteButton from '../buttons/DeleteButton'
-import DeleteModal from '../modals/DeleteModal'
+import { useDeposit } from '../../../hooks/useDeposit'
+import EditButton from '../../buttons/EditButton'
+import DeleteButton from '../../buttons/DeleteButton'
+import DeleteModal from '../../modals/DeleteModal'
 
 interface DepositTableProps {
   deposit: ReturnType<typeof useDeposit>

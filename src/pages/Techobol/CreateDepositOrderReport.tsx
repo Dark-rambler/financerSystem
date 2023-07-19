@@ -24,15 +24,16 @@ import MoneyCollectionModal from '../../components/modals/MoneyCollectionModal'
 import ExpenseModal from '../../components/modals/ExpenseModal'
 import EnvelopeModal from '../../components/modals/EnvelopeModal'
 import DolarModal from '../../components/modals/DolarModal'
+import ConfirmModal from '../../components/modals/ConfirmModal'
 
 import BranchOfficePopover from '../../components/popovers/BranchOfficePopover'
 import BranchOfficeAmountPopover from '../../components/popovers/BranchOfficeAmountPopover'
 
-import ExpenseTable from '../../components/table/ExpenseTable'
-import MoneyCollectionTable from '../../components/table/MoneyCollectionTable'
-import DepositTable from '../../components/table/DepositTable'
-import EnvelopeTable from '../../components/table/EnvelopeTable'
-import DolarTable from '../../components/table/DolarTable'
+import ExpenseTable from '../../components/table/techobol/ExpenseTable'
+import MoneyCollectionTable from '../../components/table/techobol/MoneyCollectionTable'
+import DepositTable from '../../components/table/techobol/DepositTable'
+import EnvelopeTable from '../../components/table/techobol/EnvelopeTable'
+import DolarTable from '../../components/table/techobol/DolarTable'
 
 const CreateDepositOrderReport = () => {
   const depositOrderReport = useDepositOrderReport()
@@ -45,11 +46,12 @@ const CreateDepositOrderReport = () => {
   const dolar = useDolar()
 
   const setBranchOffices = () => {
+    if (!depositBranchOffice) return
+
     const branchOffices = depositBranchOffice.map(element => ({
       label: element.branchOffice?.name as string,
       value: element.branchOffice?.id?.toString() as string
     }))
-
 
     moneyCollection.setBranchOffices(branchOffices)
     expense.setBranchOffices(branchOffices)
@@ -62,7 +64,7 @@ const CreateDepositOrderReport = () => {
   }, [depositBranchOffice])
 
   useEffect(() => {
-console.log('depositame esta')
+    console.log('depositame esta')
   }, [
     moneyCollection.totalAmount,
     deposit.totalAmount,
@@ -281,7 +283,7 @@ console.log('depositame esta')
           </Group>
         </Dropzone>
         {depositOrderReport.isSubmited && !depositOrderReport.file ? (
-          <p className='text-red-500'>Este campo es obligatorio</p>
+          <p className='text-red-600'>Este campo es obligatorio</p>
         ) : null}
       </section>
 
@@ -303,7 +305,7 @@ console.log('depositame esta')
           className='bg-blue-600 hover:bg-blue-700'
           onClick={() => {
             depositOrderReport.verifyDepositOrderReport()
-            console.log('enviado')
+            depositOrderReport.open()
           }}
         >
           Enviar informe
@@ -331,6 +333,32 @@ console.log('depositame esta')
         envelope={envelope}
       />
       <DolarModal opened={dolar.opened} close={dolar.onClose} dolar={dolar} />
+      <ConfirmModal
+        opened={depositOrderReport.opened}
+        close={depositOrderReport.close}
+        title={'Enviar reporte de orden de depósito'}
+        description='El informe parece correcto. ¿Desea enviarlo ahora?'
+        buttonText='Enviar'
+        primaryColor='blue'
+        onClick={() => {
+          const depositData = deposit.getFormattedDeposits()
+          const envelopeData = envelope.getFormattedEnvelopes()
+          const moneyCollentionData =
+            moneyCollection.getFormattedMoneyCollections()
+          const expenseData = expense.getFormattedExpenses()
+          const dolarData = dolar.getFormattedDolars()
+
+          const depositOrderReportData = {
+            moneyCollections: moneyCollentionData,
+            expenses: expenseData,
+            envelopes: envelopeData,
+            dolars: dolarData,
+            deposits: depositData
+          }
+          depositOrderReport.onSendDepositOrderReport(depositOrderReportData)
+        }}
+        isLoading={depositOrderReport.isLoading}
+      />
     </div>
   )
 }

@@ -9,6 +9,11 @@ import {
   TbList
 } from 'react-icons/tb'
 
+import { AiOutlineBank } from 'react-icons/ai'
+import { FaRegEnvelope } from 'react-icons/fa'
+import { BsCashStack } from 'react-icons/bs'
+import { BiCoinStack } from 'react-icons/bi'
+
 import { NavLink, useLocation } from 'react-router-dom'
 import { Roles } from '../../enums/Roles'
 
@@ -60,24 +65,123 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
         </NavLink>
       </div>
 
-      <div className='px-5 pb-3'>
-        <div
-          className={`${
-            location.pathname.includes('expenses') ? 'bg-gray-100' : 'bg-white'
-          } select-none hover:cursor-pointer flex items-center space-x-2  pl-5 p-3 hover:bg-gray-100 rounded-md`}
-        >
-          <div className='bg-red-100 rounded-md'>
-            <TbTags
-              size={'25px'}
-              color={'#b91c1c'}
-              style={{
-                padding: '4px'
-              }}
-            />
-          </div>
+      <div className='px-5 pb-0'>
+        <NavLink to={'/techobol/money-collections'}>
+          <div
+            className={`${
+              location.pathname.includes('money-collection')
+                ? 'bg-gray-100'
+                : 'bg-white'
+            } select-none hover:cursor-pointer flex items-center space-x-2  pl-5 p-3 hover:bg-gray-100 rounded-md`}
+          >
+            <div className='bg-amber-100 rounded-md'>
+              <BiCoinStack
+                size={'25px'}
+                color={'#f59e0b'}
+                style={{
+                  padding: '4px'
+                }}
+              />
+            </div>
 
-          <p className='text-sm text-gray-800'>Salidas y Gastos</p>
-        </div>
+            <p className='text-sm text-gray-800'>Recaudaciones</p>
+          </div>
+        </NavLink>
+      </div>
+
+      <div className='px-5 pb-0'>
+        <NavLink to={'/techobol/expenses'}>
+          <div
+            className={`${
+              location.pathname.includes('expenses')
+                ? 'bg-gray-100'
+                : 'bg-white'
+            } select-none hover:cursor-pointer flex items-center space-x-2  pl-5 p-3 hover:bg-gray-100 rounded-md`}
+          >
+            <div className='bg-red-100 rounded-md'>
+              <TbTags
+                size={'25px'}
+                color={'#b91c1c'}
+                style={{
+                  padding: '4px'
+                }}
+              />
+            </div>
+
+            <p className='text-sm text-gray-800'>Salidas</p>
+          </div>
+        </NavLink>
+      </div>
+
+      <div className='px-5 pb-0'>
+        <NavLink to={'/techobol/dolars'}>
+          {' '}
+          <div
+            className={`${
+              location.pathname.includes('dolars') ? 'bg-gray-100' : 'bg-white'
+            } select-none hover:cursor-pointer flex items-center space-x-2  pl-5 p-3 hover:bg-gray-100 rounded-md`}
+          >
+            <div className='bg-green-100 rounded-md'>
+              <BsCashStack
+                size={'25px'}
+                color={'#15803d'}
+                style={{
+                  padding: '5px'
+                }}
+              />
+            </div>
+
+            <p className='text-sm text-gray-800'>Dólares</p>
+          </div>
+        </NavLink>
+      </div>
+
+      <div className='px-5 pb-0'>
+        <NavLink to={'/techobol/envelopes'}>
+          <div
+            className={`${
+              location.pathname.includes('envelopes')
+                ? 'bg-gray-100'
+                : 'bg-white'
+            } select-none hover:cursor-pointer flex items-center space-x-2  pl-5 p-3 hover:bg-gray-100 rounded-md`}
+          >
+            <div className='bg-cyan-100 rounded-md'>
+              <FaRegEnvelope
+                size={'25px'}
+                color={'#155e75'}
+                style={{
+                  padding: '5.5px'
+                }}
+              />
+            </div>
+
+            <p className='text-sm text-gray-800'>Sobres</p>
+          </div>
+        </NavLink>
+      </div>
+
+      <div className='px-5 pb-3'>
+        <NavLink to={'/techobol/deposits'}>
+          <div
+            className={`${
+              location.pathname.includes('deposits')
+                ? 'bg-gray-100'
+                : 'bg-white'
+            } select-none hover:cursor-pointer flex items-center space-x-2  pl-5 p-3 hover:bg-gray-100 rounded-md`}
+          >
+            <div className='bg-violet-100 rounded-md'>
+              <AiOutlineBank
+                size={'25px'}
+                color={'#8b5cf6'}
+                style={{
+                  padding: '4px'
+                }}
+              />
+            </div>
+
+            <p className='text-sm text-gray-800'>Depósitos</p>
+          </div>
+        </NavLink>
       </div>
 
       {role === Roles.FINANCIAL_MANAGER && (
@@ -111,22 +215,6 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
               </div>
             </NavLink>
           </div>
-
-          {/* <div className='px-5 pb-0'>
-  <div className='select-none hover:cursor-pointer flex items-center space-x-2  pl-5 p-3 hover:bg-gray-100 rounded-md'>
-    <div className='bg-blue-100 rounded-md'>
-      <TbMapPin
-        size={'25px'}
-        color={'#3b82f6'}
-        style={{
-          padding: '4px'
-        }}
-      />
-    </div>
-
-    <p className='text-sm text-gray-800'>Regionales</p>
-  </div>
-</div> */}
 
           <div className='px-5 pb-0'>
             <NavLink to={'/techobol/admin/branch-offices'}>

@@ -154,6 +154,18 @@ export const useMoneyCollection = () => {
     calculateAmount()
   }
 
+  const getFormattedMoneyCollections = () => {
+    const formatedData = moneyCollections.map(element => ({
+      depositOrderId: depositOrder.id,
+      date: element.date,
+      branchOfficeId: Number(element.branchOfficeId),
+      amount: Number(element.amount),
+      deliveredBy: element.deliveredBy,
+      receivedById: Number(element.receivedById)
+    }))
+    return formatedData
+  }
+
   return {
     moneyCollectionOpened,
     moneyCollectionOpenedHandler,
@@ -172,6 +184,8 @@ export const useMoneyCollection = () => {
     setActualId,
     onDelete,
     totalAmount,
-    setBranchOffices
+    setBranchOffices,
+    setMoneyCollections,
+    getFormattedMoneyCollections
   }
 }

@@ -3,6 +3,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { isNotEmpty, useForm } from '@mantine/form'
 
 import { IDeposit } from '../models/Deposit'
+import { useDepositOrderStore } from '../components/store/depositOrderStore'
 
 interface SelectFormat {
   value: string
@@ -10,6 +11,7 @@ interface SelectFormat {
 }
 
 export const useDeposit = () => {
+  const { depositOrder } = useDepositOrderStore()
   const [deposits, setDeposits] = useState<IDeposit[]>([])
   const [opened, modalHandler] = useDisclosure()
   const [openedDelete, modalDeleteHandler] = useDisclosure()
@@ -48,7 +50,6 @@ export const useDeposit = () => {
       description: isNotEmpty('Ingrese una descripción')
     }
   })
-
 
   const calculateAmount = () => {
     const totalAmount = deposits.reduce((accumulator, currentValue) => {
@@ -121,6 +122,18 @@ export const useDeposit = () => {
     calculateAmount()
   }
 
+  const getFormattedDeposits = () => {
+    const formattedDeposits = deposits.map(deposit => ({
+      depositOrderId: depositOrder.id,
+      voucherNumber: deposit.voucherNumber,
+      bank: deposit.bank,
+      date: deposit.date,
+      amount: Number(deposit.amount),
+      description: deposit.description
+    }))
+    return formattedDeposits
+  }
+
   return {
     opened,
     modalHandler,
@@ -139,6 +152,7 @@ export const useDeposit = () => {
     onDelete,
     banks,
     setBanks,
-    totalAmount
+    totalAmount,
+    getFormattedDeposits
   }
 }

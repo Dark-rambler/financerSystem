@@ -1,9 +1,9 @@
 import { Table } from '@mantine/core'
 
-import EditButton from '../buttons/EditButton'
-import DeleteButton from '../buttons/DeleteButton'
-import DeleteModal from '../modals/DeleteModal'
-import { useDolar } from '../../hooks/useDolar'
+import EditButton from '../../buttons/EditButton'
+import DeleteButton from '../../buttons/DeleteButton'
+import DeleteModal from '../../modals/DeleteModal'
+import { useDolar } from '../../../hooks/useDolar'
 
 interface DolarsTableProps {
   dolar: ReturnType<typeof useDolar>

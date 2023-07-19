@@ -196,7 +196,6 @@ export const useExpense = () => {
   }
 
   const onClickEdit = (id: number) => {
-
     expenseOpenedHandler.open()
     setIsEditing(true)
     setActualId(id)
@@ -224,7 +223,7 @@ export const useExpense = () => {
       label: subAccount.name
     }))
 
-    setFilteredSubAccounts(formatedSubAccounts)    
+    setFilteredSubAccounts(formatedSubAccounts)
   }
 
   const onDelete = () => {
@@ -233,6 +232,22 @@ export const useExpense = () => {
     setIsEditing(false)
     form.reset()
     calculateAmount()
+  }
+
+  const getFormattedExpenses = () => {
+    const formatedData = expenses.map(expense => ({
+      depositOrderId: depositOrder.id as number,
+      documentType: expense.documentType,
+      documentNumber: expense.documentNumber,
+      date: expense.date,
+      branchOfficeId: Number(expense.branchOfficeId),
+      expenseType: expense.expenseType,
+      amount: Number(expense.amount),
+      accountId: Number(expense.accountId),
+      subAccountId: Number(expense.subAccountId),
+      description: expense.description
+    }))
+    return formatedData
   }
 
   return {
@@ -257,6 +272,7 @@ export const useExpense = () => {
     onDelete,
     expenseTypes,
     totalAmount,
-    setBranchOffices
+    setBranchOffices,
+    getFormattedExpenses
   }
 }

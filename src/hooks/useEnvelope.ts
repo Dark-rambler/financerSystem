@@ -7,6 +7,7 @@ import { IBranchModel } from '../models/BranchOffice'
 
 import { getAllBranchOffices as getAllBranchOfficesService } from '../services/BranchOffices'
 import { useLoginStore } from '../components/store/loginStore'
+import { useDepositOrderStore } from '../components/store/depositOrderStore'
 
 interface FormSelectOption {
   value: string
@@ -15,6 +16,7 @@ interface FormSelectOption {
 
 export const useEnvelope = () => {
   const { token } = useLoginStore()
+  const { depositOrder } = useDepositOrderStore()
   const [envelopes, setEnvelopes] = useState<IEnvelope[]>([])
   const [opened, modalHandler] = useDisclosure()
   const [openedDelete, modalDeleteHandler] = useDisclosure()
@@ -50,10 +52,12 @@ export const useEnvelope = () => {
     const response = await getAllBranchOfficesService(token)
     if (!response) return null
 
-    const branchOfficesFormatted = response.map((branchOffice: IBranchModel) => ({
-      value: branchOffice.id,
-      label: branchOffice.name
-    }))
+    const branchOfficesFormatted = response.map(
+      (branchOffice: IBranchModel) => ({
+        value: branchOffice.id,
+        label: branchOffice.name
+      })
+    )
 
     setToBranchOffices(branchOfficesFormatted)
   }
@@ -82,7 +86,8 @@ export const useEnvelope = () => {
       fromBranchOffice: {
         name: branchOffices.find(
           branchOffice =>
-            Number(branchOffice.value) === Number(form.values.fromBranchOfficeId)
+            Number(branchOffice.value) ===
+            Number(form.values.fromBranchOfficeId)
         )?.label as string,
         address: '',
         regionalOfficeId: 0
@@ -147,6 +152,18 @@ export const useEnvelope = () => {
     calculateAmount()
   }
 
+  const getFormattedEnvelopes = () => {
+    const formattedEnvelopes = envelopes.map(envelope => ({
+      depositOrderId: depositOrder.id,
+      date: envelope.date,
+      fromBranchOfficeId: Number(envelope.fromBranchOfficeId),
+      toBranchOfficeId: Number(envelope.toBranchOfficeId),
+      amount: Number(envelope.amount),
+      description: envelope.description
+    }))
+    return formattedEnvelopes
+  }
+
   return {
     opened,
     modalHandler,
@@ -166,6 +183,7 @@ export const useEnvelope = () => {
     setBranchOffices,
     branchOffices,
     totalAmount,
-    toBranchOffices
+    toBranchOffices,
+    getFormattedEnvelopes
   }
 }

@@ -1,9 +1,9 @@
 import { Table } from '@mantine/core'
 
-import { useMoneyCollection } from '../../hooks/useMoneyCollection'
-import EditButton from '../buttons/EditButton'
-import DeleteButton from '../buttons/DeleteButton'
-import DeleteModal from '../modals/DeleteModal'
+import { useMoneyCollection } from '../../../hooks/useMoneyCollection'
+import EditButton from '../../buttons/EditButton'
+import DeleteButton from '../../buttons/DeleteButton'
+import DeleteModal from '../../modals/DeleteModal'
 
 interface ExpenseTableProps {
   moneyCollection: ReturnType<typeof useMoneyCollection>

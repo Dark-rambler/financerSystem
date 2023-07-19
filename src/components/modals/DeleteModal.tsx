@@ -27,7 +27,7 @@ const DeleteModal = ({ label, opened, close, onDelete }: DeleteModalProps) => {
             <Button className='bg-gray-200 text-gray-900 hover:bg-gray-300' onClick={close}>
               Cancelar
             </Button>
-            <Button className='bg-red-500 hover:bg-red-600' onClick={onDelete}>Eliminar</Button>
+            <Button className='bg-red-600 hover:bg-red-700' onClick={onDelete}>Eliminar</Button>
           </div>
         </div>
       </Modal>
