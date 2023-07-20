@@ -27,29 +27,37 @@ const MoneyCollectionAGTable = ({ data, gridRef }: MoneyCollectionProps) => {
   const columnDefs = useMemo<ColDef[]>(
     () => [
       {
+        field: 'depositOrder.orderNumber',
+        headerName: 'Orden de depósito',
+        sortable: true,
+        filter: true,
+        resizable: true
+      },
+      {
         field: 'branchOffice.name',
         headerName: 'Sucursal',
         sortable: true,
         filter: true,
         resizable: true
       },
+
       {
         headerName: 'Fecha de recaudación',
         valueGetter: data => {
-            return new Date(data.data.date)
-          },
-          valueFormatter: params => {
-            return `${params.value.toLocaleDateString('es-ES')}`
-          },
+          return new Date(data.data.date)
+        },
+        valueFormatter: params => {
+          return `${params.value.toLocaleDateString('es-ES')}`
+        },
         sortable: true,
         filter: 'agDateColumnFilter',
-        resizable: true,
+        resizable: true
       },
       {
         field: 'amount',
         headerName: 'Monto',
         valueFormatter: params => {
-            return `${Number(params.data.amount).toFixed(2)} Bs.`
+          return `${Number(params.data.amount).toFixed(2)} Bs.`
         },
         sortable: true,
         filter: NumberFilter,
@@ -67,7 +75,7 @@ const MoneyCollectionAGTable = ({ data, gridRef }: MoneyCollectionProps) => {
         field: 'receivedBy.name',
         headerName: 'Recibido por ',
         valueGetter: params => {
-            return `${params.data.receivedBy?.name} ${params.data.receivedBy?.lastName}`
+          return `${params.data.receivedBy?.name} ${params.data.receivedBy?.lastName}`
         },
         sortable: true,
         resizable: true

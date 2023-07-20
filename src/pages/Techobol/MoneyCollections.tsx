@@ -10,7 +10,6 @@ import { errorToast } from '../../services/toasts'
 import { getAllMoneyCollections } from '../../services/MoneyCollection'
 import MoneyCollectionAGTable from '../../components/table/techobol/AGTables/MoneyCollectionAGTable'
 
-
 const MoneyCollections = () => {
   const { token } = useLoginStore()
   const [moneyCollectionData, setMoneyCollectionData] = useState<
@@ -19,10 +18,10 @@ const MoneyCollections = () => {
 
   const gridRef = useRef<AgGridReact<IMoneyCollection>>(null)
 
-  const getMoneyCollections= async () => {
+  const getMoneyCollections = async () => {
     const data = await getAllMoneyCollections(token)
     if (!data) {
-      errorToast('No se pudo obtener la información de las ordenes de deposito')
+      errorToast('No se pudo obtener la información de las recaudaciones')
       return
     }
     setMoneyCollectionData(data)
@@ -64,7 +63,10 @@ const MoneyCollections = () => {
         </div>
 
         <div className='h-[calc(100%-46px)]'>
-          <MoneyCollectionAGTable data={moneyCollectionData} gridRef={gridRef} />
+          <MoneyCollectionAGTable
+            data={moneyCollectionData}
+            gridRef={gridRef}
+          />
         </div>
       </div>
     </>

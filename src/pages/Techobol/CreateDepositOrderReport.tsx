@@ -1,39 +1,37 @@
 import { useEffect } from 'react'
-import { Table, Button, Group, Text } from '@mantine/core'
+import { Table, Button, Group, Text, ActionIcon } from '@mantine/core'
 import { Dropzone, PDF_MIME_TYPE } from '@mantine/dropzone'
 import {
   TbFileUpload,
   TbFileCheck,
   TbFileX,
-  // TbCircleCheck,
-  TbCircleCheckFilled,
-  TbAlertCircleFilled
 } from 'react-icons/tb'
-import { BsFillFileEarmarkPdfFill } from 'react-icons/bs'
+import { BsFillFileEarmarkPdfFill, BsCheckCircleFill, BsXCircleFill } from 'react-icons/bs'
 
 import { useDepositOrderStore } from '../../components/store/depositOrderStore'
 import { useExpense } from '../../hooks/useExpense'
 import { useDeposit } from '../../hooks/useDeposit'
 import { useEnvelope } from '../../hooks/useEnvelope'
 import { useMoneyCollection } from '../../hooks/useMoneyCollection'
-import { useDolar } from '../../hooks/useDolar'
+import { useDollar } from '../../hooks/useDollar'
 import { useDepositOrderReport } from '../../hooks/useDepositOrderReport'
 
 import DepositModal from '../../components/modals/DepositModal'
 import MoneyCollectionModal from '../../components/modals/MoneyCollectionModal'
 import ExpenseModal from '../../components/modals/ExpenseModal'
 import EnvelopeModal from '../../components/modals/EnvelopeModal'
-import DolarModal from '../../components/modals/DolarModal'
+import DollarModal from '../../components/modals/DollarModal'
 import ConfirmModal from '../../components/modals/ConfirmModal'
 
 import BranchOfficePopover from '../../components/popovers/BranchOfficePopover'
 import BranchOfficeAmountPopover from '../../components/popovers/BranchOfficeAmountPopover'
+import ViewIsReportCorrectModal from '../../components/modals/ViewIsReportCorrect'
 
 import ExpenseTable from '../../components/table/techobol/ExpenseTable'
 import MoneyCollectionTable from '../../components/table/techobol/MoneyCollectionTable'
 import DepositTable from '../../components/table/techobol/DepositTable'
 import EnvelopeTable from '../../components/table/techobol/EnvelopeTable'
-import DolarTable from '../../components/table/techobol/DolarTable'
+import DollarTable from '../../components/table/techobol/DollarTable'
 
 const CreateDepositOrderReport = () => {
   const depositOrderReport = useDepositOrderReport()
@@ -43,7 +41,7 @@ const CreateDepositOrderReport = () => {
   const deposit = useDeposit()
   const expense = useExpense()
   const envelope = useEnvelope()
-  const dolar = useDolar()
+  const dollar = useDollar()
 
   const setBranchOffices = () => {
     if (!depositBranchOffice) return
@@ -56,7 +54,7 @@ const CreateDepositOrderReport = () => {
     moneyCollection.setBranchOffices(branchOffices)
     expense.setBranchOffices(branchOffices)
     envelope.setBranchOffices(branchOffices)
-    dolar.setBranchOffices(branchOffices)
+    dollar.setBranchOffices(branchOffices)
   }
 
   useEffect(() => {
@@ -64,13 +62,21 @@ const CreateDepositOrderReport = () => {
   }, [depositBranchOffice])
 
   useEffect(() => {
-    console.log('depositame esta')
+    const isReportValid =
+      moneyCollection.totalAmount +
+        dollar.totalAmount +
+        expense.totalAmount -
+        envelope.totalAmount ===
+        depositOrder.amount && deposit.totalAmount === moneyCollection.totalAmount
+
+    depositOrderReport.setIsReportValid(isReportValid)
   }, [
     moneyCollection.totalAmount,
     deposit.totalAmount,
     expense.totalAmount,
     envelope.totalAmount,
-    dolar.totalAmount
+    dollar.totalAmount,
+    depositOrder.amount
   ])
 
   return (
@@ -166,12 +172,12 @@ const CreateDepositOrderReport = () => {
 
           <Button
             className='bg-blue-600 hover:bg-blue-700 text-xl px-3'
-            onClick={dolar.modalHandler.open}
+            onClick={dollar.modalHandler.open}
           >
             +
           </Button>
         </div>
-        <DolarTable dolar={dolar} />
+        <DollarTable dollar={dollar} />
       </section>
 
       <section className='space-y-2'>
@@ -288,19 +294,20 @@ const CreateDepositOrderReport = () => {
       </section>
 
       <section className='flex justify-end space-x-2'>
-        <Button
+        <ActionIcon
+          onClick={depositOrderReport.handlerDisclosureView.open}
           className={`${
             depositOrderReport.isReportValid
-              ? 'bg-emerald-600 hover:bg-emerald-700'
-              : 'bg-red-600 hover:bg-red-700'
+              ? 'bg-emerald-200 hover:bg-emerald-300'
+              : 'bg-red-200 hover:bg-red-300'
           } w-9 p-0 h-9`}
         >
-          {depositOrderReport.isReportValid ? (
-            <TbCircleCheckFilled size={19} />
-          ) : (
-            <TbAlertCircleFilled size={19} className={'stroke-2'} />
-          )}
-        </Button>
+            {depositOrderReport.isReportValid? (
+              <BsCheckCircleFill color={'#22c55e'} size={'19px'} />
+            ) : (
+              <BsXCircleFill color={'#ef4444'} size={'19px'} />
+            )}
+        </ActionIcon>
         <Button
           className='bg-blue-600 hover:bg-blue-700'
           onClick={() => {
@@ -332,7 +339,11 @@ const CreateDepositOrderReport = () => {
         close={envelope.onClose}
         envelope={envelope}
       />
-      <DolarModal opened={dolar.opened} close={dolar.onClose} dolar={dolar} />
+      <DollarModal
+        opened={dollar.opened}
+        close={dollar.onClose}
+        dollar={dollar}
+      />
       <ConfirmModal
         opened={depositOrderReport.opened}
         close={depositOrderReport.close}
@@ -346,18 +357,28 @@ const CreateDepositOrderReport = () => {
           const moneyCollentionData =
             moneyCollection.getFormattedMoneyCollections()
           const expenseData = expense.getFormattedExpenses()
-          const dolarData = dolar.getFormattedDolars()
+          const dollarData = dollar.getFormattedDollars()
 
           const depositOrderReportData = {
             moneyCollections: moneyCollentionData,
             expenses: expenseData,
             envelopes: envelopeData,
-            dolars: dolarData,
+            dollars: dollarData,
             deposits: depositData
           }
           depositOrderReport.onSendDepositOrderReport(depositOrderReportData)
         }}
         isLoading={depositOrderReport.isLoading}
+      />
+      <ViewIsReportCorrectModal
+        opened={depositOrderReport.openedView}
+        close={depositOrderReport.handlerDisclosureView.close}
+        depositOrderAmount={depositOrder.amount}
+        moneyCollectionAmount={moneyCollection.totalAmount}
+        dollarAmount={dollar.totalAmount}
+        envelopeAmount={envelope.totalAmount}
+        expenseAnount={expense.totalAmount}
+        depositAmount={deposit.totalAmount}
       />
     </div>
   )

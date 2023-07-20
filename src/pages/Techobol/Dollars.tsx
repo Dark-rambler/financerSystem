@@ -4,29 +4,29 @@ import { Input } from '@mantine/core'
 import { TbSearch } from 'react-icons/tb'
 
 import { useLoginStore } from '../../components/store/loginStore'
-import { IEnvelope } from '../../models/Envelope'
+import { IDollar } from '../../models/Dollar'
 import { errorToast } from '../../services/toasts'
 
-import { getAllEnvelopes } from '../../services/Envelope'
-import EnvelopeAGTable from '../../components/table/techobol/AGTables/EnvelopeAGTable'
+import { getAllDollars } from '../../services/Dollar'
+import DollarAGTable from '../../components/table/techobol/AGTables/DollarAGTable'
 
-const Envelopes = () => {
+const Dollars = () => {
   const { token } = useLoginStore()
-  const [envelopeData, setEnvelopeData] = useState<IEnvelope[]>([])
+  const [dollarData, setDollarData] = useState<IDollar[]>([])
 
-  const gridRef = useRef<AgGridReact<IEnvelope>>(null)
+  const gridRef = useRef<AgGridReact<IDollar>>(null)
 
-  const getEnvelopes = async () => {
-    const data = await getAllEnvelopes(token)
+  const getDollars = async () => {
+    const data = await getAllDollars(token)
     if (!data) {
-      errorToast('No se pudo obtener la información de los sobres')
+      errorToast('No se pudo obtener la información de los dólares')
       return
     }
-    setEnvelopeData(data)
+    setDollarData(data)
   }
 
   useEffect(() => {
-    getEnvelopes()
+    getDollars()
   }, [])
 
   const onFilterTextBoxChanged = useCallback(() => {
@@ -46,7 +46,7 @@ const Envelopes = () => {
       <div className='w-full p-10 space-y-5 h-full'>
         <div className='flex justify-between'>
           <div className='flex items-end '>
-            <h1 className='font-bold text-md'>SOBRES</h1>
+            <h1 className='font-bold text-md'>DÓLARES</h1>
           </div>
 
           <div className='flex space-x-5'>
@@ -61,11 +61,11 @@ const Envelopes = () => {
         </div>
 
         <div className='h-[calc(100%-46px)]'>
-          <EnvelopeAGTable data={envelopeData} gridRef={gridRef} />
+          <DollarAGTable data={dollarData} gridRef={gridRef} />
         </div>
       </div>
     </>
   )
 }
 
-export default Envelopes
+export default Dollars

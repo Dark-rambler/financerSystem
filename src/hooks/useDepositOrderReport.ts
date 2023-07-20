@@ -14,6 +14,7 @@ import { createDepositOrderReport } from '../services/DepositOrderReport'
 export const useDepositOrderReport = () => {
   const { token } = useLoginStore()
   const [opened, { open, close }] = useDisclosure()
+  const [openedView, handlerDisclosureView] = useDisclosure()
   const { setDepositBranchOffice, setDepositOrder } = useDepositOrderStore()
 
   const { id } = useParams()
@@ -81,6 +82,9 @@ export const useDepositOrderReport = () => {
     isSubmited,
     opened,
     open,
-    close
+    close,
+    openedView,
+    handlerDisclosureView,
+    setIsReportValid
   }
 }

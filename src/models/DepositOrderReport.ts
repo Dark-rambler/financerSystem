@@ -1,13 +1,13 @@
 import { IMoneyCollection } from './MoneyCollection'
 import { IExpense } from './Expense'
 import { IEnvelope } from './Envelope'
-import { IDolar } from './Dolar'
+import { IDollar } from './Dollar'
 import { IDeposit } from './Deposit'
 
 export interface IDepositOrderReport {
   moneyCollections: IMoneyCollection[]
   expenses: IExpense[]
   envelopes: IEnvelope[]
-  dolars: IDolar[]
+  dollars: IDollar[]
   deposits: IDeposit[]
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useDisclosure } from '@mantine/hooks'
 import { Popover, ActionIcon, Table } from '@mantine/core'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 
@@ -6,14 +6,13 @@ import { useDepositOrderStore } from '../store/depositOrderStore'
 
 const BranchOfficePopover = () => {
   const { depositBranchOffice } = useDepositOrderStore()
-  const [opened, setOpened] = useState(false)
+  const [opened, { open, close }] = useDisclosure()
   return (
-    <Popover opened={opened} onChange={setOpened}>
+    <Popover opened={opened} >
       <Popover.Target>
         <ActionIcon
-          onClick={() => {
-            setOpened(o => !o)
-          }}
+          onMouseEnter={open}
+          onMouseLeave={close}
           className='bg-gray-100 hover:bg-gray-200'
         >
           <AiOutlineQuestionCircle size={18} color={'#6b7280'} />
