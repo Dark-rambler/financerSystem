@@ -114,11 +114,11 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
       </div>
 
       <div className='px-5 pb-0'>
-        <NavLink to={'/techobol/dolars'}>
+        <NavLink to={'/techobol/dollars'}>
           {' '}
           <div
             className={`${
-              location.pathname.includes('dolars') ? 'bg-gray-100' : 'bg-white'
+              location.pathname.includes('dollars') ? 'bg-gray-100' : 'bg-white'
             } select-none hover:cursor-pointer flex items-center space-x-2  pl-5 p-3 hover:bg-gray-100 rounded-md`}
           >
             <div className='bg-green-100 rounded-md'>

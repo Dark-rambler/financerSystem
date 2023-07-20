@@ -3,13 +3,13 @@ import { Table } from '@mantine/core'
 import EditButton from '../../buttons/EditButton'
 import DeleteButton from '../../buttons/DeleteButton'
 import DeleteModal from '../../modals/DeleteModal'
-import { useDolar } from '../../../hooks/useDolar'
+import { useDollar } from '../../../hooks/useDollar'
 
-interface DolarsTableProps {
-  dolar: ReturnType<typeof useDolar>
+interface DollarsTableProps {
+  dollar: ReturnType<typeof useDollar>
 }
 
-const DolarTable = ({ dolar }: DolarsTableProps) => {
+const DollarTable = ({ dollar }: DollarsTableProps) => {
   return (
     <div className='border border-gray-200 rounded-md'>
       <Table striped highlightOnHover fontSize={'sm'} withColumnBorders>
@@ -25,7 +25,7 @@ const DolarTable = ({ dolar }: DolarsTableProps) => {
           </tr>
         </thead>
         <tbody>
-          {dolar.dolars.map((element, index) => (
+          {dollar.dollars.map((element, index) => (
             <tr key={`deposit-row-${index}`}>
               <td>{element.branchOffice?.name}</td>
               <td>{new Date(element.date as Date).toLocaleDateString()}</td>
@@ -35,15 +35,15 @@ const DolarTable = ({ dolar }: DolarsTableProps) => {
               <td>
                 <EditButton
                   onClick={() => {
-                    dolar.onClickEdit(index)
+                    dollar.onClickEdit(index)
                   }}
                 />
               </td>
               <td className='max-w-10'>
                 <DeleteButton
                   onClick={() => {
-                    dolar.setActualId(index)
-                    dolar.modalDeleteHandler.open()
+                    dollar.setActualId(index)
+                    dollar.modalDeleteHandler.open()
                   }}
                 />
               </td>
@@ -56,11 +56,11 @@ const DolarTable = ({ dolar }: DolarsTableProps) => {
             <th></th>
             <th className='font-semibold text-xs text-left py-3 px-3'>
               {' '}
-              Σ {dolar.totalAmount.toFixed(2)} USD.
+              Σ {dollar.totalAmount.toFixed(2)} USD.
             </th>
             <th className='font-semibold text-xs text-left py-3 px-3'>
               {' '}
-              Σ {dolar.totalAmountBs.toFixed(2)} Bs.
+              Σ {dollar.totalAmountBs.toFixed(2)} Bs.
             </th>
             <th></th>
             <th></th>
@@ -70,12 +70,12 @@ const DolarTable = ({ dolar }: DolarsTableProps) => {
       </Table>
       <DeleteModal
         label={'Depósito'}
-        opened={dolar.openedDelete}
-        close={dolar.modalDeleteHandler.close}
-        onDelete={dolar.onDelete}
+        opened={dollar.openedDelete}
+        close={dollar.modalDeleteHandler.close}
+        onDelete={dollar.onDelete}
       />
     </div>
   )
 }
 
-export default DolarTable
+export default DollarTable

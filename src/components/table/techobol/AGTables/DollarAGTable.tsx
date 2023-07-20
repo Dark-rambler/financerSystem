@@ -1,3 +1,5 @@
+
+
 import { useMemo, useState, useEffect } from 'react'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/styles/ag-grid.css'
@@ -5,15 +7,15 @@ import 'ag-grid-community/styles/ag-theme-alpine.css'
 import { ColDef, GridOptions, NumberFilter } from 'ag-grid-community'
 import { AG_GRID_LOCALE_ES } from '../../../../locale/locale.es'
 
-import { IExpense } from '../../../../models/Expense'
+import { IDollar } from '../../../../models/Dollar'
 
-interface ExpenseProps {
-  data: IExpense[]
-  gridRef: React.MutableRefObject<AgGridReact<IExpense> | null>
+interface DollarProps {
+  data: IDollar[]
+  gridRef: React.MutableRefObject<AgGridReact<IDollar> | null>
 }
 
-const ExpenseAGTable = ({ data, gridRef }: ExpenseProps) => {
-  const [rowData, setRowData] = useState<IExpense[]>(data)
+const DollarAGTable = ({ data, gridRef }: DollarProps) => {
+  const [rowData, setRowData] = useState<IDollar[]>(data)
   const containerStyle = useMemo(
     () => ({ width: '100%', height: '100%', minWidth: '1500px' }),
     []
@@ -34,19 +36,13 @@ const ExpenseAGTable = ({ data, gridRef }: ExpenseProps) => {
         resizable: true
       },
       {
-        field: 'documentType',
-        headerName: 'Documento',
+        field: 'branchOffice.name',
+        headerName: 'Sucursal',
         sortable: true,
         filter: true,
         resizable: true
       },
-      {
-        field: 'documentNumber',
-        headerName: 'Nº documento',
-        sortable: true,
-        filter: true,
-        resizable: true
-      },
+
       {
         headerName: 'Fecha',
         valueGetter: data => {
@@ -60,45 +56,23 @@ const ExpenseAGTable = ({ data, gridRef }: ExpenseProps) => {
         resizable: true
       },
       {
-        field: 'branchOffice.name',
-        headerName: 'Sucursal',
-        sortable: true,
-        filter: true,
-        resizable: true
-      },
-      {
-        field: 'expenseType',
-        headerName: 'Tipo de salida',
-        sortable: true,
-        filter: true,
-        resizable: true
-      },
-      {
         field: 'amount',
-        headerName: 'Monto',
+        headerName: 'Monto USD.',
         valueFormatter: params => {
-          return `${Number(params.data.amount).toFixed(2)} Bs.`
+          return `${Number(params.data.amount).toFixed(2)} USD.`
         },
         sortable: true,
         filter: NumberFilter,
         resizable: true
       },
       {
-        field: 'account.name',
-        headerName: 'Cuenta financiera',
-        valueGetter: params => {
-          return `${params.data.account?.name}`
+        field: 'amountBs',
+        headerName: 'Monto Bs.',
+        valueFormatter: params => {
+          return `${Number(params.data.amount).toFixed(2)} Bs.`
         },
         sortable: true,
-        resizable: true
-      },
-      {
-        field: 'subAccount.name',
-        headerName: 'Subcuenta financiera',
-        valueGetter: params => {
-          return `${params.data.subAccount?.name}`
-        },
-        sortable: true,
+        filter: NumberFilter,
         resizable: true
       },
       {
@@ -108,7 +82,8 @@ const ExpenseAGTable = ({ data, gridRef }: ExpenseProps) => {
         filter: true,
         resizable: true,
         width: 300
-      }
+      },
+ 
     ],
     []
   )
@@ -148,4 +123,4 @@ const ExpenseAGTable = ({ data, gridRef }: ExpenseProps) => {
   )
 }
 
-export default ExpenseAGTable
+export default DollarAGTable

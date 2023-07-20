@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { isNotEmpty, useForm } from '@mantine/form'
 
-import { IDolar } from '../models/Dolar'
+import { IDollar } from '../models/Dollar'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
 
 interface FormSelectOption {
@@ -10,9 +10,9 @@ interface FormSelectOption {
   label: string
 }
 
-export const useDolar = () => {
+export const useDollar = () => {
   const { depositOrder } = useDepositOrderStore()
-  const [dolars, setDolars] = useState<IDolar[]>([])
+  const [dollars, setDollars] = useState<IDollar[]>([])
   const [opened, modalHandler] = useDisclosure()
   const [openedDelete, modalDeleteHandler] = useDisclosure()
   const [actualId, setActualId] = useState<number>(0)
@@ -22,7 +22,7 @@ export const useDolar = () => {
 
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
 
-  const form = useForm<IDolar>({
+  const form = useForm<IDollar>({
     initialValues: {
       branchOfficeId: 0,
       date: null,
@@ -45,8 +45,8 @@ export const useDolar = () => {
     form.reset()
   }
 
-  const getNewDolars = () => {
-    const newDolars = {
+  const getNewDollars = () => {
+    const newDollars = {
       date: form.values.date,
       amount: form.values.amount,
       branchOffice: {
@@ -61,18 +61,18 @@ export const useDolar = () => {
       amountBs: form.values.amountBs,
       description: form.values.description
     }
-    return newDolars
+    return newDollars
   }
 
   const calculateAmount = () => {
-    const totalAmount = dolars.reduce((accumulator, currentValue) => {
+    const totalAmount = dollars.reduce((accumulator, currentValue) => {
       const amount =
         typeof currentValue.amount === 'string'
           ? parseInt(currentValue.amount)
           : currentValue.amount
       return accumulator + amount
     }, 0)
-    const totalAmountBs = dolars.reduce((accumulator, currentValue) => {
+    const totalAmountBs = dollars.reduce((accumulator, currentValue) => {
       const amountBs =
         typeof currentValue.amountBs === 'string'
           ? parseInt(currentValue.amountBs)
@@ -85,15 +85,15 @@ export const useDolar = () => {
 
   const onSubmit = () => {
     modalHandler.close()
-    const newDolars = getNewDolars()
-    dolars.push(newDolars)
+    const newDollars = getNewDollars()
+    dollars.push(newDollars)
     form.reset()
     calculateAmount()
   }
 
   const onSubmitEdit = () => {
-    const newDolar = getNewDolars()
-    dolars[actualId] = newDolar
+    const newDollar = getNewDollars()
+    dollars[actualId] = newDollar
     modalHandler.close()
     setIsEditing(false)
     form.reset()
@@ -104,20 +104,20 @@ export const useDolar = () => {
     modalHandler.open()
     setIsEditing(true)
     setActualId(id)
-    const selectedDolar = dolars[id]
+    const selectedDollar = dollars[id]
 
     form.setFieldValue(
       'branchOfficeId',
-      selectedDolar?.branchOfficeId as number
+      selectedDollar?.branchOfficeId as number
     )
-    form.setFieldValue('date', selectedDolar?.date as Date)
-    form.setFieldValue('amount', selectedDolar?.amount as string)
-    form.setFieldValue('amountBs', selectedDolar?.amountBs as string)
-    form.setFieldValue('description', selectedDolar?.description as string)
+    form.setFieldValue('date', selectedDollar?.date as Date)
+    form.setFieldValue('amount', selectedDollar?.amount as string)
+    form.setFieldValue('amountBs', selectedDollar?.amountBs as string)
+    form.setFieldValue('description', selectedDollar?.description as string)
   }
 
   const onDelete = () => {
-    dolars.splice(actualId, 1)
+    dollars.splice(actualId, 1)
     modalDeleteHandler.close()
     setIsEditing(false)
     modalDeleteHandler.close()
@@ -125,16 +125,16 @@ export const useDolar = () => {
     calculateAmount()
   }
 
-  const getFormattedDolars = () => {
-    const formattedDolars = dolars.map(dolar => ({
+  const getFormattedDollars = () => {
+    const formattedDollars = dollars.map(dollar => ({
       depositOrderId: depositOrder.id,
-      branchOfficeId: Number(dolar.branchOfficeId),
-      date: dolar.date,
-      amount: Number(dolar.amount),
-      amountBs: Number(dolar.amountBs),
-      description: dolar.description
+      branchOfficeId: Number(dollar.branchOfficeId),
+      date: dollar.date,
+      amount: Number(dollar.amount),
+      amountBs: Number(dollar.amountBs),
+      description: dollar.description
     }))
-    return formattedDolars
+    return formattedDollars
   }
 
   return {
@@ -142,8 +142,8 @@ export const useDolar = () => {
     modalHandler,
     openedDelete,
     modalDeleteHandler,
-    dolars,
-    setDolars,
+    dollars,
+    setDollars,
     actualId,
     form,
     onSubmit,
@@ -157,6 +157,6 @@ export const useDolar = () => {
     setBranchOffices,
     totalAmount,
     totalAmountBs,
-    getFormattedDolars
+    getFormattedDollars
   }
 }

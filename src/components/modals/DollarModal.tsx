@@ -9,15 +9,15 @@ import {
 
 import { DatePickerInput } from '@mantine/dates'
 
-import { useDolar } from '../../hooks/useDolar'
+import { useDollar } from '../../hooks/useDollar'
 
-interface DolarModalProps {
+interface DollarModalProps {
   opened: boolean
   close: () => void
-  dolar: ReturnType<typeof useDolar>
+  dollar: ReturnType<typeof useDollar>
 }
 
-const DolarModal = ({ opened, close, dolar }: DolarModalProps) => {
+const DollarModal = ({ opened, close, dollar }: DollarModalProps) => {
   return (
     <Modal
       opened={opened}
@@ -30,19 +30,19 @@ const DolarModal = ({ opened, close, dolar }: DolarModalProps) => {
       size={'xl'}
     >
       <form
-        onSubmit={dolar.form.onSubmit(() => {
-          if (dolar.isEditing) dolar.onSubmitEdit()
-          else dolar.onSubmit()
+        onSubmit={dollar.form.onSubmit(() => {
+          if (dollar.isEditing) dollar.onSubmitEdit()
+          else dollar.onSubmit()
         })}
         className='space-y-7 h-full'
       >
         <SimpleGrid cols={2}>
           <Select
-            data={dolar.branchOffices}
+            data={dollar.branchOffices}
             withAsterisk
             placeholder='Sucursal'
             label={'Sucursal'}
-            {...dolar.form.getInputProps('branchOfficeId')}
+            {...dollar.form.getInputProps('branchOfficeId')}
             searchable
           />
 
@@ -53,7 +53,7 @@ const DolarModal = ({ opened, close, dolar }: DolarModalProps) => {
             label={'Fecha de cobro'}
             dropdownType='modal'
             clearable
-            {...dolar.form.getInputProps('date')}
+            {...dollar.form.getInputProps('date')}
           />
           <NumberInput
             withAsterisk
@@ -64,24 +64,24 @@ const DolarModal = ({ opened, close, dolar }: DolarModalProps) => {
             // description=''
             precision={2}
             min={0}
-            {...dolar.form.getInputProps('amount')}
+            {...dollar.form.getInputProps('amount')}
           />
           <NumberInput
             withAsterisk
             label={'Monto en Bs.'}
-            placeholder={`Monto: ${(Number(dolar.form.values.amount) * 6.96).toFixed(2) } Bs.`}
+            placeholder={`Monto: ${(Number(dollar.form.values.amount) * 6.96).toFixed(2) } Bs.`}
             stepHoldDelay={600}
             stepHoldInterval={100}
             precision={2}
             min={0}
-            {...dolar.form.getInputProps('amountBs')}
+            {...dollar.form.getInputProps('amountBs')}
           />
         </SimpleGrid>
         <Textarea
           withAsterisk
           label={'Observaciones'}
           placeholder={'Observaciones'}
-          {...dolar.form.getInputProps('description')}
+          {...dollar.form.getInputProps('description')}
         />
         <div className='flex justify-end'>
           <Button type={'submit'} className='bg-blue-600 hover:bg-blue-700'>
@@ -93,4 +93,4 @@ const DolarModal = ({ opened, close, dolar }: DolarModalProps) => {
   )
 }
 
-export default DolarModal
+export default DollarModal

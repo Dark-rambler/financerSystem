@@ -1,6 +1,6 @@
 import { IBranchModel } from "./BranchOffice"
 
-export interface IDolar { 
+export interface IDollar { 
     id?: number
     depositOrderId?: number
     branchOfficeId: number

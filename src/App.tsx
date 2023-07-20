@@ -18,7 +18,7 @@ import SetPassword from './pages/SetPassword'
 import SetPasswordError from './pages/SetPasswordError'
 
 import Envelopes from './pages/Techobol/Envelopes'
-import Dolars from './pages/Techobol/Dolars'
+import Dollars from './pages/Techobol/Dollars'
 import Deposits from './pages/Techobol/Deposits'
 import Expenses from './pages/Techobol/Expenses'
 import MoneyCollections from './pages/Techobol/MoneyCollections'
@@ -60,7 +60,7 @@ function App () {
               element={<MoneyCollections />}
             />
             <Route path='/techobol/expenses' element={<Expenses />} />
-            <Route path='/techobol/dolars' element={<Dolars />} />
+            <Route path='/techobol/dollars' element={<Dollars />} />
             <Route path='/techobol/envelopes' element={<Envelopes />} />
             <Route path='/techobol/deposits' element={<Deposits />} />
             
