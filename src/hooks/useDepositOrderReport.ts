@@ -1,23 +1,27 @@
 import { useState, useEffect } from 'react'
 import { useDisclosure } from '@mantine/hooks'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 import { IDepositOrderReport } from '../models/DepositOrderReport'
 
 import { getAllDepositOrderBranchOfficeGivenAnId } from '../services/DepositOrderBranchOffice'
-import { getOneDepositOrder } from '../services/DepositOrderService'
+import { getOneDepositOrder, updateStatusAndRevitionStatus } from '../services/DepositOrderService'
 import { useLoginStore } from '../components/store/loginStore'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
 import { errorToast, succesToast } from '../services/toasts'
 import { createDepositOrderReport } from '../services/DepositOrderReport'
 
+import { useAmazonS3 } from './useAmazonS3'
+
 export const useDepositOrderReport = () => {
   const { token } = useLoginStore()
+  const s3 = useAmazonS3()
   const [opened, { open, close }] = useDisclosure()
   const [openedView, handlerDisclosureView] = useDisclosure()
-  const { setDepositBranchOffice, setDepositOrder } = useDepositOrderStore()
+  const { depositOrder, setDepositBranchOffice, setDepositOrder } = useDepositOrderStore()
 
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const [file, setFile] = useState<File | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -56,6 +60,12 @@ export const useDepositOrderReport = () => {
     depositOrderData: IDepositOrderReport
   ) => {
     setIsLoading(() => true)
+    const r2Response =await s3.uploadDepositOrderReportFileOfTechoBol(file as File, `${depositOrder.orderNumber} REPORTE`)
+    if(!r2Response.ok) {
+      errorToast('Error al enviar el reporte')
+      return
+    } 
+
     const response = await createDepositOrderReport(token, depositOrderData)
 
     if (!response) {
@@ -63,9 +73,18 @@ export const useDepositOrderReport = () => {
       setIsLoading(false)
       return
     }
+
+    const depositOrderStatusResponse = await updateStatusAndRevitionStatus(depositOrder.id as number, token)
+    
+    if(!depositOrderStatusResponse) {
+      errorToast('Error al enviar el reporte')
+      setIsLoading(false)
+      return
+    }
+
     close()
     succesToast('Reporte enviado correctamente')
-
+    navigate('/techobol/deposit-order')
     setTimeout(() => {
       setIsLoading(false)
     }, 1000)
@@ -80,6 +99,7 @@ export const useDepositOrderReport = () => {
     onSendDepositOrderReport,
     isReportValid,
     isSubmited,
+    setIsSubmited,
     opened,
     open,
     close,

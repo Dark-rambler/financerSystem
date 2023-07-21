@@ -30,7 +30,7 @@ const EnvelopeModal = ({ opened, close, envelope }: EnvelopeModalProps) => {
       >
         <SimpleGrid cols={2}>
           <Select
-            data={envelope.branchOffices}
+            data={envelope.fromBranchOffices}
             withAsterisk
             placeholder='De sucursal'
             label={'De sucursal'}
@@ -38,7 +38,7 @@ const EnvelopeModal = ({ opened, close, envelope }: EnvelopeModalProps) => {
             searchable
           />
           <Select
-            data={envelope.toBranchOffices}
+            data={envelope.branchOffices}
             withAsterisk
             placeholder='A sucursal'
             label={'A sucursal'}
@@ -48,8 +48,8 @@ const EnvelopeModal = ({ opened, close, envelope }: EnvelopeModalProps) => {
           <DatePickerInput
             withAsterisk
             valueFormat='DD MMM YYYY'
-            placeholder='Fecha de recaudación'
-            label={'Fecha de recaudación'}
+            placeholder='Fecha'
+            label={'Fecha'}
             dropdownType='modal'
             clearable
             {...envelope.form.getInputProps('date')}

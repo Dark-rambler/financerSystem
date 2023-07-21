@@ -94,6 +94,8 @@ export const useRegisterDepositOrder = () => {
 
   const [opened, { open, close }] = useDisclosure()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isBranchOfficeRepeated, setIsBranchOfficeRepeated] =
+    useState<boolean>(false)
 
   const { token } = useLoginStore()
   const navigate = useNavigate()
@@ -212,6 +214,7 @@ export const useRegisterDepositOrder = () => {
   }
 
   const onEditBranchOfficesAndAmounts = (index: number) => {
+    setIsBranchOfficeRepeated(() => false)
     setIsBranchOfficeAndAmountsEditing(() => true)
     const actualSucursalAndAmount = branchOfficesAndAmounts[index]
     setAmount(actualSucursalAndAmount.amount)
@@ -220,6 +223,19 @@ export const useRegisterDepositOrder = () => {
   }
 
   const onSaveEditBranchOfficesAndAmounts = () => {
+    const branchEdited =
+      branchOfficesAndAmounts[actualBranchOfficeAndAmountIndex as number]
+    const branchFound = branchOfficesAndAmounts.find(
+      element =>
+        element.branchOffice.value === branchOffice &&
+        element.branchOffice.value !== branchEdited.branchOffice.value
+    )
+
+    if (branchFound) {
+      setIsBranchOfficeRepeated(() => true)
+      return
+    }
+
     const branchOfficeInfo = branchOfficeEntireData.find(
       element => element.id === Number(branchOffice)
     )
@@ -246,6 +262,15 @@ export const useRegisterDepositOrder = () => {
   }
 
   const onAddBranchOfficesAndAmounts = () => {
+    const branchFound = branchOfficesAndAmounts.find(
+      element => element.branchOffice.value === branchOffice
+    )
+
+    if (branchFound) {
+      setIsBranchOfficeRepeated(() => true)
+      return
+    }
+
     const branchOfficeInfo = branchOfficeEntireData.find(
       element => element.id === Number(branchOffice)
     )
@@ -274,6 +299,14 @@ export const useRegisterDepositOrder = () => {
     )
     setBranchOfficesAndAmounts(() => newBranchOfficesAndAmounts)
     calculateTotalAmount()
+
+    const branchFound = newBranchOfficesAndAmounts.find(
+      element => element.branchOffice.value === branchOffice
+    )
+
+    if (!branchFound) {
+      setIsBranchOfficeRepeated(() => false)
+    }
   }
 
   const onCreateDepositOrder = async () => {
@@ -355,6 +388,8 @@ export const useRegisterDepositOrder = () => {
     close,
     open,
     isLoading,
-    setIsLoading
+    setIsLoading,
+    isBranchOfficeRepeated,
+    setIsBranchOfficeRepeated
   }
 }

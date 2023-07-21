@@ -54,7 +54,6 @@ export const useMoneyCollection = () => {
       date: isNotEmpty('Seleccione una fecha'),
       amount: isNotEmpty('Ingrese un monto'),
       deliveredBy: isNotEmpty('Ingrese un nombre')
-      // receivedById: isNotEmpty('Seleccione un empleado')
     }
   })
 

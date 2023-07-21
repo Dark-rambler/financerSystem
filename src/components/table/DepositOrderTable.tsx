@@ -172,20 +172,20 @@ const Table = ({
           justifyContent: 'left'
         }
       },
+      // {
+      //   headerName: 'Orden',
+      //   resizable: true,
+        // cellRenderer: ViewDocument,
+      //   cellStyle: {
+      //     overflow: 'visible',
+      //     display: 'flex',
+      //     alignItems: 'center',
+      //     justifyContent: 'center'
+      //   },
+      //   width: 80
+      // },
       {
-        headerName: 'Orden',
-        resizable: true,
-        cellRenderer: ViewDocument,
-        cellStyle: {
-          overflow: 'visible',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        },
-        width: 80
-      },
-      {
-        headerName: 'Informe',
+        headerName: 'Detalle',
         resizable: true,
         cellRenderer: ViewDepositOrderReport,
         cellStyle: {

@@ -1,12 +1,15 @@
 import { useEffect } from 'react'
 import { Table, Button, Group, Text, ActionIcon } from '@mantine/core'
 import { Dropzone, PDF_MIME_TYPE } from '@mantine/dropzone'
+import { TbFileUpload, TbFileCheck, TbFileX } from 'react-icons/tb'
 import {
-  TbFileUpload,
-  TbFileCheck,
-  TbFileX,
-} from 'react-icons/tb'
-import { BsFillFileEarmarkPdfFill, BsCheckCircleFill, BsXCircleFill } from 'react-icons/bs'
+  BsFillFileEarmarkPdfFill,
+  BsCheckCircleFill,
+  BsXCircleFill
+} from 'react-icons/bs'
+import { useNavigate } from 'react-router-dom'
+
+import Status from '../../enums/Status'
 
 import { useDepositOrderStore } from '../../components/store/depositOrderStore'
 import { useExpense } from '../../hooks/useExpense'
@@ -36,6 +39,7 @@ import DollarTable from '../../components/table/techobol/DollarTable'
 const CreateDepositOrderReport = () => {
   const depositOrderReport = useDepositOrderReport()
   const { depositOrder, depositBranchOffice } = useDepositOrderStore()
+  const navigate = useNavigate()
 
   const moneyCollection = useMoneyCollection()
   const deposit = useDeposit()
@@ -58,16 +62,18 @@ const CreateDepositOrderReport = () => {
   }
 
   useEffect(() => {
+    if (depositOrder.status?.toUpperCase() !== Status.EMITTED) navigate('/techobol/deposit-order')
     setBranchOffices()
   }, [depositBranchOffice])
 
   useEffect(() => {
     const isReportValid =
       moneyCollection.totalAmount +
-        dollar.totalAmount +
+        dollar.totalAmountBs +
         expense.totalAmount -
         envelope.totalAmount ===
-        depositOrder.amount && deposit.totalAmount === moneyCollection.totalAmount
+        depositOrder.amount &&
+      deposit.totalAmount === moneyCollection.totalAmount
 
     depositOrderReport.setIsReportValid(isReportValid)
   }, [
@@ -217,7 +223,6 @@ const CreateDepositOrderReport = () => {
       <section className='space-y-2'>
         <div className='flex items-end justify-between'>
           <div className='flex items-center space-x-2'>
-            {/* <div className='w-4 h-4 bg-blue-500 rounded-sm'></div> */}
             <h1 className='font-bold'>Documento</h1>
           </div>
         </div>
@@ -257,7 +262,11 @@ const CreateDepositOrderReport = () => {
               ) : (
                 <TbFileUpload
                   size={50}
-                  color={'#374151'}
+                  color={
+                    depositOrderReport.isSubmited && !depositOrderReport.file
+                      ? '#dc2626'
+                      : '#374151'
+                  }
                   className={'stroke-1'}
                 />
               )}
@@ -277,12 +286,20 @@ const CreateDepositOrderReport = () => {
               </div>
             ) : (
               <div>
-                <Text size='xl' inline>
+                <Text
+                  size='xl'
+                  inline
+                  color={
+                    depositOrderReport.isSubmited && !depositOrderReport.file
+                      ? '#dc2626'
+                      : '#171717'
+                  }
+                >
                   Arrastre el documento aqui o haga click para seleccionar
                 </Text>
                 <Text size='sm' color='dimmed' inline mt={7}>
-                  Solo se permite subir un documento en formato PDF, el
-                  documento no debe exceder los 50 mb.
+                  Solo se permite un documento en formato PDF, el documento no
+                  debe exceder los 50 mb.
                 </Text>
               </div>
             )}
@@ -302,16 +319,17 @@ const CreateDepositOrderReport = () => {
               : 'bg-red-200 hover:bg-red-300'
           } w-9 p-0 h-9`}
         >
-            {depositOrderReport.isReportValid? (
-              <BsCheckCircleFill color={'#22c55e'} size={'19px'} />
-            ) : (
-              <BsXCircleFill color={'#ef4444'} size={'19px'} />
-            )}
+          {depositOrderReport.isReportValid ? (
+            <BsCheckCircleFill color={'#22c55e'} size={'19px'} />
+          ) : (
+            <BsXCircleFill color={'#ef4444'} size={'19px'} />
+          )}
         </ActionIcon>
         <Button
           className='bg-blue-600 hover:bg-blue-700'
           onClick={() => {
-            depositOrderReport.verifyDepositOrderReport()
+            depositOrderReport.setIsSubmited(true)
+            if (!depositOrderReport.file) return
             depositOrderReport.open()
           }}
         >
@@ -348,9 +366,13 @@ const CreateDepositOrderReport = () => {
         opened={depositOrderReport.opened}
         close={depositOrderReport.close}
         title={'Enviar reporte de orden de depósito'}
-        description='El informe parece correcto. ¿Desea enviarlo ahora?'
+        description={
+          depositOrderReport.isReportValid
+            ? 'El reporte parece correcto. ¿Desea enviarlo ahora?'
+            : 'El reporte no coincide. ¿Desea enviarlo de todos modos?'
+        }
         buttonText='Enviar'
-        primaryColor='blue'
+        primaryColor={depositOrderReport.isReportValid ? 'blue' : 'red'}
         onClick={() => {
           const depositData = deposit.getFormattedDeposits()
           const envelopeData = envelope.getFormattedEnvelopes()
@@ -375,7 +397,7 @@ const CreateDepositOrderReport = () => {
         close={depositOrderReport.handlerDisclosureView.close}
         depositOrderAmount={depositOrder.amount}
         moneyCollectionAmount={moneyCollection.totalAmount}
-        dollarAmount={dollar.totalAmount}
+        dollarAmount={dollar.totalAmountBs}
         envelopeAmount={envelope.totalAmount}
         expenseAnount={expense.totalAmount}
         depositAmount={deposit.totalAmount}

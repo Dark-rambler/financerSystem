@@ -90,16 +90,21 @@ const RegisterDepositOrderForm = ({
         />
       </SimpleGrid>
       <Divider />
-      <SimpleGrid cols={2}>
+      <SimpleGrid cols={2} className='flex items-start'>
         <Select
-          withAsterisk
           placeholder='Sucursal'
           label={'Sucursal'}
           data={depositOrder.branchOfficeData}
-          // {...depositOrder.form.getInputProps('branhOffice')}
           disabled={depositOrder.form.values.regional === ''}
           value={depositOrder.branchOffice}
-          onChange={depositOrder.setBranchOffice}
+          onChange={e => {
+            depositOrder.setBranchOffice(e)
+            depositOrder.setIsBranchOfficeRepeated(() => false)
+          }}
+          error={
+            depositOrder.isBranchOfficeRepeated &&
+            'Esta sucursal ya fue agregada'
+          }
         />
         <div className='flex items-end space-x-2'>
           <NumberInput
@@ -107,7 +112,6 @@ const RegisterDepositOrderForm = ({
             stepHoldInterval={100}
             precision={2}
             min={0}
-            withAsterisk
             label={'Monto'}
             placeholder='Monto'
             onChange={depositOrder.setAmount}
@@ -133,6 +137,7 @@ const RegisterDepositOrderForm = ({
               className='bg-blue-600 hover:bg-700 p-2 w-10 text-xl font-bold'
               onClick={() => {
                 depositOrder.setBranchOffice(null)
+                depositOrder.setIsBranchOfficeRepeated(false)
                 depositOrder.setAmount('')
                 depositOrder.setIsBranchOfficeAndAmountsEditing(false)
               }}
