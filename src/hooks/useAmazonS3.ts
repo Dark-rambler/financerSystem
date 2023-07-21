@@ -35,8 +35,24 @@ export const useAmazonS3 = () => {
     return response
   }
 
+  const uploadDepositOrderReportFileOfTechoBol = async (file: File, name: string) => {
+    const signedUrl = await getSignedUrl(
+      s3 as S3Client,
+      new PutObjectCommand({ Bucket: `${import.meta.env.VITE_S3_BUCKET_NAME}`, Key: `TECHOBOL/DEPOSIT_ORDER_REPORT/${name}.pdf` }),
+      { expiresIn: 3600 }
+    )
+
+    const response = await fetch(signedUrl, {
+      method: 'PUT',
+      body: file
+    })
+
+    return response
+  }
+
   return {
     s3,
-    uploadDepositOrderFileOfTechoBol
+    uploadDepositOrderFileOfTechoBol,
+    uploadDepositOrderReportFileOfTechoBol
   }
 }

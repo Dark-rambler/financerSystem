@@ -1,24 +1,22 @@
 import { ActionIcon } from '@mantine/core'
 import { HiDocumentChartBar } from 'react-icons/hi2'
+import { useNavigate } from 'react-router-dom'
 
 import { DepositOrderInterface } from '../../../models/DepositOrder'
-import Status from '../../../enums/Status'
 
 interface ViewDepositOrderReport {
   data: DepositOrderInterface
 }
 
 const ViewDepositOrderReport = ({ data }: DepositOrderInterface) => {
-  const isAvailable = data.status.toUpperCase() === Status.RECEIVED
+  const navigate = useNavigate()
+  const { id } = data
   return (
     <ActionIcon
       className='bg-gray-100 hover:bg-gray-200'
-      disabled={!isAvailable}
+      onClick={() => navigate(`/techobol/deposit-order-detail/${id}`)}
     >
-      <HiDocumentChartBar
-        size={20}
-        color={`${isAvailable ? '#2563eb' : '#d1d5db'}`}
-      />
+      <HiDocumentChartBar size={20} color={'#2563eb'} />
     </ActionIcon>
   )
 }

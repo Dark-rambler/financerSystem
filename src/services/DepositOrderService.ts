@@ -76,3 +76,24 @@ export const getOneDepositOrder = async (id: number, token: string) => {
     return null
   }
 }
+
+export const updateStatusAndRevitionStatus = async (id: number, token: string) => {
+  try {
+    const response = await fetch(
+      `${
+        import.meta.env.VITE_API_DOMAIN
+      }/deposit-order/update-status-report/${id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        }
+      }
+    )
+    if (!response.ok) return null
+    return response.json()
+  } catch {
+    return null
+  }
+}

@@ -23,6 +23,10 @@ import Deposits from './pages/Techobol/Deposits'
 import Expenses from './pages/Techobol/Expenses'
 import MoneyCollections from './pages/Techobol/MoneyCollections'
 
+import DepositOrderDetailLayout from './layouts/DepositOrderDetailLayout'
+import DepositOrderDetail from './pages/Techobol/DepositOrderDetail'
+import DepositOrderReportDetail from './pages/Techobol/DepositOrderReportDetail'
+
 function App () {
   const { isLoggedIn, role } = useLoginStore()
 
@@ -63,6 +67,10 @@ function App () {
             <Route path='/techobol/dollars' element={<Dollars />} />
             <Route path='/techobol/envelopes' element={<Envelopes />} />
             <Route path='/techobol/deposits' element={<Deposits />} />
+            <Route path='/techobol/deposit-order-detail/:id' element={<DepositOrderDetailLayout />} >
+              <Route path='/techobol/deposit-order-detail/:id/deposit-order' element={<DepositOrderDetail />} />
+              <Route path='/techobol/deposit-order-detail/:id/deposit-order-report' element={<DepositOrderReportDetail />} />
+            </Route>
             
             <Route
               path='/megadis/deposit-order'

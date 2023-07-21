@@ -128,7 +128,7 @@ const ViewIsReportCorrectModal = ({
                   <p>
                     {(
                       moneyCollectionAmount +
-                      dollarAmount +
+                      dollarAmount -
                       envelopeAmount +
                       expenseAnount
                     ).toFixed(2)}{' '}

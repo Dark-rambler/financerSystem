@@ -25,7 +25,7 @@ export const useEnvelope = () => {
   const [totalAmount, setTotalAmount] = useState<number>(0)
 
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
-  const [toBranchOffices, setToBranchOffices] = useState<FormSelectOption[]>([])
+  const [fromBranchOffices, setFromBranchOffices] = useState<FormSelectOption[]>([])
 
   const form = useForm<IEnvelope>({
     initialValues: {
@@ -59,7 +59,7 @@ export const useEnvelope = () => {
       })
     )
 
-    setToBranchOffices(branchOfficesFormatted)
+    setFromBranchOffices(branchOfficesFormatted)
   }
 
   const calculateAmount = () => {
@@ -93,7 +93,7 @@ export const useEnvelope = () => {
         regionalOfficeId: 0
       },
       toBranchOffice: {
-        name: toBranchOffices.find(
+        name: fromBranchOffices.find(
           branchOffice =>
             Number(branchOffice.value) === Number(form.values.toBranchOfficeId)
         )?.label as string,
@@ -183,7 +183,7 @@ export const useEnvelope = () => {
     setBranchOffices,
     branchOffices,
     totalAmount,
-    toBranchOffices,
+    fromBranchOffices,
     getFormattedEnvelopes
   }
 }

@@ -20,7 +20,7 @@ const RegisterDepositOrder = () => {
                 className='absolute left-[-50px] bg-gray-100 hover:bg-gray-200'
                 size={'md'}
                 onClick={() => {
-                  navigate('/deposit-order')
+                  navigate('/techobol/deposit-order')
                 }}
               >
                 <TbChevronLeft />
