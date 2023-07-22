@@ -7,9 +7,10 @@ import DeleteModal from '../../modals/DeleteModal'
 
 interface DepositTableProps {
   deposit: ReturnType<typeof useDeposit>
+  isReadonly: boolean
 }
 
-const DepositTable = ({ deposit }: DepositTableProps) => {
+const DepositTable = ({ deposit, isReadonly }: DepositTableProps) => {
   return (
     <div className='rounded-md border border-gray-200'>
       <Table striped highlightOnHover fontSize={'sm'} withColumnBorders>
@@ -20,8 +21,13 @@ const DepositTable = ({ deposit }: DepositTableProps) => {
             <th className='w-[200px]'>Fecha</th>
             <th className='w-[200px]'>Monto</th>
             <th className='w-[500px]'>Observaciones</th>
-            <th className='w-12'></th>
-            <th className='w-12'></th>
+            {!isReadonly && (
+              <>
+                {' '}
+                <th className='w-12'></th>
+                <th className='w-12'></th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -35,21 +41,26 @@ const DepositTable = ({ deposit }: DepositTableProps) => {
                 {Number(element.amount).toFixed(2)} Bs.
               </td>
               <td>{element.description}</td>
-              <td>
-                <EditButton
-                  onClick={() => {
-                    deposit.onClickEdit(index)
-                  }}
-                />
-              </td>
-              <td>
-                <DeleteButton
-                  onClick={() => {
-                    deposit.setActualId(index)
-                    deposit.modalDeleteHandler.open()
-                  }}
-                />
-              </td>
+              {!isReadonly && (
+                <>
+                  {' '}
+                  <td>
+                    <EditButton
+                      onClick={() => {
+                        deposit.onClickEdit(index)
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <DeleteButton
+                      onClick={() => {
+                        deposit.setActualId(index)
+                        deposit.modalDeleteHandler.open()
+                      }}
+                    />
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>

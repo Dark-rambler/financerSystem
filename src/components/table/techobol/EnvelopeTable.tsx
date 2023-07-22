@@ -8,9 +8,10 @@ import { useEnvelope } from '../../../hooks/useEnvelope'
 
 interface EnvelopeTableProps {
   envelope: ReturnType<typeof useEnvelope>
+  isReadonly: boolean
 }
 
-const EnvelopeTable = ({ envelope }: EnvelopeTableProps) => {
+const EnvelopeTable = ({ envelope, isReadonly }: EnvelopeTableProps) => {
   return (
     <div className='border border-gray-200 rounded-md'>
       <Table striped highlightOnHover fontSize={'sm'} withColumnBorders>
@@ -21,8 +22,13 @@ const EnvelopeTable = ({ envelope }: EnvelopeTableProps) => {
             <th className='w-[200px]'>Fecha</th>
             <th className='w-[200px]'>Monto</th>
             <th className='w-[500px]'>Descripción</th>
-            <th className='w-12'></th>
-            <th className='w-12'></th>
+            {!isReadonly && (
+              <>
+                {' '}
+                <th className='w-12'></th>
+                <th className='w-12'></th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -35,22 +41,26 @@ const EnvelopeTable = ({ envelope }: EnvelopeTableProps) => {
                 {Number(element.amount).toFixed(2)} Bs.
               </td>
               <td>{element.description}</td>
-
-              <td>
-                <EditButton
-                  onClick={() => {
-                    envelope.onClickEdit(index)
-                  }}
-                />
-              </td>
-              <td className='max-w-10'>
-                <DeleteButton
-                  onClick={() => {
-                    envelope.setActualId(index)
-                    envelope.modalDeleteHandler.open()
-                  }}
-                />
-              </td>
+              {!isReadonly && (
+                <>
+                  {' '}
+                  <td>
+                    <EditButton
+                      onClick={() => {
+                        envelope.onClickEdit(index)
+                      }}
+                    />
+                  </td>
+                  <td className='max-w-10'>
+                    <DeleteButton
+                      onClick={() => {
+                        envelope.setActualId(index)
+                        envelope.modalDeleteHandler.open()
+                      }}
+                    />
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>
