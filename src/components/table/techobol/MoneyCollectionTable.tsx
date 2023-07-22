@@ -7,8 +7,12 @@ import DeleteModal from '../../modals/DeleteModal'
 
 interface ExpenseTableProps {
   moneyCollection: ReturnType<typeof useMoneyCollection>
+  isReadonly: boolean
 }
-const MoneyCollectionTable = ({ moneyCollection }: ExpenseTableProps) => {
+const MoneyCollectionTable = ({
+  moneyCollection,
+  isReadonly
+}: ExpenseTableProps) => {
   return (
     <div className='border border-gray-200 rounded-md'>
       <Table striped highlightOnHover fontSize={'sm'} withColumnBorders>
@@ -19,8 +23,12 @@ const MoneyCollectionTable = ({ moneyCollection }: ExpenseTableProps) => {
             <th className='w-[330px]'>Monto</th>
             <th className='w-[330px]'>Entregado por</th>
             <th className='w-[330px]'>Recibido por</th>
-            <th className='w-12'></th>
-            <th className='w-12'></th>
+            {!isReadonly && (
+              <>
+                {' '}
+                <th className='w-12'></th> <th className='w-12'></th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -35,21 +43,26 @@ const MoneyCollectionTable = ({ moneyCollection }: ExpenseTableProps) => {
               <td>
                 {collection.receivedBy?.name} {collection.receivedBy?.lastName}
               </td>
-              <td>
-                <EditButton
-                  onClick={() => {
-                    moneyCollection.onClickEdit(index)
-                  }}
-                />
-              </td>
-              <td className='max-w-10'>
-                <DeleteButton
-                  onClick={() => {
-                    moneyCollection.setActualId(index)
-                    moneyCollection.moneyCollectionOpenedDeleteHandler.open()
-                  }}
-                />
-              </td>
+              {!isReadonly && (
+                <>
+                  {' '}
+                  <td>
+                    <EditButton
+                      onClick={() => {
+                        moneyCollection.onClickEdit(index)
+                      }}
+                    />
+                  </td>
+                  <td className='max-w-10'>
+                    <DeleteButton
+                      onClick={() => {
+                        moneyCollection.setActualId(index)
+                        moneyCollection.moneyCollectionOpenedDeleteHandler.open()
+                      }}
+                    />
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>

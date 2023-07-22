@@ -172,20 +172,8 @@ const Table = ({
           justifyContent: 'left'
         }
       },
-      // {
-      //   headerName: 'Orden',
-      //   resizable: true,
-        // cellRenderer: ViewDocument,
-      //   cellStyle: {
-      //     overflow: 'visible',
-      //     display: 'flex',
-      //     alignItems: 'center',
-      //     justifyContent: 'center'
-      //   },
-      //   width: 80
-      // },
       {
-        headerName: 'Detalle',
+        headerName: 'Detalles',
         resizable: true,
         cellRenderer: ViewDepositOrderReport,
         cellStyle: {
@@ -194,7 +182,7 @@ const Table = ({
           alignItems: 'center',
           justifyContent: 'center'
         },
-        width: 80
+        width: 100
       },
       ...(role === Roles.FINANCIAL_MANAGER
         ? [

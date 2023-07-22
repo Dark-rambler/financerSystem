@@ -7,9 +7,10 @@ import DeleteModal from '../../modals/DeleteModal'
 
 interface ExpenseTableProps {
   expense: ReturnType<typeof useExpense>
+  isReadonly: boolean
 }
 
-const ExpenseTable = ({ expense }: ExpenseTableProps) => {
+const ExpenseTable = ({ expense, isReadonly }: ExpenseTableProps) => {
   return (
     <div className='rounded-md border border-gray-200'>
       <Table striped highlightOnHover fontSize={'sm'} withColumnBorders>
@@ -24,8 +25,13 @@ const ExpenseTable = ({ expense }: ExpenseTableProps) => {
             <th className='w-[180px]'>Cuenta financiera</th>
             <th className='w-[180px]'>Subcuenta financiera</th>
             <th className='w-[400px]'>Descripción</th>
-            <th className='w-12'></th>
-            <th className='w-12'></th>
+            {!isReadonly && (
+              <>
+                {' '}
+                <th className='w-12'></th>
+                <th className='w-12'></th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -43,21 +49,26 @@ const ExpenseTable = ({ expense }: ExpenseTableProps) => {
               <td>{element.account?.name}</td>
               <td>{element.subAccount?.name}</td>
               <td>{element.description}</td>
-              <td>
-                <EditButton
-                  onClick={() => {
-                    expense.onClickEdit(index)
-                  }}
-                />
-              </td>
-              <td className='max-w-10'>
-                <DeleteButton
-                  onClick={() => {
-                    expense.setActualId(index)
-                    expense.expenseOpenedDeleteHandler.open()
-                  }}
-                />
-              </td>
+              {!isReadonly && (
+                <>
+                  {' '}
+                  <td>
+                    <EditButton
+                      onClick={() => {
+                        expense.onClickEdit(index)
+                      }}
+                    />
+                  </td>
+                  <td className='max-w-10'>
+                    <DeleteButton
+                      onClick={() => {
+                        expense.setActualId(index)
+                        expense.expenseOpenedDeleteHandler.open()
+                      }}
+                    />
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>

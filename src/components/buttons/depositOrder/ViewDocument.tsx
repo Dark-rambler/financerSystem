@@ -1,20 +1,16 @@
-import { Tooltip, ActionIcon } from "@mantine/core"
 import { BsFillFileEarmarkPdfFill } from 'react-icons/bs'
 
-const ViewDocument = ({url}: {url: string}) => {
+const ViewDocument = ({ url, label }: { url: string; label: string }) => {
   return (
-    <Tooltip label={'Ver documento'}>
-    <ActionIcon
-      className='bg-gray-100 hover:bg-gray-200'
+    <div
+      className='bg-gray-100 hover:bg-gray-200 p-2 flex space-x-3 rounded-md hover:cursor-pointer'
       onClick={() => {
-        window.open(
-            url
-        )
+        window.open(url)
       }}
     >
       <BsFillFileEarmarkPdfFill size={20} color={'#dc2626'} />
-    </ActionIcon>
-  </Tooltip>
+      <p className='text-sm'>{label}</p>
+    </div>
   )
 }
 

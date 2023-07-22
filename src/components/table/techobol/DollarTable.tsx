@@ -7,9 +7,10 @@ import { useDollar } from '../../../hooks/useDollar'
 
 interface DollarsTableProps {
   dollar: ReturnType<typeof useDollar>
+  isReadonly: boolean
 }
 
-const DollarTable = ({ dollar }: DollarsTableProps) => {
+const DollarTable = ({ dollar, isReadonly }: DollarsTableProps) => {
   return (
     <div className='border border-gray-200 rounded-md'>
       <Table striped highlightOnHover fontSize={'sm'} withColumnBorders>
@@ -20,8 +21,14 @@ const DollarTable = ({ dollar }: DollarsTableProps) => {
             <th className='w-[200px]'>Monto USD.</th>
             <th className='w-[200px]'>Monto Bs.</th>
             <th className='w-[500px]'>Descripción</th>
-            <th className='w-12'></th>
-            <th className='w-12'></th>
+
+            {!isReadonly && (
+              <>
+                {' '}
+                <th className='w-12'></th>
+                <th className='w-12'></th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -32,21 +39,26 @@ const DollarTable = ({ dollar }: DollarsTableProps) => {
               <td>{Number(element.amount).toFixed(2)} USD.</td>
               <td>{Number(element.amountBs).toFixed(2)} Bs.</td>
               <td>{element.description}</td>
-              <td>
-                <EditButton
-                  onClick={() => {
-                    dollar.onClickEdit(index)
-                  }}
-                />
-              </td>
-              <td className='max-w-10'>
-                <DeleteButton
-                  onClick={() => {
-                    dollar.setActualId(index)
-                    dollar.modalDeleteHandler.open()
-                  }}
-                />
-              </td>
+              {!isReadonly && (
+                <>
+                  {' '}
+                  <td>
+                    <EditButton
+                      onClick={() => {
+                        dollar.onClickEdit(index)
+                      }}
+                    />
+                  </td>
+                  <td className='max-w-10'>
+                    <DeleteButton
+                      onClick={() => {
+                        dollar.setActualId(index)
+                        dollar.modalDeleteHandler.open()
+                      }}
+                    />
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>

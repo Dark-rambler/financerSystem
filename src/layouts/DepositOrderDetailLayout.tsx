@@ -1,15 +1,46 @@
+import { useEffect } from 'react'
 import { useParams, useNavigate, Outlet } from 'react-router-dom'
 import { Tabs, ActionIcon } from '@mantine/core'
-
 import { TbChevronLeft } from 'react-icons/tb'
-import { useEffect } from 'react'
+
+import { errorToast } from '../services/toasts'
+
+import { getOneDepositOrder } from '../services/DepositOrderService'
+import { getAllDepositOrderBranchOfficeGivenAnId } from '../services/DepositOrderBranchOffice'
+
+import { useDepositOrderStore } from '../components/store/depositOrderStore'
+import { useLoginStore } from '../components/store/loginStore'
 
 const DepositOrderDetailLayout = () => {
+  const { setDepositOrder, setDepositBranchOffice } =
+  useDepositOrderStore()
   const { id } = useParams()
   const navigate = useNavigate()
+  const { token } = useLoginStore()
+
+  const getBranchOfficesAndAmounts = async () => {
+    const response = await getAllDepositOrderBranchOfficeGivenAnId(
+      Number(id),
+      token
+    )
+    setDepositBranchOffice(response)
+  }
+
+  const getDepositOrder = async () => {
+    const response = await getOneDepositOrder(Number(id), token)
+
+    if (!response) {
+      errorToast('Error al cargar los datos')
+      return
+    }
+    setDepositOrder(response)
+  }
+
 
   useEffect(() => {
-    navigate('/techobol/deposit-order-detail/:id/deposit-order')
+    getDepositOrder()
+    getBranchOfficesAndAmounts()
+    navigate(`/techobol/deposit-order-detail/${id}/deposit-order`)
   }, [])
 
   return (
@@ -31,7 +62,7 @@ const DepositOrderDetailLayout = () => {
               <Tabs.Tab
                 value='depositOrder'
                 onClick={() =>
-                  navigate('/techobol/deposit-order-detail/:id/deposit-order')
+                  navigate(`/techobol/deposit-order-detail/${id}/deposit-order`)
                 }
               >
                 Orden de deposito
@@ -40,7 +71,7 @@ const DepositOrderDetailLayout = () => {
                 value='depositOrderReport'
                 onClick={() =>
                   navigate(
-                    '/techobol/deposit-order-detail/:id/deposit-order-report'
+                    `/techobol/deposit-order-detail/${id}/deposit-order-report`
                   )
                 }
               >
