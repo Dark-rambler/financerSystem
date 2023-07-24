@@ -1,9 +1,6 @@
 import { useEffect } from 'react'
 import { Button, ActionIcon } from '@mantine/core'
-import {
-  BsCheckCircleFill,
-  BsXCircleFill
-} from 'react-icons/bs'
+import { BsCheckCircleFill, BsXCircleFill } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 
 import Status from '../../enums/Status'
@@ -25,6 +22,7 @@ import ConfirmModal from '../../components/modals/ConfirmModal'
 import ViewIsReportCorrectModal from '../../components/modals/ViewIsReportCorrect'
 
 import DropzonePDFFile from '../../components/dropzone/DropzonePDFFile'
+import ReturnButton from '../../components/buttons/depositOrder/ReturnButton'
 
 import ExpenseTable from '../../components/table/techobol/ExpenseTable'
 import MoneyCollectionTable from '../../components/table/techobol/MoneyCollectionTable'
@@ -40,8 +38,8 @@ const CreateDepositOrderReport = () => {
 
   const moneyCollection = useMoneyCollection()
   const deposit = useDeposit()
-  const expense = useExpense()
-  const envelope = useEnvelope()
+  const expense = useExpense(false)
+  const envelope = useEnvelope(false)
   const dollar = useDollar()
 
   const setBranchOffices = () => {
@@ -59,7 +57,8 @@ const CreateDepositOrderReport = () => {
   }
 
   useEffect(() => {
-    if (depositOrder.status?.toUpperCase() !== Status.EMITTED) navigate('/techobol/deposit-order')
+    if (depositOrder.status?.toUpperCase() !== Status.EMITTED)
+      navigate('/techobol/deposit-order')
     setBranchOffices()
   }, [depositBranchOffice])
 
@@ -85,10 +84,15 @@ const CreateDepositOrderReport = () => {
   return (
     <div className='px-16 py-12 space-y-16'>
       <section className='space-y-7'>
-        <h1 className='text-center text-md font-bold'>
-          INFORME ORDEN DE DEPOSITO
-        </h1>
-       <SingleDepositOrderTable />
+        <div className='flex justify-between'>
+          <ReturnButton onClick={() => navigate('/techobol/deposit-order')} />
+          <h1 className='text-center text-md font-bold'>
+            INFORME ORDEN DE DEPOSITO
+          </h1>
+          <div></div>
+        </div>
+
+        <SingleDepositOrderTable />
       </section>
 
       <section className='space-y-2'>
@@ -104,7 +108,10 @@ const CreateDepositOrderReport = () => {
             +
           </Button>
         </div>
-        <MoneyCollectionTable moneyCollection={moneyCollection} isReadonly={false} />
+        <MoneyCollectionTable
+          moneyCollection={moneyCollection}
+          isReadonly={false}
+        />
       </section>
 
       <section className='space-y-2'>
@@ -120,7 +127,7 @@ const CreateDepositOrderReport = () => {
             +
           </Button>
         </div>
-        <ExpenseTable expense={expense} isReadonly={false}/>
+        <ExpenseTable expense={expense} isReadonly={false} />
       </section>
 
       <section className='space-y-2'>
@@ -137,7 +144,7 @@ const CreateDepositOrderReport = () => {
             +
           </Button>
         </div>
-        <DollarTable dollar={dollar} isReadonly={false}/>
+        <DollarTable dollar={dollar} isReadonly={false} />
       </section>
 
       <section className='space-y-2'>
@@ -154,7 +161,7 @@ const CreateDepositOrderReport = () => {
             +
           </Button>
         </div>
-        <EnvelopeTable envelope={envelope} isReadonly={false}/>
+        <EnvelopeTable envelope={envelope} isReadonly={false} />
       </section>
 
       <section className='space-y-2'>
@@ -171,7 +178,7 @@ const CreateDepositOrderReport = () => {
             +
           </Button>
         </div>
-        <DepositTable deposit={deposit} isReadonly={false}/>
+        <DepositTable deposit={deposit} isReadonly={false} />
       </section>
 
       <section className='space-y-2'>
@@ -180,7 +187,7 @@ const CreateDepositOrderReport = () => {
             <h1 className='font-bold'>Documento</h1>
           </div>
         </div>
-       <DropzonePDFFile depositOrderReport={depositOrderReport}/>
+        <DropzonePDFFile depositOrderReport={depositOrderReport} />
         {depositOrderReport.isSubmited && !depositOrderReport.file ? (
           <p className='text-red-600'>Este campo es obligatorio</p>
         ) : null}

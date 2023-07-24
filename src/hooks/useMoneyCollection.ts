@@ -5,6 +5,8 @@ import { isNotEmpty, useForm } from '@mantine/form'
 import { IMoneyCollection } from '../models/MoneyCollection'
 
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
+import { getAllMoneyCollectionsFromDepositOrder } from '../services/MoneyCollection'
+import { useLoginStore } from '../components/store/loginStore'
 
 interface FormSelectOption {
   value: string
@@ -13,7 +15,7 @@ interface FormSelectOption {
 
 export const useMoneyCollection = () => {
   const { depositOrder } = useDepositOrderStore()
-
+  const { token } = useLoginStore()
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
   const [selectedBranchOffices, setSelectedBranchOffices] = useState<
     FormSelectOption[]
@@ -165,6 +167,14 @@ export const useMoneyCollection = () => {
     return formatedData
   }
 
+  const getMoneyCollectionsFromDepositOrder = async (id: number) => {
+    const moneyCollections = await getAllMoneyCollectionsFromDepositOrder(id, token)
+    if(!moneyCollections) return
+
+    setMoneyCollections(moneyCollections)
+    calculateAmount()
+  }
+
   return {
     moneyCollectionOpened,
     moneyCollectionOpenedHandler,
@@ -185,6 +195,7 @@ export const useMoneyCollection = () => {
     totalAmount,
     setBranchOffices,
     setMoneyCollections,
-    getFormattedMoneyCollections
+    getFormattedMoneyCollections,
+    getMoneyCollectionsFromDepositOrder
   }
 }

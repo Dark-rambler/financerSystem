@@ -77,7 +77,7 @@ export const getOneDepositOrder = async (id: number, token: string) => {
   }
 }
 
-export const updateStatusAndRevitionStatus = async (id: number, token: string) => {
+export const updateStatusAndRevitionStatusAndReportURL = async (id: number, token: string) => {
   try {
     const response = await fetch(
       `${
@@ -88,7 +88,8 @@ export const updateStatusAndRevitionStatus = async (id: number, token: string) =
         headers: {
           'Content-Type': 'application/json',
           'x-access-token': token
-        }
+        },
+        body: JSON.stringify({ reportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}`})
       }
     )
     if (!response.ok) return null

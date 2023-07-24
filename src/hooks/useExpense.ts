@@ -5,22 +5,21 @@ import { isNotEmpty, useForm } from '@mantine/form'
 import { IExpense } from '../models/Expense'
 import { IAccount } from '../models/Account'
 import { ISubAccount } from '../models/SubAccount'
-import { IBranchModel } from '../models/BranchOffice'
 
 import { getAllSubAccounts as getAllSubAccountsServide } from '../services/SubAccount'
 import { getAllAccounts as getAllAccountsService } from '../services/Account'
-import { getAllBranchOffices as getAllBranchOfficesService } from '../services/BranchOffices'
 import { errorToast } from '../services/toasts'
 
 import { useLoginStore } from '../components/store/loginStore'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
+import { getAllExpensesFromDepositOrder } from '../services/Expense'
 
 interface FormSelectOption {
   value: string
   label: string
 }
 
-export const useExpense = () => {
+export const useExpense = (isReadOnly:boolean) => {
   const { token } = useLoginStore()
   const { depositOrder } = useDepositOrderStore()
 
@@ -76,9 +75,10 @@ export const useExpense = () => {
   })
 
   useEffect(() => {
-    getAllAccounts()
-    getAllSubAccounts()
-    // getAllBranchOffices()
+    if (!isReadOnly) {
+      getAllAccounts()
+      getAllSubAccounts()
+    }
   }, [])
 
   const calculateAmount = () => {
@@ -97,25 +97,6 @@ export const useExpense = () => {
     setIsEditing(false)
     form.reset()
   }
-
-  // const getAllBranchOffices = async () => {
-  //   const response = await getAllBranchOfficesService(token)
-  //   if (!response) {
-  //     return null
-  //   }
-
-  //   const branchOfficesFiltered = response
-  //     .filter((branchOffice: IBranchModel) => {
-  //       if (branchOffice.regionalOffice?.id == depositOrder.regional?.id) {
-  //         return true
-  //       }
-  //     })
-  //     .map((branchOffice: IBranchModel) => {
-  //       return { value: branchOffice.id, label: branchOffice.name }
-  //     })
-
-  //   setBranchOffices(branchOfficesFiltered)
-  // }
 
   const getAllAccounts = async () => {
     const response = await getAllAccountsService(token)
@@ -180,7 +161,6 @@ export const useExpense = () => {
   const onSubmit = () => {
     const newExpense = getNewExpense()
     expenses.push(newExpense)
-    // setExpenses([...expenses, newExpense])
     expenseOpenedHandler.close()
     form.reset()
     calculateAmount()
@@ -250,6 +230,14 @@ export const useExpense = () => {
     return formatedData
   }
 
+  const getExpensesFromDepositOrder = async (id: number) => {
+    const response = await getAllExpensesFromDepositOrder(id, token)
+    if (!response) return
+    
+    setExpenses(response)
+    calculateAmount()
+  }
+
   return {
     expenseOpened,
     expenseOpenedHandler,
@@ -273,6 +261,7 @@ export const useExpense = () => {
     expenseTypes,
     totalAmount,
     setBranchOffices,
-    getFormattedExpenses
+    getFormattedExpenses,
+    getExpensesFromDepositOrder
   }
 }

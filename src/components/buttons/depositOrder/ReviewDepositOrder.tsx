@@ -1,7 +1,7 @@
 import { Tooltip, ActionIcon } from '@mantine/core'
 import { TbZoomQuestion } from 'react-icons/tb'
 import { DepositOrderInterface } from '../../../models/DepositOrder'
-import ReviewModal from '../../modals/ReviewModal'
+import ReviewDepositOrderModal from '../../modals/ReviewDepositOrderModal'
 
 import { useDisclosure } from '@mantine/hooks'
 import Status from '../../../enums/Status'
@@ -23,7 +23,7 @@ const ReviewDepositOrder = ({ data }: DepositOrderInterface) => {
           />
         </ActionIcon>
       </Tooltip>
-      <ReviewModal opened={opened} close={close} />
+      <ReviewDepositOrderModal opened={opened} close={close} />
     </>
   )
 }

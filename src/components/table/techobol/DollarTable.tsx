@@ -74,9 +74,6 @@ const DollarTable = ({ dollar, isReadonly }: DollarsTableProps) => {
               {' '}
               Σ {dollar.totalAmountBs.toFixed(2)} Bs.
             </th>
-            <th></th>
-            <th></th>
-            <th></th>
           </tr>
         </tfoot>
       </Table>

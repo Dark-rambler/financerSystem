@@ -8,13 +8,14 @@ import { IBranchModel } from '../models/BranchOffice'
 import { getAllBranchOffices as getAllBranchOfficesService } from '../services/BranchOffices'
 import { useLoginStore } from '../components/store/loginStore'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
+import { getAllEnvelopesFromDepositOrder } from '../services/Envelope'
 
 interface FormSelectOption {
   value: string
   label: string
 }
 
-export const useEnvelope = () => {
+export const useEnvelope = (isReadOnly: boolean) => {
   const { token } = useLoginStore()
   const { depositOrder } = useDepositOrderStore()
   const [envelopes, setEnvelopes] = useState<IEnvelope[]>([])
@@ -25,7 +26,9 @@ export const useEnvelope = () => {
   const [totalAmount, setTotalAmount] = useState<number>(0)
 
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
-  const [fromBranchOffices, setFromBranchOffices] = useState<FormSelectOption[]>([])
+  const [fromBranchOffices, setFromBranchOffices] = useState<
+    FormSelectOption[]
+  >([])
 
   const form = useForm<IEnvelope>({
     initialValues: {
@@ -45,7 +48,7 @@ export const useEnvelope = () => {
   })
 
   useEffect(() => {
-    getAllBranchOffices()
+    if (!isReadOnly) getAllBranchOffices()
   }, [])
 
   const getAllBranchOffices = async () => {
@@ -58,7 +61,6 @@ export const useEnvelope = () => {
         label: branchOffice.name
       })
     )
-
     setFromBranchOffices(branchOfficesFormatted)
   }
 
@@ -164,6 +166,14 @@ export const useEnvelope = () => {
     return formattedEnvelopes
   }
 
+  const getEnvelopesFromDepositOrder = async (id: number) => {
+    const envelopes = await getAllEnvelopesFromDepositOrder(id, token)
+    if (!envelopes) return null
+    
+    setEnvelopes(envelopes)
+    calculateAmount()
+  }
+
   return {
     opened,
     modalHandler,
@@ -184,6 +194,7 @@ export const useEnvelope = () => {
     branchOffices,
     totalAmount,
     fromBranchOffices,
-    getFormattedEnvelopes
+    getFormattedEnvelopes,
+    getEnvelopesFromDepositOrder
   }
 }

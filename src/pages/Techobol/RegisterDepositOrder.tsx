@@ -1,11 +1,12 @@
 import { Stack, ActionIcon, AspectRatio } from '@mantine/core'
-import { TbChevronLeft } from 'react-icons/tb'
+
 import { useNavigate } from 'react-router-dom'
 
 import RegisterDepositOrderForm from '../../components/forms/RegisterDepositOrderForm'
 import DocumentVisualizer from '../../components/pdf/DocumentVisualizer'
 import { useRegisterDepositOrder } from '../../hooks/useRegisterDepositOrder'
 import ConfirmModal from '../../components/modals/ConfirmModal'
+import ReturnButton from '../../components/buttons/depositOrder/ReturnButton'
 
 const RegisterDepositOrder = () => {
   const navigate = useNavigate()
@@ -16,15 +17,12 @@ const RegisterDepositOrder = () => {
         <div className=' grid grid-cols-2 h-full w-[1365px] p-5 space-x-5'>
           <Stack className='py-9 space-y-4 h-full max-w-[550px] min-w-[370px]'>
             <div className='relative flex'>
-              <ActionIcon
-                className='absolute left-[-50px] bg-gray-100 hover:bg-gray-200'
-                size={'md'}
-                onClick={() => {
-                  navigate('/techobol/deposit-order')
-                }}
-              >
-                <TbChevronLeft />
-              </ActionIcon>
+              <div className='absolute left-[-50px]'>
+              <ReturnButton
+                onClick={() => navigate('/techobol/deposit-order')}
+              />
+              </div>
+    
               <h1 className=' text-gray-900 font-bold text-xl m-0'>
                 Emitir nueva orden de depósito
               </h1>
