@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate, Outlet } from 'react-router-dom'
-import { Tabs, ActionIcon } from '@mantine/core'
-import { TbChevronLeft } from 'react-icons/tb'
+import { Tabs } from '@mantine/core'
 
+import ReturnButton from '../components/buttons/depositOrder/ReturnButton'
 import { errorToast } from '../services/toasts'
 
 import { getOneDepositOrder } from '../services/DepositOrderService'
@@ -11,9 +11,11 @@ import { getAllDepositOrderBranchOfficeGivenAnId } from '../services/DepositOrde
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
 import { useLoginStore } from '../components/store/loginStore'
 
+import Status from '../enums/Status'
+
 const DepositOrderDetailLayout = () => {
-  const { setDepositOrder, setDepositBranchOffice } =
-  useDepositOrderStore()
+  const { depositOrder, setDepositOrder, setDepositBranchOffice } =
+    useDepositOrderStore()
   const { id } = useParams()
   const navigate = useNavigate()
   const { token } = useLoginStore()
@@ -36,7 +38,6 @@ const DepositOrderDetailLayout = () => {
     setDepositOrder(response)
   }
 
-
   useEffect(() => {
     getDepositOrder()
     getBranchOfficesAndAmounts()
@@ -45,18 +46,9 @@ const DepositOrderDetailLayout = () => {
 
   return (
     <>
-      <div className='p-10'>
+      <div className='px-16 py-12'>
         <div className='max-w-[440px] flex items-center space-x-5'>
-          <ActionIcon
-            className=' bg-gray-100 hover:bg-gray-200'
-            size={'md'}
-            onClick={e => {
-              e.preventDefault()
-              navigate('/techobol/deposit-order')
-            }}
-          >
-            <TbChevronLeft />
-          </ActionIcon>
+          <ReturnButton onClick={() => navigate('/techobol/deposit-order')} />
           <Tabs defaultValue='depositOrder'>
             <Tabs.List>
               <Tabs.Tab
@@ -74,6 +66,7 @@ const DepositOrderDetailLayout = () => {
                     `/techobol/deposit-order-detail/${id}/deposit-order-report`
                   )
                 }
+                disabled={depositOrder.status?.toUpperCase() === Status.EMITTED}
               >
                 Reporte de orden de deposito
               </Tabs.Tab>

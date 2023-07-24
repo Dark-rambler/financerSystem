@@ -72,9 +72,6 @@ const DepositTable = ({ deposit, isReadonly }: DepositTableProps) => {
             <th className='font-semibold text-xs text-left py-2 px-3'>
               Σ {deposit.totalAmount.toFixed(2)} Bs.
             </th>
-            <th></th>
-            <th></th>
-            <th></th>
           </tr>
         </tfoot>
       </Table>

@@ -1,3 +1,6 @@
+import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+
 import { Divider } from '@mantine/core'
 
 import ViewDocument from '../../components/buttons/depositOrder/ViewDocument'
@@ -14,13 +17,27 @@ import DollarTable from '../../components/table/techobol/DollarTable'
 import EnvelopeTable from '../../components/table/techobol/EnvelopeTable'
 import DepositTable from '../../components/table/techobol/DepositTable'
 
+import Status from '../../enums/Status'
+
 const DepositOrderReportDetail = () => {
   const { depositOrder } = useDepositOrderStore()
+  const { id } = useParams()
+  const isReadOnly = true
   const moneyCollection = useMoneyCollection()
-  const expense = useExpense()
+  const expense = useExpense(isReadOnly)
   const dollar = useDollar()
-  const envelope = useEnvelope()
+  const envelope = useEnvelope(isReadOnly)
   const deposit = useDeposit()
+
+  useEffect(() => {
+    if (depositOrder.status !== Status.EMITTED) {
+      moneyCollection.getMoneyCollectionsFromDepositOrder(Number(id))
+      expense.getExpensesFromDepositOrder(Number(id))
+      dollar.getDollarsFromDepositOrder(Number(id))
+      envelope.getEnvelopesFromDepositOrder(Number(id))
+      deposit.getDepositsFromDepositOrder(Number(id))
+    }
+  }, [])
 
   return (
     <div className='p-14 space-y-9'>
@@ -29,7 +46,7 @@ const DepositOrderReportDetail = () => {
         <div className='flex items-end space-x-3 px-3'>
           <ViewDocument
             label='Respaldo de salidas'
-            url={depositOrder.documentUrl as string}
+            url={depositOrder.reportUrl as string}
           />
         </div>
         <div className='flex items-end space-x-3 px-3'>

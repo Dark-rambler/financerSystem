@@ -4,6 +4,8 @@ import { isNotEmpty, useForm } from '@mantine/form'
 
 import { IDeposit } from '../models/Deposit'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
+import { useLoginStore } from '../components/store/loginStore'
+import { getAllDepositsFromDepositOrder } from '../services/Deposit'
 
 interface SelectFormat {
   value: string
@@ -11,6 +13,7 @@ interface SelectFormat {
 }
 
 export const useDeposit = () => {
+  const { token } = useLoginStore()
   const { depositOrder } = useDepositOrderStore()
   const [deposits, setDeposits] = useState<IDeposit[]>([])
   const [opened, modalHandler] = useDisclosure()
@@ -134,6 +137,14 @@ export const useDeposit = () => {
     return formattedDeposits
   }
 
+  const getDepositsFromDepositOrder = async (id: number) => {
+    const deposits = await getAllDepositsFromDepositOrder(id, token)
+    if (!deposits) return null
+
+    setDeposits(() => deposits)
+    calculateAmount()
+  } 
+
   return {
     opened,
     modalHandler,
@@ -153,6 +164,7 @@ export const useDeposit = () => {
     banks,
     setBanks,
     totalAmount,
-    getFormattedDeposits
+    getFormattedDeposits,
+    getDepositsFromDepositOrder
   }
 }

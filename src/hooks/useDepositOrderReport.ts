@@ -5,7 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { IDepositOrderReport } from '../models/DepositOrderReport'
 
 import { getAllDepositOrderBranchOfficeGivenAnId } from '../services/DepositOrderBranchOffice'
-import { getOneDepositOrder, updateStatusAndRevitionStatus } from '../services/DepositOrderService'
+import { getOneDepositOrder, updateStatusAndRevitionStatusAndReportURL } from '../services/DepositOrderService'
 import { useLoginStore } from '../components/store/loginStore'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
 import { errorToast, succesToast } from '../services/toasts'
@@ -14,8 +14,8 @@ import { createDepositOrderReport } from '../services/DepositOrderReport'
 import { useAmazonS3 } from './useAmazonS3'
 
 export const useDepositOrderReport = () => {
-  const { token } = useLoginStore()
   const s3 = useAmazonS3()
+  const { token } = useLoginStore()
   const [opened, { open, close }] = useDisclosure()
   const [openedView, handlerDisclosureView] = useDisclosure()
   const { depositOrder, setDepositBranchOffice, setDepositOrder } = useDepositOrderStore()
@@ -74,7 +74,7 @@ export const useDepositOrderReport = () => {
       return
     }
 
-    const depositOrderStatusResponse = await updateStatusAndRevitionStatus(depositOrder.id as number, token)
+    const depositOrderStatusResponse = await updateStatusAndRevitionStatusAndReportURL(depositOrder.id as number, token)
     
     if(!depositOrderStatusResponse) {
       errorToast('Error al enviar el reporte')

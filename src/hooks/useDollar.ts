@@ -4,6 +4,8 @@ import { isNotEmpty, useForm } from '@mantine/form'
 
 import { IDollar } from '../models/Dollar'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
+import { useLoginStore } from '../components/store/loginStore'
+import { getAllDollarsFromDepositOrder } from '../services/Dollar'
 
 interface FormSelectOption {
   value: string
@@ -12,6 +14,7 @@ interface FormSelectOption {
 
 export const useDollar = () => {
   const { depositOrder } = useDepositOrderStore()
+  const { token } = useLoginStore()
   const [dollars, setDollars] = useState<IDollar[]>([])
   const [opened, modalHandler] = useDisclosure()
   const [openedDelete, modalDeleteHandler] = useDisclosure()
@@ -137,6 +140,13 @@ export const useDollar = () => {
     return formattedDollars
   }
 
+  const getDollarsFromDepositOrder = async (id: number) => {
+    const dollars = await getAllDollarsFromDepositOrder(id, token)
+    if (!dollars) return
+    setDollars(dollars)
+    calculateAmount()
+  }
+
   return {
     opened,
     modalHandler,
@@ -157,6 +167,7 @@ export const useDollar = () => {
     setBranchOffices,
     totalAmount,
     totalAmountBs,
-    getFormattedDollars
+    getFormattedDollars,
+    getDollarsFromDepositOrder
   }
 }
