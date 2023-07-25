@@ -23,7 +23,7 @@ const ReviewDepositOrder = ({ data }: DepositOrderInterface) => {
           />
         </ActionIcon>
       </Tooltip>
-      <ReviewDepositOrderModal opened={opened} close={close} />
+      <ReviewDepositOrderModal opened={opened} close={close} data={data}/>
     </>
   )
 }

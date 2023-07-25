@@ -5,7 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { IDepositOrderReport } from '../models/DepositOrderReport'
 
 import { getAllDepositOrderBranchOfficeGivenAnId } from '../services/DepositOrderBranchOffice'
-import { getOneDepositOrder, updateStatusAndRevitionStatusAndReportURL } from '../services/DepositOrderService'
+import { getOneDepositOrder, updateStatusAndRevitionStatusAndReportURL } from '../services/DepositOrder'
 import { useLoginStore } from '../components/store/loginStore'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
 import { errorToast, succesToast } from '../services/toasts'

@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { isNotEmpty, useForm } from '@mantine/form'
 
-import { getAllRegionals } from '../services/RegionalService'
+import { getAllRegionals } from '../services/Regional'
 
 import { useLoginStore } from '../components/store/loginStore'
 import { IBranchModel } from '../models/BranchOffice'

@@ -1,13 +1,75 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Modal, Button } from '@mantine/core'
+import {
+  TbClockHour4,
+  TbDiscountCheck,
+  TbExclamationCircle
+} from 'react-icons/tb'
+
+import RevisionStatus from '../../enums/RevisionStatus'
+import { updateRevitionStatus as updateRevitionStatusService } from '../../services/DepositOrder'
+import { errorToast, succesToast } from '../../services/toasts'
+
+import { DepositOrderInterface } from '../../models/DepositOrder'
+
+import { useLoginStore } from '../store/loginStore'
 
 interface ReviweModalProps {
   opened: boolean
   close: () => void
+  data: DepositOrderInterface
 }
 
-const ReviewDepositOrderModal = ({ opened, close }: ReviweModalProps) => {
+const ReviewDepositOrderModal = ({ opened, close, data }: ReviweModalProps) => {
+  const { token } = useLoginStore()
   const [isActive, setIsActive] = useState([false, false, false])
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    if (data.revitionStatus?.toUpperCase() === RevisionStatus.PENDING)
+      setIsActive([true, false, false])
+    if (data.revitionStatus?.toUpperCase() === RevisionStatus.OBSERVED)
+      setIsActive([false, true, false])
+    if (data.revitionStatus?.toUpperCase() === RevisionStatus.APPROBED)
+      setIsActive([false, false, true])
+  }, [opened])
+
+  const getRevitionStatusToUpdate = () => {
+    if (isActive[0])
+      return (
+        RevisionStatus.PENDING.toLowerCase().charAt(0).toUpperCase() +
+        RevisionStatus.PENDING.toLowerCase().slice(1)
+      )
+    if (isActive[1])
+      return (
+        RevisionStatus.OBSERVED.toLowerCase().charAt(0).toUpperCase() +
+        RevisionStatus.OBSERVED.toLowerCase().slice(1)
+      )
+    if (isActive[2])
+      return (
+        RevisionStatus.APPROBED.toLowerCase().charAt(0).toUpperCase() +
+        RevisionStatus.APPROBED.toLowerCase().slice(1)
+      )
+
+    return ''
+  }
+
+  const updateRevitionStatus = async () => {
+    setIsLoading(() => true)
+    const response = await updateRevitionStatusService(
+      getRevitionStatusToUpdate(),
+      Number(data.id),
+      token
+    )
+    if (!response) {
+      errorToast('Error al actualizar el estado de revisión')
+      setIsLoading(() => false)
+      return
+    }
+    close()
+    succesToast('Estado de revisión actualizado correctamente')
+    setIsLoading(() => false)
+  }
 
   return (
     <Modal
@@ -20,7 +82,7 @@ const ReviewDepositOrderModal = ({ opened, close }: ReviweModalProps) => {
       }}
       size={'md'}
     >
-      <section className=' px-6 pb-7 pt-5'>
+      <section className=' px-6 pb-7 pt-5 select-none'>
         <div className='flex justify-between'>
           <div
             className='flex flex-col items-center space-y-3 hover:bg-gray-100 p-3 rounded-md hover:cursor-pointer'
@@ -28,9 +90,15 @@ const ReviewDepositOrderModal = ({ opened, close }: ReviweModalProps) => {
           >
             <div
               className={`${
-                isActive[0] ? 'bg-[#fab005]' : 'bg-[#e2e8f0]'
-              } rounded-full w-10 h-10 transition-all`}
-            ></div>
+                isActive[0] ? 'bg-[#ffeca1]' : 'bg-[#e2e8f0]'
+              } rounded-full w-10 h-10 transition-all flex items-center justify-center`}
+            >
+              <TbClockHour4
+                color={isActive[0] ? '#fbbf24' : '#d1d8e2'}
+                className={'stoke-2'}
+                size={22}
+              />
+            </div>
             <p>Pendiente</p>
           </div>
           <div
@@ -39,9 +107,15 @@ const ReviewDepositOrderModal = ({ opened, close }: ReviweModalProps) => {
           >
             <div
               className={`${
-                isActive[1] ? 'bg-red-500 ' : 'bg-[#e2e8f0]'
-              } rounded-full w-10 h-10 transition-all`}
-            ></div>
+                isActive[1] ? 'bg-red-200 ' : 'bg-[#e2e8f0]'
+              } rounded-full w-10 h-10 transition-all flex items-center justify-center`}
+            >
+              <TbExclamationCircle
+                color={isActive[1] ? '#ef4444' : '#d1d8e2'}
+                className={'stoke-2'}
+                size={22}
+              />
+            </div>
             <p>Observado</p>
           </div>
           <div
@@ -50,16 +124,24 @@ const ReviewDepositOrderModal = ({ opened, close }: ReviweModalProps) => {
           >
             <div
               className={`${
-                isActive[2] ? 'bg-[#40c057]' : 'bg-[#e2e8f0]'
-              } rounded-full  w-10 h-10 transition-all`}
-            ></div>
+                isActive[2] ? 'bg-[#86efac]' : 'bg-[#e2e8f0]'
+              } rounded-full  w-10 h-10 transition-all flex items-center justify-center`}
+            >
+              <TbDiscountCheck
+                color={isActive[2] ? '#22c55e' : '#d1d8e2'}
+                className={'stoke-2'}
+                size={22}
+              />
+            </div>
             <p>Aprobado</p>
           </div>
         </div>
       </section>
 
-      <div className='flex justify-end'>
-        <Button className='bg-blue-600 hover:bg-blue-700'>Guardar</Button>
+      <div className='flex justify-end' onClick={updateRevitionStatus}>
+        <Button className='bg-blue-600 hover:bg-blue-700' loading={isLoading}>
+          Guardar
+        </Button>
       </div>
     </Modal>
   )

@@ -1,4 +1,4 @@
-import { Stack, ActionIcon, AspectRatio } from '@mantine/core'
+import { Stack, AspectRatio } from '@mantine/core'
 
 import { useNavigate } from 'react-router-dom'
 
