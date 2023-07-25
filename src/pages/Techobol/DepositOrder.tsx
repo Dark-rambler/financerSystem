@@ -8,7 +8,7 @@ import { useState, useRef, useCallback } from 'react'
 
 import { Roles } from '../../enums/Roles'
 import { DepositOrderInterface } from '../../models/DepositOrder'
-import { getAllDepositOrders } from '../../services/DepositOrderService'
+import { getAllDepositOrders } from '../../services/DepositOrder'
 import { errorToast } from '../../services/toasts'
 import Table from '../../components/table/DepositOrderTable'
 
@@ -35,6 +35,8 @@ const DepositOrder = () => {
   useEffect(() => {
     getDepositOrders()
   }, [])
+
+  // useEffect(( ) => { }, [] )
 
   const onFilterTextBoxChanged = useCallback(() => {
     let value = ''

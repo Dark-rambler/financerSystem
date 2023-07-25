@@ -10,7 +10,6 @@ import StatusBadge from '../badges/StatusBadge'
 import RevisionStatusBadge from '../badges/RevisionStatusBadge'
 import ReviewDepositOrder from '../buttons/depositOrder/ReviewDepositOrder'
 import CancelDepositOrder from '../buttons/depositOrder/CancelDepositOrder'
-import ViewDocument from '../buttons/depositOrder/ViewDocument'
 import ViewDepositOrderReport from '../buttons/depositOrder/ViewDepositOrderReport'
 import GenerateDepositOrderReport from '../buttons/depositOrder/GenerateDepositOrderReport'
 

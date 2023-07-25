@@ -6,7 +6,7 @@ import PasswordInput from '../components/inputs/PasswordInput'
 import { validateToken as ValidateTokenBackend } from '../services/AuthenticationService'
 import { Button } from '@mantine/core'
 import { errorToast, succesToast } from '../services/toasts'
-import { changePassword } from '../services/EmployeeService'
+import { changePassword } from '../services/Employee'
 
 const SetPassword = () => {
   const navigate = useNavigate()

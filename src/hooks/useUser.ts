@@ -7,8 +7,8 @@ import {
   createEmployee,
   deleteEmployee,
   getAllEmployeesWithRoles
-} from '../services/EmployeeService'
-import { getAllRegionals } from '../services/RegionalService'
+} from '../services/Employee'
+import { getAllRegionals } from '../services/Regional'
 
 import { useLoginStore } from '../components/store/loginStore'
 import { EmployeeInterface } from '../models/Employee'
