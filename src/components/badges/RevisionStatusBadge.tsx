@@ -8,7 +8,7 @@ import {
 import { DepositOrderInterface } from '../../models/DepositOrder'
 
 const RevisionStatusBadge = ({ data }: DepositOrderInterface) => {
-  const RevisionStatus = data.revitionStatus
+  const RevisionStatus = data.revisionStatus
   return (
     <>
           {RevisionStatus.toUpperCase() === RevisionStatusEnum.PENDING && (
