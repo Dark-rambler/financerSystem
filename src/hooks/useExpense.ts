@@ -192,8 +192,7 @@ export const useExpense = (isReadOnly:boolean) => {
     form.setFieldValue('subAccountId', Number(expense.subAccountId))
   }
 
-  const onSelectAccount = (value: string) => {
-    console.log(value)
+  const onSelectAccount = () => {
     const filterSubAccounts = subAccounts.filter(subAccount => {
       if (Number(subAccount.accountId) === form.values.accountId) return true
     })

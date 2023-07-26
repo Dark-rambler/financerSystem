@@ -10,7 +10,6 @@ import StatusBadge from '../badges/StatusBadge'
 import RevisionStatusBadge from '../badges/RevisionStatusBadge'
 import ReviewDepositOrder from '../buttons/depositOrder/ReviewDepositOrder'
 import CancelDepositOrder from '../buttons/depositOrder/CancelDepositOrder'
-import ViewDocument from '../buttons/depositOrder/ViewDocument'
 import ViewDepositOrderReport from '../buttons/depositOrder/ViewDepositOrderReport'
 import GenerateDepositOrderReport from '../buttons/depositOrder/GenerateDepositOrderReport'
 
@@ -156,14 +155,14 @@ const Table = ({
         filter: 'agMultiColumnFilter'
       },
       {
-        field: 'revitionStatus',
+        field: 'revisionStatus',
         headerName: 'Revisión',
         sortable: true,
         filter: true,
         cellRenderer: RevisionStatusBadge,
         resizable: true,
         valueGetter: data => {
-          return data.data.revitionStatus
+          return data.data.revisionStatus
         },
         cellStyle: {
           overflow: 'visible',

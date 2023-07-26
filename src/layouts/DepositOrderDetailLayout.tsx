@@ -5,7 +5,7 @@ import { Tabs } from '@mantine/core'
 import ReturnButton from '../components/buttons/depositOrder/ReturnButton'
 import { errorToast } from '../services/toasts'
 
-import { getOneDepositOrder } from '../services/DepositOrderService'
+import { getOneDepositOrder } from '../services/DepositOrder'
 import { getAllDepositOrderBranchOfficeGivenAnId } from '../services/DepositOrderBranchOffice'
 
 import { useDepositOrderStore } from '../components/store/depositOrderStore'

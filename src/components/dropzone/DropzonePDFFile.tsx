@@ -15,8 +15,7 @@ const DropzonePDFFile = ({depositOrderReport}: DropzonePDFFileProps) => {
     onDrop={files => {
       depositOrderReport.setFile(files[0])
     }}
-    onReject={files => {
-      console.log(files)
+    onReject={() => {
       depositOrderReport.setFile(null)
     }}
     className={`${

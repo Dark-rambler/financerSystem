@@ -5,7 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { IDepositOrderReport } from '../models/DepositOrderReport'
 
 import { getAllDepositOrderBranchOfficeGivenAnId } from '../services/DepositOrderBranchOffice'
-import { getOneDepositOrder, updateStatusAndRevitionStatusAndReportURL } from '../services/DepositOrderService'
+import { getOneDepositOrder, updateStatusAndRevisionStatusAndReportURL } from '../services/DepositOrder'
 import { useLoginStore } from '../components/store/loginStore'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
 import { errorToast, succesToast } from '../services/toasts'
@@ -74,7 +74,7 @@ export const useDepositOrderReport = () => {
       return
     }
 
-    const depositOrderStatusResponse = await updateStatusAndRevitionStatusAndReportURL(depositOrder.id as number, token)
+    const depositOrderStatusResponse = await updateStatusAndRevisionStatusAndReportURL(depositOrder.id as number, token)
     
     if(!depositOrderStatusResponse) {
       errorToast('Error al enviar el reporte')

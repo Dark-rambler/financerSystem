@@ -6,15 +6,15 @@ import { succesToast, errorToast } from '../services/toasts'
 import { useNavigate } from 'react-router-dom'
 import { useAmazonS3 } from './useAmazonS3'
 
-import { getAllEmployeesWithRoles } from '../services/EmployeeService'
-import { getAllRegionals } from '../services/RegionalService'
+import { getAllEmployeesWithRoles } from '../services/Employee'
+import { getAllRegionals } from '../services/Regional'
 import { getAllBranchOffices } from '../services/BranchOffices'
 import { IBranchModel } from '../models/BranchOffice'
 import { RegionalOfficeInterface } from '../models/RegionalOffice'
 import { EmployeeInterface } from '../models/Employee'
 import { useDisclosure } from '@mantine/hooks'
 
-import { createDepositOrder } from '../services/DepositOrderService'
+import { createDepositOrder } from '../services/DepositOrder'
 
 interface SelectMantineData {
   value: string

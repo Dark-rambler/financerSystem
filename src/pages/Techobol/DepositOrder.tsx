@@ -1,52 +1,15 @@
 import { Button, Input } from '@mantine/core'
 
-import { useNavigate } from 'react-router-dom'
 import { TbPlus, TbSearch } from 'react-icons/tb'
-import { useEffect } from 'react'
-import { useLoginStore } from '../../components/store/loginStore'
-import { useState, useRef, useCallback } from 'react'
 
 import { Roles } from '../../enums/Roles'
-import { DepositOrderInterface } from '../../models/DepositOrder'
-import { getAllDepositOrders } from '../../services/DepositOrderService'
-import { errorToast } from '../../services/toasts'
 import Table from '../../components/table/DepositOrderTable'
+import useDepositOrder from '../../hooks/useDepositOrder'
 
-import { AgGridReact } from 'ag-grid-react'
+
 
 const DepositOrder = () => {
-  const navigate = useNavigate()
-  const { token, role } = useLoginStore()
-  const [depositOrderData, setDepositOrderData] = useState<
-    DepositOrderInterface[]
-  >([])
-
-  const gridRef = useRef<AgGridReact<DepositOrderInterface>>(null)
-
-  const getDepositOrders = async () => {
-    const data = await getAllDepositOrders(token)
-    if (!data) {
-      errorToast('No se pudo obtener la información de las ordenes de deposito')
-      return
-    }
-    setDepositOrderData(data)
-  }
-
-  useEffect(() => {
-    getDepositOrders()
-  }, [])
-
-  const onFilterTextBoxChanged = useCallback(() => {
-    let value = ''
-    const input = document.getElementById(
-      'filter-text-box'
-    ) as HTMLInputElement | null
-
-    if (input !== null) {
-      value = input.value
-    }
-    gridRef.current?.api.setQuickFilter(value)
-  }, [])
+ const depositOrder = useDepositOrder()
 
   return (
     <>
@@ -62,9 +25,9 @@ const DepositOrder = () => {
               icon={<TbSearch />}
               placeholder={'Buscar..'}
               className='w-72'
-              onChange={onFilterTextBoxChanged}
+              onChange={depositOrder.onFilterTextBoxChanged}
             />
-            {role === Roles.FINANCIAL_MANAGER && (
+            {depositOrder.role === Roles.FINANCIAL_MANAGER && (
               <Button
                 leftIcon={<TbPlus />}
                 size='sm'
@@ -74,7 +37,7 @@ const DepositOrder = () => {
                 className='bg-blue-600 hover:bg-blue-700'
                 // onClick={open}
                 onClick={() => {
-                  navigate('/techobol/register-deposit-order')
+                  depositOrder.navigate('/techobol/register-deposit-order')
                 }}
               >
                 Emitir nueva orden de depósito
@@ -85,8 +48,8 @@ const DepositOrder = () => {
 
         <div className='h-[calc(100%-46px)]'>
           <Table
-            depositOrderData={depositOrderData}
-            gridRef={gridRef}
+            depositOrderData={depositOrder.depositOrderData}
+            gridRef={depositOrder.gridRef}
           />
         </div>
       </div>

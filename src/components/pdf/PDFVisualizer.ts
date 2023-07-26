@@ -172,8 +172,6 @@ export const PDFModifier = async ({ depositOrder }: PDFVisualizerProps) => {
   })
   // const docUrl = URL.createObjectURL(pdfFile)
 
-  console.log('pdfFile', pdfFile)
-
   depositOrder.setPdfFile(() => pdfFile)
 
 

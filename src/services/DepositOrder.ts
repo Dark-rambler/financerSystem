@@ -51,8 +51,8 @@ export const createDepositOrder = async (
     }
 
     return response.json()
-  } catch (err) {
-    console.log(err)
+  } catch {
+    return null
   }
 }
 
@@ -77,7 +77,10 @@ export const getOneDepositOrder = async (id: number, token: string) => {
   }
 }
 
-export const updateStatusAndRevitionStatusAndReportURL = async (id: number, token: string) => {
+export const updateStatusAndRevisionStatusAndReportURL = async (
+  id: number,
+  token: string
+) => {
   try {
     const response = await fetch(
       `${
@@ -89,9 +92,34 @@ export const updateStatusAndRevitionStatusAndReportURL = async (id: number, toke
           'Content-Type': 'application/json',
           'x-access-token': token
         },
-        body: JSON.stringify({ reportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}`})
+        body: JSON.stringify({
+          reportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}`
+        })
       }
     )
+    if (!response.ok) return null
+    return response.json()
+  } catch {
+    return null
+  }
+}
+
+export const updateRevisionStatus = async (revisionStatus: string, id: number, token: string) => {
+  try {
+    const response = await fetch(
+      `${
+        import.meta.env.VITE_API_DOMAIN
+      }/deposit-order/update-revision-status/${id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        },
+        body: JSON.stringify({ revisionStatus })
+      }
+    )
+
     if (!response.ok) return null
     return response.json()
   } catch {
