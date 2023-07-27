@@ -26,7 +26,6 @@ export const useAccount = () => {
   const [actualAccountId, setActualAccountId] = useState<number>(0)
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isRepeatedError, setIsRepeatedError] = useState<boolean>(false)
 
   const form = useForm<IAccount>({
     initialValues: {
@@ -34,8 +33,11 @@ export const useAccount = () => {
     },
     validate: {
       name: value => {
-        if (value === '') return 'Ingrese una cuenta financiera'
-        if (isRepeatedError) return 'Ya existe una cuenta con este nombre'
+        const nameEntered = value.trim().toLowerCase()
+        const isRepeated = accounts.some((account) => account.name.toLowerCase().replace(/\s+/g,'') === nameEntered.replace(/\s+/g,''));
+        
+        if (nameEntered === '') return 'Ingrese un nombre'
+        if (isRepeated) return 'Ya existe una cuenta con este nombre'
       },
     }
   })
@@ -70,16 +72,6 @@ export const useAccount = () => {
   }, [])
 
   const registerAccount = async () => {
-    const isRepeated = accounts.find(
-      account => account.name === form.values.name
-    )
-    
-    if (isRepeated) {
-      setIsRepeatedError(() => true)
-      return null
-    }
-
-    setIsRepeatedError(() => false)
     setIsLoading(true)
     const body: IAccount = {
       name: form.values.name
