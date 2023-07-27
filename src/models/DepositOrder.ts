@@ -11,7 +11,7 @@ export interface DepositOrderInterface {
   orderNumber: string
   regionalId?: number
   regional?: RegionalOfficeInterface
-  revitionStatus?: string
+  revisionStatus?: string
   solitudeDate: Date
   startDate: Date
   status?: string

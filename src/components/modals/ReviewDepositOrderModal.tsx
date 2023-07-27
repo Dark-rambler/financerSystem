@@ -6,8 +6,10 @@ import {
   TbExclamationCircle
 } from 'react-icons/tb'
 
+import socket from '../../services/SocketIOConnection'
+
 import RevisionStatus from '../../enums/RevisionStatus'
-import { updateRevitionStatus as updateRevitionStatusService } from '../../services/DepositOrder'
+import { updateRevisionStatus as updateRevisionStatusService } from '../../services/DepositOrder'
 import { errorToast, succesToast } from '../../services/toasts'
 
 import { DepositOrderInterface } from '../../models/DepositOrder'
@@ -26,15 +28,15 @@ const ReviewDepositOrderModal = ({ opened, close, data }: ReviweModalProps) => {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    if (data.revitionStatus?.toUpperCase() === RevisionStatus.PENDING)
+    if (data.revisionStatus?.toUpperCase() === RevisionStatus.PENDING)
       setIsActive([true, false, false])
-    if (data.revitionStatus?.toUpperCase() === RevisionStatus.OBSERVED)
+    if (data.revisionStatus?.toUpperCase() === RevisionStatus.OBSERVED)
       setIsActive([false, true, false])
-    if (data.revitionStatus?.toUpperCase() === RevisionStatus.APPROBED)
+    if (data.revisionStatus?.toUpperCase() === RevisionStatus.APPROBED)
       setIsActive([false, false, true])
   }, [opened])
 
-  const getRevitionStatusToUpdate = () => {
+  const getRevisionStatusToUpdate = () => {
     if (isActive[0])
       return (
         RevisionStatus.PENDING.toLowerCase().charAt(0).toUpperCase() +
@@ -54,10 +56,10 @@ const ReviewDepositOrderModal = ({ opened, close, data }: ReviweModalProps) => {
     return ''
   }
 
-  const updateRevitionStatus = async () => {
+  const updateRevisionStatus = async () => {
     setIsLoading(() => true)
-    const response = await updateRevitionStatusService(
-      getRevitionStatusToUpdate(),
+    const response = await updateRevisionStatusService(
+      getRevisionStatusToUpdate(),
       Number(data.id),
       token
     )
@@ -68,7 +70,10 @@ const ReviewDepositOrderModal = ({ opened, close, data }: ReviweModalProps) => {
     }
     close()
     succesToast('Estado de revisión actualizado correctamente')
-    setIsLoading(() => false)
+    socket.emit('updateRevisionStatus', response)
+    setTimeout(() => {
+      setIsLoading(() => false)
+    }, 1000)
   }
 
   return (
@@ -95,7 +100,7 @@ const ReviewDepositOrderModal = ({ opened, close, data }: ReviweModalProps) => {
             >
               <TbClockHour4
                 color={isActive[0] ? '#fbbf24' : '#d1d8e2'}
-                className={'stoke-2'}
+                className={'stoke-2 transition-all'}
                 size={22}
               />
             </div>
@@ -112,7 +117,7 @@ const ReviewDepositOrderModal = ({ opened, close, data }: ReviweModalProps) => {
             >
               <TbExclamationCircle
                 color={isActive[1] ? '#ef4444' : '#d1d8e2'}
-                className={'stoke-2'}
+                className={'stoke-2 transition-all'}
                 size={22}
               />
             </div>
@@ -129,7 +134,7 @@ const ReviewDepositOrderModal = ({ opened, close, data }: ReviweModalProps) => {
             >
               <TbDiscountCheck
                 color={isActive[2] ? '#22c55e' : '#d1d8e2'}
-                className={'stoke-2'}
+                className={'stoke-2 transition-all'}
                 size={22}
               />
             </div>
@@ -138,7 +143,7 @@ const ReviewDepositOrderModal = ({ opened, close, data }: ReviweModalProps) => {
         </div>
       </section>
 
-      <div className='flex justify-end' onClick={updateRevitionStatus}>
+      <div className='flex justify-end' onClick={updateRevisionStatus}>
         <Button className='bg-blue-600 hover:bg-blue-700' loading={isLoading}>
           Guardar
         </Button>

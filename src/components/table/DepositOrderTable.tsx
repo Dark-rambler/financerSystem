@@ -155,14 +155,14 @@ const Table = ({
         filter: 'agMultiColumnFilter'
       },
       {
-        field: 'revitionStatus',
+        field: 'revisionStatus',
         headerName: 'Revisión',
         sortable: true,
         filter: true,
         cellRenderer: RevisionStatusBadge,
         resizable: true,
         valueGetter: data => {
-          return data.data.revitionStatus
+          return data.data.revisionStatus
         },
         cellStyle: {
           overflow: 'visible',
