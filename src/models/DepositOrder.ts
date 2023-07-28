@@ -16,6 +16,7 @@ export interface DepositOrderInterface {
   startDate: Date
   status?: string
   documentUrl?: string
+  generatedReportUrl?: string 
   reportUrl?: string
   [key: string]: any
 }

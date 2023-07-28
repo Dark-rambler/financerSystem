@@ -52,7 +52,7 @@ const DepositOrderReportDetail = () => {
         <div className='flex items-end space-x-3 px-3'>
           <ViewDocument
             label='Reporte de orden de depósito'
-            url={depositOrder.documentUrl as string}
+            url={depositOrder.generatedReportUrl as string}
           />
         </div>
       </div>
