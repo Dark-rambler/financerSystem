@@ -77,7 +77,7 @@ export const getOneDepositOrder = async (id: number, token: string) => {
   }
 }
 
-export const updateStatusAndRevitionStatusAndReportURL = async (
+export const updateStatusAndRevisionStatusAndReportURL = async (
   id: number,
   token: string
 ) => {
@@ -104,19 +104,19 @@ export const updateStatusAndRevitionStatusAndReportURL = async (
   }
 }
 
-export const updateRevitionStatus = async (revitionStatus: string, id: number, token: string) => {
+export const updateRevisionStatus = async (revisionStatus: string, id: number, token: string) => {
   try {
     const response = await fetch(
       `${
         import.meta.env.VITE_API_DOMAIN
-      }/deposit-order/update-revition-status/${id}`,
+      }/deposit-order/update-revision-status/${id}`,
       {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'x-access-token': token
         },
-        body: JSON.stringify({ revitionStatus })
+        body: JSON.stringify({ revisionStatus })
       }
     )
 
