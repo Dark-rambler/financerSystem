@@ -5,7 +5,10 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { IDepositOrderReport } from '../models/DepositOrderReport'
 
 import { getAllDepositOrderBranchOfficeGivenAnId } from '../services/DepositOrderBranchOffice'
-import { getOneDepositOrder, updateStatusAndRevisionStatusAndReportURL } from '../services/DepositOrder'
+import {
+  getOneDepositOrder,
+  updateStatusAndRevisionStatusAndReportURL
+} from '../services/DepositOrder'
 import { useLoginStore } from '../components/store/loginStore'
 import { useDepositOrderStore } from '../components/store/depositOrderStore'
 import { errorToast, succesToast } from '../services/toasts'
@@ -18,12 +21,14 @@ export const useDepositOrderReport = () => {
   const { token } = useLoginStore()
   const [opened, { open, close }] = useDisclosure()
   const [openedView, handlerDisclosureView] = useDisclosure()
-  const { depositOrder, setDepositBranchOffice, setDepositOrder } = useDepositOrderStore()
+  const { depositOrder, setDepositBranchOffice, setDepositOrder } =
+    useDepositOrderStore()
 
   const { id } = useParams()
   const navigate = useNavigate()
 
   const [file, setFile] = useState<File | null>(null)
+  const [reportFile, setReportFile] = useState<File | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const [isReportValid, setIsReportValid] = useState<boolean>(false)
@@ -60,11 +65,24 @@ export const useDepositOrderReport = () => {
     depositOrderData: IDepositOrderReport
   ) => {
     setIsLoading(() => true)
-    const r2Response =await s3.uploadDepositOrderReportFileOfTechoBol(file as File, `${depositOrder.orderNumber} REPORTE`)
-    if(!r2Response.ok) {
+    const r2Response = await s3.uploadDepositOrderReportFileOfTechoBol(
+      file as File,
+      `${depositOrder.orderNumber} DOCUMENTOS`
+    )
+    if (!r2Response.ok) {
       errorToast('Error al enviar el reporte')
       return
-    } 
+    }
+
+    const r2ReportResponse =
+      await s3.uploadGeneratedDepositOrderReportFileOfTechoBol(
+        reportFile as File,
+        `${depositOrder.orderNumber} REPORTE`
+      )
+    if (!r2ReportResponse.ok) {
+      errorToast('Error al enviar el reporte')
+      return
+    }
 
     const response = await createDepositOrderReport(token, depositOrderData)
 
@@ -74,9 +92,19 @@ export const useDepositOrderReport = () => {
       return
     }
 
-    const depositOrderStatusResponse = await updateStatusAndRevisionStatusAndReportURL(depositOrder.id as number, token)
-    
-    if(!depositOrderStatusResponse) {
+    const body = {
+      reportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}/TECHOBOL/DEPOSIT_ORDER_DOCUMENTS/${depositOrder?.orderNumber} DOCUMENTOS.pdf`,
+      generatedReportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}/TECHOBOL/DEPOSIT_ORDER_REPORT/${depositOrder?.orderNumber} REPORTE.pdf`
+    }
+
+    const depositOrderStatusResponse =
+      await updateStatusAndRevisionStatusAndReportURL(
+        depositOrder.id as number,
+        token,
+        body
+      )
+
+    if (!depositOrderStatusResponse) {
       errorToast('Error al enviar el reporte')
       setIsLoading(false)
       return
@@ -105,6 +133,8 @@ export const useDepositOrderReport = () => {
     close,
     openedView,
     handlerDisclosureView,
-    setIsReportValid
+    setIsReportValid,
+    reportFile,
+    setReportFile
   }
 }

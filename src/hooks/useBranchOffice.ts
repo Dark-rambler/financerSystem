@@ -34,7 +34,6 @@ export const useBranchOffice = () => {
   const [actualBranchOfficeId, setActualBranchOfficeId] = useState<number>(0)
 
   const [regionals, setRegionals] = useState<SelectFormat[]>([])
-  const [isRepeatedError, setIsRepeatedError] = useState<boolean>(false)
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -46,8 +45,11 @@ export const useBranchOffice = () => {
     },
     validate: {
       name: value => {
-        if (value === '') return 'Ingrese un nombre'
-        if (isRepeatedError) return 'Ya existe una sucursal con este nombre'
+        const name = value.trim().toLowerCase()
+        const isRepeated = branchOffices.some((branchOffice) => branchOffice.name.toLowerCase().replace(/\s+/g,'') === name.replace(/\s+/g,''));
+        
+        if (name === '') return 'Ingrese un nombre'
+        if (isRepeated) return 'Ya existe una sucursal con este nombre'
       },
       address: isNotEmpty('Ingrese una dirección'),
 
@@ -99,16 +101,6 @@ export const useBranchOffice = () => {
   }, [])
 
   const registerBranchOffice = async () => {
-    const isRepeated = branchOffices.find(
-      branchOfffice => branchOfffice.name === form.values.name
-    )
-
-    if (isRepeated) {
-      setIsRepeatedError(() => true)
-      return null
-    }
-
-    setIsRepeatedError(() => false)
     setIsLoading(true)
     const body: IBranchModel = {
       name: form.values.name,
@@ -179,6 +171,6 @@ export const useBranchOffice = () => {
     setActualBranchOfficeId,
     onDeleteBranchOffice,
     isLoading,
-    isRepeatedError
+    //isRepeatedError
   }
 }
