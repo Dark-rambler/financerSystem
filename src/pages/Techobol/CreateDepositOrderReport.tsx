@@ -30,6 +30,7 @@ import DepositTable from '../../components/table/techobol/DepositTable'
 import EnvelopeTable from '../../components/table/techobol/EnvelopeTable'
 import DollarTable from '../../components/table/techobol/DollarTable'
 import SingleDepositOrderTable from '../../components/table/techobol/SingleDepositOrderTable'
+import { generateReportPDF } from '../../components/pdf/PDFReport'
 
 const CreateDepositOrderReport = () => {
   const depositOrderReport = useDepositOrderReport()
@@ -80,6 +81,21 @@ const CreateDepositOrderReport = () => {
     dollar.totalAmount,
     depositOrder.amount
   ])
+
+  const handleSendDepositOrderReport = async () => {
+    depositOrderReport.setIsSubmited(true)
+    const file = generateReportPDF({
+      moneyCollection,
+      deposit,
+      expense,
+      envelope,
+      dollar
+    })
+    depositOrderReport.setReportFile(() => file)
+
+    if (!depositOrderReport.file || !depositOrderReport.reportFile) return
+    depositOrderReport.open()
+  }
 
   return (
     <div className='px-16 py-12 space-y-16'>
@@ -210,11 +226,7 @@ const CreateDepositOrderReport = () => {
         </ActionIcon>
         <Button
           className='bg-blue-600 hover:bg-blue-700'
-          onClick={() => {
-            depositOrderReport.setIsSubmited(true)
-            if (!depositOrderReport.file) return
-            depositOrderReport.open()
-          }}
+          onClick={handleSendDepositOrderReport}
         >
           Enviar informe
         </Button>

@@ -79,7 +79,11 @@ export const getOneDepositOrder = async (id: number, token: string) => {
 
 export const updateStatusAndRevisionStatusAndReportURL = async (
   id: number,
-  token: string
+  token: string,
+  body: {
+    reportUrl: string
+    generatedReportUrl: string
+  }
 ) => {
   try {
     const response = await fetch(
@@ -92,9 +96,7 @@ export const updateStatusAndRevisionStatusAndReportURL = async (
           'Content-Type': 'application/json',
           'x-access-token': token
         },
-        body: JSON.stringify({
-          reportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}`
-        })
+        body: JSON.stringify(body)
       }
     )
     if (!response.ok) return null
@@ -104,7 +106,11 @@ export const updateStatusAndRevisionStatusAndReportURL = async (
   }
 }
 
-export const updateRevisionStatus = async (revisionStatus: string, id: number, token: string) => {
+export const updateRevisionStatus = async (
+  revisionStatus: string,
+  id: number,
+  token: string
+) => {
   try {
     const response = await fetch(
       `${

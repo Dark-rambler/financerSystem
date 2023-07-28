@@ -196,6 +196,7 @@ export const useMoneyCollection = () => {
     setBranchOffices,
     setMoneyCollections,
     getFormattedMoneyCollections,
-    getMoneyCollectionsFromDepositOrder
+    getMoneyCollectionsFromDepositOrder,
+    depositOrder
   }
 }

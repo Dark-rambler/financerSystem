@@ -36,7 +36,7 @@ const MoneyCollectionTable = ({
             <tr key={`money-collection-${index}`}>
               <td>{collection.branchOffice?.name}</td>
               <td>{new Date(collection.date as Date).toLocaleDateString()}</td>
-              <td className='text-left'>
+              <td >
                 {Number(collection.amount).toFixed(2)} Bs.
               </td>
               <td>{collection.deliveredBy}</td>
