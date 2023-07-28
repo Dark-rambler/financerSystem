@@ -34,7 +34,7 @@ const RegisterBrachOfficeModal = ({
       >
         <form
           onSubmit={branchOffice.form.onSubmit(() => {
-            branchOffice.registerBranchOffice()
+           branchOffice.registerBranchOffice()
           })}
         >
           <div className='space-y-5'>
