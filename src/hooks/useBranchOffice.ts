@@ -46,8 +46,12 @@ export const useBranchOffice = () => {
     validate: {
       name: value => {
         const name = value.trim().toLowerCase()
-        const isRepeated = branchOffices.some((branchOffice) => branchOffice.name.toLowerCase().replace(/\s+/g,'') === name.replace(/\s+/g,''));
-        
+        const isRepeated = branchOffices.some(
+          branchOffice =>
+            branchOffice.name.toLowerCase().replace(/\s+/g, '') ===
+            name.replace(/\s+/g, '')
+        )
+
         if (name === '') return 'Ingrese un nombre'
         if (isRepeated) return 'Ya existe una sucursal con este nombre'
       },
@@ -170,7 +174,7 @@ export const useBranchOffice = () => {
     actualBranchOfficeId,
     setActualBranchOfficeId,
     onDeleteBranchOffice,
-    isLoading,
+    isLoading
     //isRepeatedError
   }
 }

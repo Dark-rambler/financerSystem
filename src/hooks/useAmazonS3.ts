@@ -23,7 +23,10 @@ export const useAmazonS3 = () => {
   const uploadDepositOrderFileOfTechoBol = async (file: File, name: string) => {
     const signedUrl = await getSignedUrl(
       s3 as S3Client,
-      new PutObjectCommand({ Bucket: `${import.meta.env.VITE_S3_BUCKET_NAME}`, Key: `TECHOBOL/DEPOSIT_ORDER/${name}.pdf` }),
+      new PutObjectCommand({
+        Bucket: `${import.meta.env.VITE_S3_BUCKET_NAME}`,
+        Key: `TECHOBOL/DEPOSIT_ORDER/${name}.pdf`
+      }),
       { expiresIn: 3600 }
     )
 
@@ -35,10 +38,16 @@ export const useAmazonS3 = () => {
     return response
   }
 
-  const uploadDepositOrderReportFileOfTechoBol = async (file: File, name: string) => {
+  const uploadDepositOrderReportFileOfTechoBol = async (
+    file: File,
+    name: string
+  ) => {
     const signedUrl = await getSignedUrl(
       s3 as S3Client,
-      new PutObjectCommand({ Bucket: `${import.meta.env.VITE_S3_BUCKET_NAME}`, Key: `TECHOBOL/DEPOSIT_ORDER_DOCUMENTS/${name}.pdf` }),
+      new PutObjectCommand({
+        Bucket: `${import.meta.env.VITE_S3_BUCKET_NAME}`,
+        Key: `TECHOBOL/DEPOSIT_ORDER_DOCUMENTS/${name}.pdf`
+      }),
       { expiresIn: 3600 }
     )
 
@@ -49,10 +58,16 @@ export const useAmazonS3 = () => {
 
     return response
   }
-  const uploadGeneratedDepositOrderReportFileOfTechoBol = async (file: File, name: string) => {
+  const uploadGeneratedDepositOrderReportFileOfTechoBol = async (
+    file: File,
+    name: string
+  ) => {
     const signedUrl = await getSignedUrl(
       s3 as S3Client,
-      new PutObjectCommand({ Bucket: `${import.meta.env.VITE_S3_BUCKET_NAME}`, Key: `TECHOBOL/DEPOSIT_ORDER_REPORT/${name}.pdf` }),
+      new PutObjectCommand({
+        Bucket: `${import.meta.env.VITE_S3_BUCKET_NAME}`,
+        Key: `TECHOBOL/DEPOSIT_ORDER_REPORT/${name}.pdf`
+      }),
       { expiresIn: 3600 }
     )
 
@@ -70,6 +85,4 @@ export const useAmazonS3 = () => {
     uploadDepositOrderReportFileOfTechoBol,
     uploadGeneratedDepositOrderReportFileOfTechoBol
   }
-
 }
-
