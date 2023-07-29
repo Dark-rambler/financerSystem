@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState  } from 'react'
 import { useParams, useNavigate, Outlet } from 'react-router-dom'
 import { Tabs } from '@mantine/core'
 
@@ -18,7 +18,7 @@ const DepositOrderDetailLayout = () => {
     useDepositOrderStore()
   const { id } = useParams()
   const navigate = useNavigate()
-  const { token } = useLoginStore()
+  const { token } = useLoginStore() 
 
   const getBranchOfficesAndAmounts = async () => {
     const response = await getAllDepositOrderBranchOfficeGivenAnId(
@@ -41,8 +41,14 @@ const DepositOrderDetailLayout = () => {
   useEffect(() => {
     getDepositOrder()
     getBranchOfficesAndAmounts()
-    navigate(`/techobol/deposit-order-detail/${id}/deposit-order`)
-  }, [])
+    navigate(`/techobol/deposit-order-detail/${id}/deposit-order`);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('popstate', () => {
+      navigate('/techobol/deposit-order');
+    });
+  }, []);
 
   return (
     <>
