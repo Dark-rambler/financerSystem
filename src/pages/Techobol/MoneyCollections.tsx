@@ -62,7 +62,7 @@ const MoneyCollections = () => {
           </div>
         </div>
 
-        <div className='h-[calc(100%-46px)]'>
+        <div className='h-[calc(100%-46px)]' style={{ overflowX: "auto" }}>
           <MoneyCollectionAGTable
             data={moneyCollectionData}
             gridRef={gridRef}

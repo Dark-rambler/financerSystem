@@ -60,7 +60,7 @@ const Expenses = () => {
           </div>
         </div>
 
-        <div className='h-[calc(100%-46px)]'>
+        <div className='h-[calc(100%-46px)]' style={{ overflowX: "auto" }}>
           <ExpenseAGTable data={expenseData} gridRef={gridRef} />
         </div>
       </div>

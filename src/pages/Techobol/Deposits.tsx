@@ -61,7 +61,7 @@ const Deposits = () => {
           </div>
         </div>
 
-        <div className='h-[calc(100%-46px)]'>
+        <div className='h-[calc(100%-46px)]' style={{ overflowX: "auto" }}>
           <DepositAGTable data={depositData} gridRef={gridRef} />
         </div>
       </div>
