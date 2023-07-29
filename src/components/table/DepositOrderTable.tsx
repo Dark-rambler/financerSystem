@@ -13,7 +13,6 @@ import CancelDepositOrder from '../buttons/depositOrder/CancelDepositOrder'
 import ViewDepositOrderReport from '../buttons/depositOrder/ViewDepositOrderReport'
 import GenerateDepositOrderReport from '../buttons/depositOrder/GenerateDepositOrderReport'
 
-
 import { AG_GRID_LOCALE_ES } from '../../locale/locale.es'
 import { useLoginStore } from '../store/loginStore'
 import { Roles } from '../../enums/Roles'
@@ -47,6 +46,7 @@ const Table = ({
   useEffect(() => {
     setRowData(depositOrderData)
   }, [depositOrderData])
+
 
   const columnDefs = useMemo<ColDef[]>(
     () => [
@@ -229,8 +229,6 @@ const Table = ({
     []
   )
 
-  // const gridRef = useRef<AgGridReact<DepositOrderInterface>>(null)
-
   const gridOptions = useMemo<GridOptions>(
     () => ({
       pagination: true,
@@ -238,7 +236,6 @@ const Table = ({
       suppressRowClickSelection: true,
       cacheQuickFilter: true,
       localeText: AG_GRID_LOCALE_ES,
-
       onGridSizeChanged: params => {
         params.api.sizeColumnsToFit()
       },

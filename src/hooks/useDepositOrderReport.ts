@@ -15,6 +15,7 @@ import { errorToast, succesToast } from '../services/toasts'
 import { createDepositOrderReport } from '../services/DepositOrderReport'
 
 import { useAmazonS3 } from './useAmazonS3'
+import socket from '../services/SocketIOConnection'
 
 export const useDepositOrderReport = () => {
   const s3 = useAmazonS3()
@@ -113,6 +114,7 @@ export const useDepositOrderReport = () => {
     close()
     succesToast('Reporte enviado correctamente')
     navigate('/techobol/deposit-order')
+    socket.emit('updateDepositOrder', depositOrderStatusResponse)
     setTimeout(() => {
       setIsLoading(false)
     }, 1000)

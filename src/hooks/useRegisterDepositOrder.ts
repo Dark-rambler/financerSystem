@@ -15,6 +15,7 @@ import { EmployeeInterface } from '../models/Employee'
 import { useDisclosure } from '@mantine/hooks'
 
 import { createDepositOrder } from '../services/DepositOrder'
+import socket from '../services/SocketIOConnection'
 
 interface SelectMantineData {
   value: string
@@ -337,7 +338,7 @@ export const useRegisterDepositOrder = () => {
       form.values.orderNumber
     )
 
-    const response = createDepositOrder(
+    const response = await createDepositOrder(
       depositOrderBody,
       deposiOrderBranchOfficeBody,
       token
@@ -349,6 +350,7 @@ export const useRegisterDepositOrder = () => {
       return
     }
 
+    socket.emit('createDepositOrder', response)
     succesToast('Orden de depósito enviada con éxito')
     navigate('/deposit-order')
     setIsLoading(() => false)
