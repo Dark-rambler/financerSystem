@@ -24,7 +24,7 @@ interface RegisterDepositOrderFormProps {
 const RegisterDepositOrderForm = ({
   depositOrder
 }: RegisterDepositOrderFormProps) => {
-  const {currentDate, isLoading} = useRealTimeDate();
+  const currentDate = useRealTimeDate();
   const handleOnSubmit = async () => {
     await PDFModifier({ depositOrder })
     depositOrder.open()
@@ -38,33 +38,16 @@ const RegisterDepositOrderForm = ({
     >
       {' '}
       <SimpleGrid cols={2}>
-      {isLoading ? (
-          <>
-          <DatePickerInput
-          id="myDatePicker"
-          withAsterisk
-          valueFormat='DD MMM YYYY'
-          clearable
-          label={'Fecha de orden'}
-          placeholder='Fecha de orden'
-          disabled
-          defaultValue={new Date()}
-          {...depositOrder.form.getInputProps('orderDate')}
-        />
-        </>
-        ) : (
-          <DatePickerInput
+      <DatePickerInput
             id="myDatePicker"
             withAsterisk
             valueFormat='DD MMM YYYY'
             clearable
             label={'Fecha de orden'}
             placeholder='Fecha de orden'
-            disabled
-            defaultValue={currentDate}
+            maxDate={currentDate}
             {...depositOrder.form.getInputProps('orderDate')}
           />
-        )}
         <Select
           withAsterisk
           placeholder='Regional'

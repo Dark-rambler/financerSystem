@@ -11,7 +11,7 @@ interface EnvelopeModalProps {
 }
 
 const EnvelopeModal = ({ opened, close, envelope }: EnvelopeModalProps) => {
-  const {currentDate} = useRealTimeDate();
+  const currentDate = useRealTimeDate();
   return (
     <Modal
       opened={opened}
