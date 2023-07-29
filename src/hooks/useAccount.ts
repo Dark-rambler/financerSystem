@@ -34,11 +34,15 @@ export const useAccount = () => {
     validate: {
       name: value => {
         const nameEntered = value.trim().toLowerCase()
-        const isRepeated = accounts.some((account) => account.name.toLowerCase().replace(/\s+/g,'') === nameEntered.replace(/\s+/g,''));
-        
+        const isRepeated = accounts.some(
+          account =>
+            account.name.toLowerCase().replace(/\s+/g, '') ===
+            nameEntered.replace(/\s+/g, '')
+        )
+
         if (nameEntered === '') return 'Ingrese un nombre'
         if (isRepeated) return 'Ya existe una cuenta con este nombre'
-      },
+      }
     }
   })
 
@@ -61,11 +65,12 @@ export const useAccount = () => {
     })
 
     socket.on('deletedAccount', (data: IAccount) => {
-      setAccounts(accounts => accounts.filter(account => account.id !== data.id))
+      setAccounts(accounts =>
+        accounts.filter(account => account.id !== data.id)
+      )
     })
 
-    return () =>
-    {
+    return () => {
       socket.off('newAccount')
       socket.off('deletedAccount')
     }

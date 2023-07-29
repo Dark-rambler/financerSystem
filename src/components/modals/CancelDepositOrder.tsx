@@ -1,7 +1,10 @@
-import { Button, Modal } from '@mantine/core'
 import { useState } from 'react'
+import { Button, Modal } from '@mantine/core'
+
 import { useLoginStore } from '../store/loginStore'
 import { errorToast, succesToast } from '../../services/toasts'
+import { cancelDepositOrder } from '../../services/DepositOrder'
+import socket from '../../services/SocketIOConnection'
 
 interface CancelDepositOrderProps {
   id?: number
@@ -15,28 +18,17 @@ const CancelDepositOrder = ({ opened, close, id }: CancelDepositOrderProps) => {
 
   const handleCancelButton = async () => {
     setIsLoading(() => true)
-    try {
-      const response = await fetch(
-        `${
-          import.meta.env.VITE_API_DOMAIN
-        }/deposit-order/cancel-deposit-order/${id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': token
-          }
-        }
-      )
-      if (!response.ok) {
-        throw new Error('Error al cancelar la orden de depósito')
-      }
-      close()
-      succesToast('Orden de depósito cancelada')
-    } catch (err) {
+    const response = await cancelDepositOrder(Number(id), token)
+
+    if (!response) {
+      setIsLoading(() => false)
       errorToast('Error al cancelar la orden de depósito')
+      return
     }
+    close()
+    succesToast('Orden de depósito cancelada')
     setIsLoading(() => false)
+    socket.emit('updateDepositOrder', response)
   }
   return (
     <>

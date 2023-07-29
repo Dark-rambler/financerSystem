@@ -23,7 +23,7 @@ export const useDeposit = () => {
   const [totalAmount, setTotalAmount] = useState<number>(0)
 
   const [banks, setBanks] = useState<SelectFormat[]>([
-    { value: 'Banco de credito BCP', label: 'Banco de credito BCP' },
+    { value: 'Banco de credito BCP', label: 'Banco de crédito BCP' },
     { value: 'Banco Bisa', label: 'Banco Bisa' },
     { value: 'Banco Fie', label: 'Banco Fie' },
     { value: 'Banco Ganadero', label: 'Banco Ganadero' },
