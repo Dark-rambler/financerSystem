@@ -22,7 +22,7 @@ const MoneyCollectionModal = ({
   close,
   moneyCollection
 }: MoneyCollectionModalProps) => {
-  const {currentDate}= useRealTimeDate(); 
+  const currentDate= useRealTimeDate(); 
   return (
     <Modal
       opened={opened}

@@ -19,7 +19,7 @@ interface ExpenseModalProps {
 }
 
 const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
-const {currentDate}=useRealTimeDate();
+const currentDate=useRealTimeDate();
   return (
     <Modal
       opened={opened}

@@ -19,7 +19,7 @@ interface DollarModalProps {
 }
 
 const DollarModal = ({ opened, close, dollar }: DollarModalProps) => {
-const {currentDate}= useRealTimeDate();
+const currentDate= useRealTimeDate();
   return (
     <Modal
       opened={opened}
