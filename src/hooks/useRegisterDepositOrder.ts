@@ -5,6 +5,7 @@ import { succesToast, errorToast } from '../services/toasts'
 
 import { useNavigate } from 'react-router-dom'
 import { useAmazonS3 } from './useAmazonS3'
+import { useRealTimeDate } from './useRealTimeDate'
 
 import { getAllEmployeesWithRoles } from '../services/Employee'
 import { getAllRegionals } from '../services/Regional'
@@ -37,6 +38,7 @@ interface branchOfficesAndAmount {
 }
 
 export const useRegisterDepositOrder = () => {
+  const {currentDate}= useRealTimeDate();
   const form = useForm<useFormInterface>({
     initialValues: {
       regional: '',
@@ -353,6 +355,9 @@ export const useRegisterDepositOrder = () => {
     navigate('/deposit-order')
     setIsLoading(() => false)
   }
+  useEffect(() => {
+    form.setFieldValue('orderDate', currentDate);
+  }, [currentDate]);
 
   useEffect(() => {
     fetchRegionalData()

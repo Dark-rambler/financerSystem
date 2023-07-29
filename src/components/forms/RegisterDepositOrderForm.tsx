@@ -12,6 +12,7 @@ import { DatePickerInput } from '@mantine/dates'
 
 import { useRegisterDepositOrder } from '../../hooks/useRegisterDepositOrder'
 import { PDFModifier } from '../pdf/PDFVisualizer'
+import { useRealTimeDate } from '../../hooks/useRealTimeDate'
 
 import EditButton from '../buttons/EditButton'
 import DeleteButton from '../buttons/DeleteButton'
@@ -23,6 +24,7 @@ interface RegisterDepositOrderFormProps {
 const RegisterDepositOrderForm = ({
   depositOrder
 }: RegisterDepositOrderFormProps) => {
+  const {currentDate, isLoading} = useRealTimeDate();
   const handleOnSubmit = async () => {
     await PDFModifier({ depositOrder })
     depositOrder.open()
@@ -36,14 +38,33 @@ const RegisterDepositOrderForm = ({
     >
       {' '}
       <SimpleGrid cols={2}>
-        <DatePickerInput
+      {isLoading ? (
+          <>
+          <DatePickerInput
+          id="myDatePicker"
           withAsterisk
           valueFormat='DD MMM YYYY'
           clearable
           label={'Fecha de orden'}
           placeholder='Fecha de orden'
+          disabled
+          defaultValue={new Date()}
           {...depositOrder.form.getInputProps('orderDate')}
         />
+        </>
+        ) : (
+          <DatePickerInput
+            id="myDatePicker"
+            withAsterisk
+            valueFormat='DD MMM YYYY'
+            clearable
+            label={'Fecha de orden'}
+            placeholder='Fecha de orden'
+            disabled
+            defaultValue={currentDate}
+            {...depositOrder.form.getInputProps('orderDate')}
+          />
+        )}
         <Select
           withAsterisk
           placeholder='Regional'
@@ -77,6 +98,7 @@ const RegisterDepositOrderForm = ({
           clearable
           withAsterisk
           label={'Periodo de depósito '}
+          maxDate={currentDate}
           placeholder='Periodo de depósito'
           {...depositOrder.form.getInputProps('orderRange')}
         />
@@ -86,6 +108,7 @@ const RegisterDepositOrderForm = ({
           clearable
           label={'Fecha límite de entrega'}
           placeholder='Fecha límite de entrega'
+          minDate={currentDate}
           {...depositOrder.form.getInputProps('limitedDate')}
         />
       </SimpleGrid>

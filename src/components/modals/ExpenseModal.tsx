@@ -10,6 +10,7 @@ import {
 import { DatePickerInput } from '@mantine/dates'
 
 import { useExpense } from '../../hooks/useExpense'
+import { useRealTimeDate } from '../../hooks/useRealTimeDate'
 
 interface ExpenseModalProps {
   opened: boolean
@@ -18,6 +19,7 @@ interface ExpenseModalProps {
 }
 
 const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
+const {currentDate}=useRealTimeDate();
   return (
     <Modal
       opened={opened}
@@ -58,6 +60,7 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
             label={'Fecha de gasto'}
             dropdownType='modal'
             clearable
+            maxDate={currentDate}
             {...expense.form.getInputProps('date')}
           />
           <Select
