@@ -70,7 +70,7 @@ const ReviewDepositOrderModal = ({ opened, close, data }: ReviweModalProps) => {
     }
     close()
     succesToast('Estado de revisión actualizado correctamente')
-    socket.emit('updateRevisionStatus', response)
+    socket.emit('updateDepositOrder', response)
     setTimeout(() => {
       setIsLoading(() => false)
     }, 1000)

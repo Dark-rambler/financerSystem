@@ -6,8 +6,6 @@ import { Roles } from '../../enums/Roles'
 import Table from '../../components/table/DepositOrderTable'
 import useDepositOrder from '../../hooks/useDepositOrder'
 
-
-
 const DepositOrder = () => {
  const depositOrder = useDepositOrder()
 
