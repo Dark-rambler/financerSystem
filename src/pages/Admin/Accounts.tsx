@@ -1,5 +1,3 @@
-
-
 import { Input, Button } from '@mantine/core'
 import { TbSearch, TbPlus } from 'react-icons/tb'
 
@@ -9,7 +7,6 @@ import { useAccount } from '../../hooks/useAccount'
 
 import DeleteModal from '../../components/modals/DeleteModal'
 import RegisterAccountModal from '../../components/modals/admin/RegisterAccountModal'
-
 
 const Accounts = () => {
   const account = useAccount()
@@ -47,11 +44,15 @@ const Accounts = () => {
           </div>
         </div>
 
-        <div className='h-[calc(100%-60px)] overflow-y-auto'>
+        <div className='h-[calc(100%-60px)] overflow-y-auto max-2xl:border-x-2 '>
           <FinanceAccountTable account={account} gridRef={account.gridRef} />
         </div>
       </div>
-      <RegisterAccountModal account={account} opened={account.opened} close={account.close} />
+      <RegisterAccountModal
+        account={account}
+        opened={account.opened}
+        close={account.close}
+      />
       <DeleteModal
         label={'Cuenta financiera'}
         opened={account.openedDelete}

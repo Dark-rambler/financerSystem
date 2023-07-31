@@ -44,7 +44,7 @@ const DepositOrder = () => {
           </div>
         </div>
 
-        <div className='h-[calc(100%-46px)]'>
+        <div className='h-[calc(100%-46px)] overflow-x-auto max-2xl:border-x-2 ' >
           <Table
             depositOrderData={depositOrder.depositOrderData}
             gridRef={depositOrder.gridRef}

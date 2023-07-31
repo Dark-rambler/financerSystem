@@ -44,7 +44,7 @@ const SubAccounts = () => {
           </div>
         </div>
 
-        <div className='h-[calc(100%-60px)] overflow-y-auto'>
+        <div className='h-[calc(100%-60px)] overflow-y-auto max-2xl:border-x-2 '>
           <SubAccountTable
             subAccount={subAccount}
             gridRef={subAccount.gridRef}
