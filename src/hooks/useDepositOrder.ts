@@ -34,8 +34,13 @@ const useDepositOrder = () => {
     }, [])
   
     useEffect(() => { 
+      socket.on('newDepositOrder', (data: DepositOrderInterface) => { 
+        const newData = [...depositOrderDataRef.current, data]
+
+        setDepositOrderData(() => [...newData])
+        depositOrderDataRef.current = [...newData]
+      })
       socket.on('updatedDepositOrder', (data: DepositOrderInterface) => { 
-        console.log(data)
         const newData = depositOrderDataRef.current.map((depositOrder) => { 
           if (depositOrder.id === data.id) { 
             return data
@@ -45,8 +50,10 @@ const useDepositOrder = () => {
         setDepositOrderData(() => [...newData])
         depositOrderDataRef.current = [...newData]
       })
+
   
       return () => { 
+        socket.off('newDepositOrder')
         socket.off('updatedDepositOrder')
       }
   
@@ -71,8 +78,8 @@ const useDepositOrder = () => {
         depositOrderData,
 
         gridRef,
-        onFilterTextBoxChanged
-
+        onFilterTextBoxChanged,
+        depositOrderDataRef
     }
 }
 

@@ -132,3 +132,27 @@ export const updateRevisionStatus = async (
     return null
   }
 }
+
+export const cancelDepositOrder = async (id: number, token: string) => {
+  try {
+    const response = await fetch(
+      `${
+        import.meta.env.VITE_API_DOMAIN
+      }/deposit-order/cancel-deposit-order/${id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token
+        }
+      }
+    )
+    if (!response.ok) {
+      return null
+    }
+    return response.json()
+
+  } catch {
+    return null
+  }
+}
