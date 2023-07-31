@@ -50,8 +50,16 @@ export const useUser = () => {
       lastName: isNotEmpty('Ingrese un apellido'),
       email: isEmail('Ingrese un correo válido'),
       password: isNotEmpty('Ingrese una contraseña'),
-      roleId: (value: number)=> {
+      roleId: (value: number) => {
         if (value === 0) return 'Seleccione un rol'
+
+        const selectedRole = roles.find(role => role.value === value)
+        const maxEmployeesForRole = selectedRole.maxEmployeesAllowed
+        const usersWithRole = users.filter(user => user.role.id === value)
+
+        if (usersWithRole.length >= maxEmployeesForRole) {
+          return `Se ha alcanzado el límite de usuarios para este rol (${maxEmployeesForRole})`
+        }
       },
       regionalOfficeId: (value: number) => {
         if (value === 0) return 'Seleccione una regional'
@@ -66,14 +74,14 @@ export const useUser = () => {
 
   const getRoles = async () => {
     const data = await getAllRoles(token)
-
     if (!data) {
       errorToast('Error al cargar los roles')
       return null
     }
     const roles = data.map((role: Role) => ({
       value: role.id,
-      label: role.name
+      label: role.name,
+      maxEmployeesAllowed: role.maxEmployeesAllowed
     }))
     setRoles(roles)
   }
@@ -107,8 +115,7 @@ export const useUser = () => {
       setUsers(users => users.filter(user => user.id !== data.id))
     })
 
-    return () => 
-    {
+    return () => {
       socket.off('newEmployee')
       socket.off('deletedEmployee')
     }
