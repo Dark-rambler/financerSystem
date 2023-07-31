@@ -56,17 +56,15 @@ export const useMoneyCollection = () => {
         idOfice.current = value
       },
       amount: value => {
-        if (
-          parseFloat(value) >
-          parseFloat(
-            depositBranchOffice.find(
-              branchOffice => branchOffice.branchOfficeId == idOfice.current
-            ).amount
-          )
-        ) {
-          return 'El monto es mayor al indicado en la orden de deposito para esta sucursal'
+        const foundBranchOffice = depositBranchOffice.find(
+          branchOffice => branchOffice.branchOfficeId == idOfice.current
+        )?.amount
+        if (foundBranchOffice) {
+          const numericValue =
+            typeof value === 'string' ? parseFloat(value) : value
+          if (numericValue > foundBranchOffice)
+            return 'El monto es mayor al indicado en la orden de deposito para esta sucursal'
         }
-
         if (value.toString().trim().length == 0) return 'Ingrese un monto '
       },
       date: isNotEmpty('Seleccione una fecha'),
