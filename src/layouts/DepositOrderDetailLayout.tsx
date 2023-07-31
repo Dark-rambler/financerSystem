@@ -1,4 +1,4 @@
-import { useEffect, useState  } from 'react'
+import { useEffect  } from 'react'
 import { useParams, useNavigate, Outlet } from 'react-router-dom'
 import { Tabs } from '@mantine/core'
 
