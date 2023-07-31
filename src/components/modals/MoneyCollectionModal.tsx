@@ -9,7 +9,6 @@ import {
 import { DatePickerInput } from '@mantine/dates'
 
 import { useMoneyCollection } from '../../hooks/useMoneyCollection'
-import { useRealTimeDate } from '../../hooks/useRealTimeDate'
 
 interface MoneyCollectionModalProps {
   opened: boolean
@@ -22,7 +21,6 @@ const MoneyCollectionModal = ({
   close,
   moneyCollection
 }: MoneyCollectionModalProps) => {
-  const currentDate= useRealTimeDate(); 
   return (
     <Modal
       opened={opened}
@@ -57,7 +55,7 @@ const MoneyCollectionModal = ({
             label={'Fecha de recaudación'}
             dropdownType='modal'
             clearable
-            maxDate={currentDate}
+            maxDate={moneyCollection.currentDate}
             {...moneyCollection.form.getInputProps('date')}
           />
         </SimpleGrid>

@@ -9,6 +9,7 @@ import { errorToast } from '../../services/toasts'
 
 import { getAllMoneyCollections } from '../../services/MoneyCollection'
 import MoneyCollectionAGTable from '../../components/table/techobol/AGTables/MoneyCollectionAGTable'
+import socket from '../../services/SocketIOConnection'
 
 const MoneyCollections = () => {
   const { token } = useLoginStore()
@@ -29,6 +30,16 @@ const MoneyCollections = () => {
 
   useEffect(() => {
     getMoneyCollections()
+  }, [])
+
+  useEffect(() => {
+    socket.on('newMoneyCollections', (data: IMoneyCollection[]) => {
+      setMoneyCollectionData(prevState => [...prevState, ...data])
+    })
+
+    return () => { 
+      socket.off('newMoneyCollections')
+    }
   }, [])
 
   const onFilterTextBoxChanged = useCallback(() => {

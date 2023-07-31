@@ -9,6 +9,7 @@ import { errorToast } from '../../services/toasts'
 
 import { getAllEnvelopes } from '../../services/Envelope'
 import EnvelopeAGTable from '../../components/table/techobol/AGTables/EnvelopeAGTable'
+import socket from '../../services/SocketIOConnection'
 
 const Envelopes = () => {
   const { token } = useLoginStore()
@@ -27,6 +28,16 @@ const Envelopes = () => {
 
   useEffect(() => {
     getEnvelopes()
+  }, [])
+
+  useEffect(() => {
+    socket.on('newEnvelopes', (data: IEnvelope[]) => {
+      setEnvelopeData(prevState => [...prevState, ...data])
+    })
+
+    return () => { 
+      socket.off('newEnvelopes')
+    }
   }, [])
 
   const onFilterTextBoxChanged = useCallback(() => {

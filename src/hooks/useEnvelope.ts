@@ -24,6 +24,7 @@ export const useEnvelope = (isReadOnly: boolean) => {
   const [actualId, setActualId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState(false)
   const [totalAmount, setTotalAmount] = useState<number>(0)
+  const [currentDate, setCurrentDate] = useState<Date>(new Date())
 
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
   const [fromBranchOffices, setFromBranchOffices] = useState<
@@ -195,6 +196,8 @@ export const useEnvelope = (isReadOnly: boolean) => {
     totalAmount,
     fromBranchOffices,
     getFormattedEnvelopes,
-    getEnvelopesFromDepositOrder
+    getEnvelopesFromDepositOrder,
+    currentDate,
+    setCurrentDate
   }
 }

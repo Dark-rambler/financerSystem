@@ -85,9 +85,9 @@ export const useDepositOrderReport = () => {
       return
     }
 
-    const response = await createDepositOrderReport(token, depositOrderData)
+    const depositOrderResponse = await createDepositOrderReport(token, depositOrderData)
 
-    if (!response) {
+    if (!depositOrderResponse) {
       errorToast('Error al enviar el reporte')
       setIsLoading(false)
       return
@@ -115,6 +115,13 @@ export const useDepositOrderReport = () => {
     succesToast('Reporte enviado correctamente')
     navigate('/techobol/deposit-order')
     socket.emit('updateDepositOrder', depositOrderStatusResponse)
+
+    socket.emit('createMoneyCollections', depositOrderResponse.moneyCollections)
+    socket.emit('createExpenses', depositOrderResponse.expenses)
+    socket.emit('createDollars', depositOrderResponse.dollars)
+    socket.emit('createEnvelopes', depositOrderResponse.envelopes)
+    socket.emit('createDeposits', depositOrderResponse.deposits)
+
     setTimeout(() => {
       setIsLoading(false)
     }, 1000)

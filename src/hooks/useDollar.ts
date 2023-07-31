@@ -22,6 +22,7 @@ export const useDollar = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [totalAmount, setTotalAmount] = useState<number>(0)
   const [totalAmountBs, setTotalAmountBs] = useState<number>(0)
+  const [currentDate, setCurrentDate] = useState<Date>(new Date())
 
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
 
@@ -168,6 +169,8 @@ export const useDollar = () => {
     totalAmount,
     totalAmountBs,
     getFormattedDollars,
-    getDollarsFromDepositOrder
+    getDollarsFromDepositOrder,
+    currentDate,
+    setCurrentDate
   }
 }
