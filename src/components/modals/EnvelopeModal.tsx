@@ -2,7 +2,6 @@ import { Modal, SimpleGrid, Select, NumberInput, Textarea, Button } from '@manti
 import { DatePickerInput } from '@mantine/dates'
 
 import { useEnvelope } from '../../hooks/useEnvelope'
-import { useRealTimeDate } from '../../hooks/useRealTimeDate'
 
 interface EnvelopeModalProps {
   opened: boolean
@@ -11,7 +10,6 @@ interface EnvelopeModalProps {
 }
 
 const EnvelopeModal = ({ opened, close, envelope }: EnvelopeModalProps) => {
-  const currentDate = useRealTimeDate();
   return (
     <Modal
       opened={opened}
@@ -54,7 +52,7 @@ const EnvelopeModal = ({ opened, close, envelope }: EnvelopeModalProps) => {
             label={'Fecha'}
             dropdownType='modal'
             clearable
-            maxDate={currentDate}
+            maxDate={envelope.currentDate}
             {...envelope.form.getInputProps('date')}
           />
           <NumberInput

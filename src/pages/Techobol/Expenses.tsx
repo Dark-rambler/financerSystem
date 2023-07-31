@@ -9,6 +9,7 @@ import { errorToast } from '../../services/toasts'
 
 import { getAllExpenses } from '../../services/Expense'
 import ExpenseAGTable from '../../components/table/techobol/AGTables/ExpenseAGTable'
+import socket from '../../services/SocketIOConnection'
 
 const Expenses = () => {
   const { token } = useLoginStore()
@@ -27,6 +28,17 @@ const Expenses = () => {
 
   useEffect(() => {
     getExpenses()
+  }, [])
+
+  useEffect(() => {
+    socket.on('newExpenses', (data: IExpense[]) => {
+      setExpenseData(prevState => [...prevState, ...data])
+    })
+
+    return () => { 
+      socket.off('newExpenses')
+    }
+   
   }, [])
 
   const onFilterTextBoxChanged = useCallback(() => {

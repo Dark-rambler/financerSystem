@@ -31,6 +31,7 @@ export const useMoneyCollection = () => {
   const [actualId, setActualId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState(false)
   const [totalAmount, setTotalAmount] = useState<number>(0)
+  const [currentDate, setCurrentDate] = useState<Date>(new Date())
 
   const form = useForm<IMoneyCollection>({
     initialValues: {
@@ -197,6 +198,8 @@ export const useMoneyCollection = () => {
     setMoneyCollections,
     getFormattedMoneyCollections,
     getMoneyCollectionsFromDepositOrder,
-    depositOrder
+    depositOrder,
+    currentDate,
+    setCurrentDate
   }
 }

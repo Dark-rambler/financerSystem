@@ -10,4 +10,5 @@ export interface IDepositOrderReport {
   envelopes: IEnvelope[]
   dollars: IDollar[]
   deposits: IDeposit[]
+  depositOrderId: number
 }
