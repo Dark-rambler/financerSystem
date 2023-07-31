@@ -19,7 +19,7 @@ interface FormSelectOption {
   label: string
 }
 
-export const useExpense = (isReadOnly:boolean) => {
+export const useExpense = (isReadOnly: boolean) => {
   const { token } = useLoginStore()
   const { depositOrder } = useDepositOrderStore()
 
@@ -31,6 +31,7 @@ export const useExpense = (isReadOnly:boolean) => {
   const [filteredSubAccounts, setFilteredSubAccounts] = useState<
     FormSelectOption[]
   >([])
+  const [selectedAccountId, setSelectedAccountId] = useState<number | null>(null);
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
 
   const [expenses, setExpenses] = useState<IExpense[]>([])
@@ -80,6 +81,15 @@ export const useExpense = (isReadOnly:boolean) => {
       getAllSubAccounts()
     }
   }, [])
+
+  useEffect(() => {
+    setFilteredSubAccounts(
+      subAccounts.map(subAccount => ({
+        value: subAccount.id?.toString() as string,
+        label: subAccount.name
+      }))
+    )
+  }, [subAccounts])
 
   const calculateAmount = () => {
     const totalAmount = expenses.reduce((accumulator, currentValue) => {
@@ -192,18 +202,33 @@ export const useExpense = (isReadOnly:boolean) => {
     form.setFieldValue('subAccountId', Number(expense.subAccountId))
   }
 
-  const onSelectAccount = () => {
+  const onSelectAccount = (accountId: string) => {
     const filterSubAccounts = subAccounts.filter(subAccount => {
-      if (Number(subAccount.accountId) === form.values.accountId) return true
-    })
-
+      return Number(subAccount.accountId) === Number(accountId);
+    });
+  
     const formatedSubAccounts = filterSubAccounts.map(subAccount => ({
+      value: subAccount.id?.toString() as string,
+      label: subAccount.name
+    }));
+  
+    setFilteredSubAccounts(formatedSubAccounts);
+    setSelectedAccountId(Number(accountId));
+    form.setFieldValue('subAccountId', 0);
+  };
+
+  useEffect(() => {
+    const filterSubAccounts = subAccounts.filter(
+      subAccount => Number(subAccount.accountId) === form.values.accountId
+    )
+
+    const formattedSubAccounts = filterSubAccounts.map(subAccount => ({
       value: subAccount.id?.toString() as string,
       label: subAccount.name
     }))
 
-    setFilteredSubAccounts(formatedSubAccounts)
-  }
+    setFilteredSubAccounts(formattedSubAccounts)
+  }, [form.values.accountId, subAccounts])
 
   const onDelete = () => {
     expenses.splice(actualId, 1)
@@ -232,7 +257,7 @@ export const useExpense = (isReadOnly:boolean) => {
   const getExpensesFromDepositOrder = async (id: number) => {
     const response = await getAllExpensesFromDepositOrder(id, token)
     if (!response) return
-    
+
     setExpenses(response)
     calculateAmount()
   }
@@ -261,6 +286,7 @@ export const useExpense = (isReadOnly:boolean) => {
     totalAmount,
     setBranchOffices,
     getFormattedExpenses,
-    getExpensesFromDepositOrder
+    getExpensesFromDepositOrder,
+    selectedAccountId
   }
 }

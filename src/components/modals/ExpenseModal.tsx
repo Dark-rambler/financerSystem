@@ -19,7 +19,7 @@ interface ExpenseModalProps {
 }
 
 const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
-const currentDate=useRealTimeDate();
+  const currentDate = useRealTimeDate()
   return (
     <Modal
       opened={opened}
@@ -91,7 +91,6 @@ const currentDate=useRealTimeDate();
           />
         </SimpleGrid>
 
-    
         <SimpleGrid cols={2}>
           <Select
             data={expense.accounts}
@@ -100,8 +99,8 @@ const currentDate=useRealTimeDate();
             label={'Cuenta financiera'}
             searchable
             {...expense.form.getInputProps('accountId')}
-
-            // onSelect={(e) => expense.onSelectAccount(e.currentTarget.value)}
+            value={expense.selectedAccountId}
+            onChange={(e) => expense.onSelectAccount(e)}
           />
           <Select
             data={expense.filteredSubAccounts}
