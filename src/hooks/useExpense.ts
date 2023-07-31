@@ -37,6 +37,7 @@ export const useExpense = (isReadOnly:boolean) => {
   const [isEditing, setIsEditing] = useState(false)
   const [actualId, setActualId] = useState<number>(0)
   const [totalAmount, setTotalAmount] = useState<number>(0)
+  const [currentDate, setCurrentDate] = useState<Date>(new Date())
 
   const documentTypes = [
     { value: 'Recibo', label: 'Recibo' },
@@ -80,6 +81,7 @@ export const useExpense = (isReadOnly:boolean) => {
       getAllSubAccounts()
     }
   }, [])
+
 
   const calculateAmount = () => {
     const totalAmount = expenses.reduce((accumulator, currentValue) => {
@@ -261,6 +263,8 @@ export const useExpense = (isReadOnly:boolean) => {
     totalAmount,
     setBranchOffices,
     getFormattedExpenses,
-    getExpensesFromDepositOrder
+    getExpensesFromDepositOrder,
+    currentDate,
+    setCurrentDate
   }
 }

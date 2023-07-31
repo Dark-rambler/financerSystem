@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { isNotEmpty, useForm } from '@mantine/form'
 
@@ -21,6 +21,7 @@ export const useDeposit = () => {
   const [actualId, setActualId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState(false)
   const [totalAmount, setTotalAmount] = useState<number>(0)
+  const [currentDate, setCurrentDate] = useState<Date>(new Date())
 
   const [banks, setBanks] = useState<SelectFormat[]>([
     { value: 'Banco de credito BCP', label: 'Banco de crédito BCP' },
@@ -165,6 +166,8 @@ export const useDeposit = () => {
     setBanks,
     totalAmount,
     getFormattedDeposits,
-    getDepositsFromDepositOrder
+    getDepositsFromDepositOrder,
+    currentDate,
+    setCurrentDate
   }
 }

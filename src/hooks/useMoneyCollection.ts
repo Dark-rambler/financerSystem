@@ -31,7 +31,8 @@ export const useMoneyCollection = () => {
   const [actualId, setActualId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState(false)
   const [totalAmount, setTotalAmount] = useState<number>(0)
-  const idOfice = useRef(0)
+  const [currentDate, setCurrentDate] = useState<Date>(new Date())
+  const idOffice = useRef(0)
 
   const form = useForm<IMoneyCollection>({
     initialValues: {
@@ -53,7 +54,7 @@ export const useMoneyCollection = () => {
           )
         )
           return 'Esta sucursal ya fue seleccionada'
-        idOfice.current = value
+        idOffice.current = value
       },
       amount: value => {
         if (
@@ -215,6 +216,8 @@ export const useMoneyCollection = () => {
     setMoneyCollections,
     getFormattedMoneyCollections,
     getMoneyCollectionsFromDepositOrder,
-    depositOrder
+    depositOrder,
+    currentDate,
+    setCurrentDate
   }
 }

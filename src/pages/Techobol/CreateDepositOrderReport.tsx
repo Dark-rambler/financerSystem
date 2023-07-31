@@ -31,10 +31,12 @@ import EnvelopeTable from '../../components/table/techobol/EnvelopeTable'
 import DollarTable from '../../components/table/techobol/DollarTable'
 import SingleDepositOrderTable from '../../components/table/techobol/SingleDepositOrderTable'
 import { generateReportPDF } from '../../components/pdf/PDFReport'
+import { useRealTimeDate } from '../../hooks/useRealTimeDate'
 
 const CreateDepositOrderReport = () => {
   const depositOrderReport = useDepositOrderReport()
   const { depositOrder, depositBranchOffice } = useDepositOrderStore()
+  const realTimeDate = useRealTimeDate()
   const navigate = useNavigate()
 
   const moneyCollection = useMoneyCollection()
@@ -62,6 +64,14 @@ const CreateDepositOrderReport = () => {
       navigate('/techobol/deposit-order')
     setBranchOffices()
   }, [depositBranchOffice])
+
+  useEffect(() => {
+    moneyCollection.setCurrentDate(realTimeDate)
+    expense.setCurrentDate(realTimeDate)
+    envelope.setCurrentDate(realTimeDate)
+    dollar.setCurrentDate(realTimeDate)
+    deposit.setCurrentDate(realTimeDate)
+  }, [realTimeDate])
 
   useEffect(() => {
     const isReportValid =
@@ -107,7 +117,6 @@ const CreateDepositOrderReport = () => {
           </h1>
           <div></div>
         </div>
-
         <SingleDepositOrderTable />
       </section>
 
@@ -277,6 +286,7 @@ const CreateDepositOrderReport = () => {
           const dollarData = dollar.getFormattedDollars()
 
           const depositOrderReportData = {
+            depositOrderId: Number(depositOrder.id),
             moneyCollections: moneyCollentionData,
             expenses: expenseData,
             envelopes: envelopeData,
