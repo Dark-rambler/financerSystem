@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { isNotEmpty, useForm } from '@mantine/form'
 
@@ -14,7 +14,7 @@ interface FormSelectOption {
 }
 
 export const useMoneyCollection = () => {
-  const { depositOrder } = useDepositOrderStore()
+  const { depositOrder, depositBranchOffice } = useDepositOrderStore()
   const { token } = useLoginStore()
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
   const [selectedBranchOffices, setSelectedBranchOffices] = useState<
@@ -31,6 +31,7 @@ export const useMoneyCollection = () => {
   const [actualId, setActualId] = useState<number>(0)
   const [isEditing, setIsEditing] = useState(false)
   const [totalAmount, setTotalAmount] = useState<number>(0)
+  const idOfice = useRef(0)
 
   const form = useForm<IMoneyCollection>({
     initialValues: {
@@ -52,9 +53,23 @@ export const useMoneyCollection = () => {
           )
         )
           return 'Esta sucursal ya fue seleccionada'
+        idOfice.current = value
+      },
+      amount: value => {
+        if (
+          parseFloat(value) >
+          parseFloat(
+            depositBranchOffice.find(
+              branchOffice => branchOffice.branchOfficeId == idOfice.current
+            ).amount
+          )
+        ) {
+          return 'El monto es mayor al indicado en la orden de deposito para esta sucursal'
+        }
+
+        if (value.toString().trim().length == 0) return 'Ingrese un monto '
       },
       date: isNotEmpty('Seleccione una fecha'),
-      amount: isNotEmpty('Ingrese un monto'),
       deliveredBy: isNotEmpty('Ingrese un nombre')
     }
   })
@@ -168,8 +183,11 @@ export const useMoneyCollection = () => {
   }
 
   const getMoneyCollectionsFromDepositOrder = async (id: number) => {
-    const moneyCollections = await getAllMoneyCollectionsFromDepositOrder(id, token)
-    if(!moneyCollections) return
+    const moneyCollections = await getAllMoneyCollectionsFromDepositOrder(
+      id,
+      token
+    )
+    if (!moneyCollections) return
 
     setMoneyCollections(moneyCollections)
     calculateAmount()
