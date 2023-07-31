@@ -50,7 +50,7 @@ export const useUser = () => {
       lastName: isNotEmpty('Ingrese un apellido'),
       email: isEmail('Ingrese un correo válido'),
       password: isNotEmpty('Ingrese una contraseña'),
-      roleId: (value: number)=> {
+      roleId: (value: number) => {
         if (value === 0) return 'Seleccione un rol'
       },
       regionalOfficeId: (value: number) => {
@@ -107,8 +107,7 @@ export const useUser = () => {
       setUsers(users => users.filter(user => user.id !== data.id))
     })
 
-    return () => 
-    {
+    return () => {
       socket.off('newEmployee')
       socket.off('deletedEmployee')
     }
