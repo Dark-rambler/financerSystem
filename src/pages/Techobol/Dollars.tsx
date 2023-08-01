@@ -9,6 +9,7 @@ import { errorToast } from '../../services/toasts'
 
 import { getAllDollars } from '../../services/Dollar'
 import DollarAGTable from '../../components/table/techobol/AGTables/DollarAGTable'
+import socket from '../../services/SocketIOConnection'
 
 const Dollars = () => {
   const { token } = useLoginStore()
@@ -27,6 +28,17 @@ const Dollars = () => {
 
   useEffect(() => {
     getDollars()
+  }, [])
+
+  
+  useEffect(() => {
+    socket.on('newDollars', (data: IDollar[]) => {
+      setDollarData(prevState => [...prevState, ...data])
+    })
+
+    return () => { 
+      socket.off('newDollars')
+    }
   }, [])
 
   const onFilterTextBoxChanged = useCallback(() => {
@@ -60,7 +72,7 @@ const Dollars = () => {
           </div>
         </div>
 
-        <div className='h-[calc(100%-46px)]'>
+        <div className='h-[calc(100%-46px)] overflow-x-auto  max-2xl:border-x-2 ' >
           <DollarAGTable data={dollarData} gridRef={gridRef} />
         </div>
       </div>

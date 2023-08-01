@@ -10,6 +10,7 @@ import { errorToast } from '../../services/toasts'
 
 import { getAllDeposits } from '../../services/Deposit'
 import DepositAGTable from '../../components/table/techobol/AGTables/DepositAGTable'
+import socket from '../../services/SocketIOConnection'
 
 const Deposits = () => {
   const { token } = useLoginStore()
@@ -28,6 +29,17 @@ const Deposits = () => {
 
   useEffect(() => {
     getDeposits()
+  }, [])
+
+  
+  useEffect(() => {
+    socket.on('newDeposits', (data: IDeposit[]) => {
+      setDepositData(prevState => [...prevState, ...data])
+    })
+
+    return () => { 
+      socket.off('newDeposits')
+    }
   }, [])
 
   const onFilterTextBoxChanged = useCallback(() => {
@@ -61,7 +73,7 @@ const Deposits = () => {
           </div>
         </div>
 
-        <div className='h-[calc(100%-46px)]'>
+        <div className='h-[calc(100%-46px)] overflow-x-auto max-2xl:border-x-2 '>
           <DepositAGTable data={depositData} gridRef={gridRef} />
         </div>
       </div>

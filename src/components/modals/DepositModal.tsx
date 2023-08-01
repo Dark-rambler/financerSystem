@@ -10,7 +10,6 @@ import {
 import { DatePickerInput } from '@mantine/dates'
 
 import { useDeposit } from '../../hooks/useDeposit'
-import { useRealTimeDate } from '../../hooks/useRealTimeDate'
 
 interface DepositModalProps {
   opened: boolean
@@ -19,7 +18,6 @@ interface DepositModalProps {
 }
 
 const DepositModal = ({ opened, close, deposit }: DepositModalProps) => {
-  const currentDate= useRealTimeDate();
   return (
     <Modal
       opened={opened}
@@ -62,7 +60,7 @@ const DepositModal = ({ opened, close, deposit }: DepositModalProps) => {
             label={'Fecha de depósito'}
             dropdownType='modal'
             clearable
-            maxDate={currentDate}
+            maxDate={deposit.currentDate}
             {...deposit.form.getInputProps('date')}
           />
           <NumberInput

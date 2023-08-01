@@ -6,11 +6,6 @@ import pluginRewriteAll from 'vite-plugin-rewrite-all'
 export default defineConfig({
   plugins: [react(), pluginRewriteAll()],
   define: {
-    global: {}
+    _global: {}
   }
-  // server: {
-  //   host: true,
-  //   strictPort: true,
-  //   port: 8080
-  // }
 })
