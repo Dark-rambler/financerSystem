@@ -19,7 +19,7 @@ interface FormSelectOption {
   label: string
 }
 
-export const useExpense = (isReadOnly:boolean) => {
+export const useExpense = (isReadOnly: boolean) => {
   const { token } = useLoginStore()
   const { depositOrder } = useDepositOrderStore()
 
@@ -31,6 +31,9 @@ export const useExpense = (isReadOnly:boolean) => {
   const [filteredSubAccounts, setFilteredSubAccounts] = useState<
     FormSelectOption[]
   >([])
+  const [selectedAccountId, setSelectedAccountId] = useState<number | null>(
+    null
+  )
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
 
   const [expenses, setExpenses] = useState<IExpense[]>([])
@@ -70,7 +73,7 @@ export const useExpense = (isReadOnly:boolean) => {
       amount: isNotEmpty('Ingrese un monto'),
       expenseType: isNotEmpty('Seleccione un tipo de gasto'),
       description: isNotEmpty('Ingrese una descripción'),
-      accountId: value => value === 0 && 'Seleccione una cuenta',
+      accountId: (value) => (value === 0 ? 'Seleccione una cuenta' : null),
       subAccountId: value => value === 0 && 'Seleccione una subcuenta'
     }
   })
@@ -194,9 +197,9 @@ export const useExpense = (isReadOnly:boolean) => {
     form.setFieldValue('subAccountId', Number(expense.subAccountId))
   }
 
-  const onSelectAccount = () => {
+  const onSelectAccount = (accountId: string) => {
     const filterSubAccounts = subAccounts.filter(subAccount => {
-      if (Number(subAccount.accountId) === form.values.accountId) return true
+      return Number(subAccount.accountId) === Number(accountId)
     })
 
     const formatedSubAccounts = filterSubAccounts.map(subAccount => ({
@@ -205,6 +208,8 @@ export const useExpense = (isReadOnly:boolean) => {
     }))
 
     setFilteredSubAccounts(formatedSubAccounts)
+    setSelectedAccountId(Number(accountId))
+    form.setFieldValue('subAccountId', 0)
   }
 
   const onDelete = () => {
@@ -234,7 +239,7 @@ export const useExpense = (isReadOnly:boolean) => {
   const getExpensesFromDepositOrder = async (id: number) => {
     const response = await getAllExpensesFromDepositOrder(id, token)
     if (!response) return
-    
+
     setExpenses(response)
     calculateAmount()
   }
@@ -264,6 +269,7 @@ export const useExpense = (isReadOnly:boolean) => {
     setBranchOffices,
     getFormattedExpenses,
     getExpensesFromDepositOrder,
+    selectedAccountId
     currentDate,
     setCurrentDate
   }

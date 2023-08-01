@@ -30,6 +30,7 @@ const EnvelopeAGTable = ({ data, gridRef }: EnvelopeProps) => {
         field: 'depositOrder.orderNumber',
         headerName: 'Orden de depósito',
         sortable: true,
+        comparator: (idA: string, idB: string) => (parseInt(idA.split('-')[1]) - parseInt(idB.split('-')[1])),
         filter: true,
         resizable: true
       },

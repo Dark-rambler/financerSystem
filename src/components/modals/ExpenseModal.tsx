@@ -89,7 +89,6 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
           />
         </SimpleGrid>
 
-    
         <SimpleGrid cols={2}>
           <Select
             data={expense.accounts}
@@ -99,6 +98,10 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
             searchable
             {...expense.form.getInputProps('accountId')}
             maxDropdownHeight={125}
+            onChange={e => (
+              expense.onSelectAccount(e ? e.toString() : ''),
+              expense.form.getInputProps('accountId').onChange(e)
+            )}
           />
           <Select
             data={expense.filteredSubAccounts}

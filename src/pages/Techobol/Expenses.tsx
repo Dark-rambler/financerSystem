@@ -89,7 +89,6 @@ const Expenses = () => {
             />
           </div>
         </div>
-
         <div className='h-[calc(100%-46px)]'>
           <ExpenseAGTable data={expenseData} gridRef={gridRef} filteredExpenseData={filteredExpenseData}/>
         </div>
