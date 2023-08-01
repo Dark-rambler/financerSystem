@@ -20,6 +20,7 @@ interface ExpenseModalProps {
 
 const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
   const currentDate = useRealTimeDate()
+
   return (
     <Modal
       opened={opened}
@@ -99,8 +100,10 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
             label={'Cuenta financiera'}
             searchable
             {...expense.form.getInputProps('accountId')}
-            value={expense.selectedAccountId}
-            onChange={(e) => expense.onSelectAccount(e)}
+            onChange={e => (
+              expense.onSelectAccount(e ? e.toString() : ''),
+              expense.form.getInputProps('accountId').onChange(e)
+            )}
           />
           <Select
             data={expense.filteredSubAccounts}

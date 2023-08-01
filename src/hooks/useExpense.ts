@@ -31,7 +31,9 @@ export const useExpense = (isReadOnly: boolean) => {
   const [filteredSubAccounts, setFilteredSubAccounts] = useState<
     FormSelectOption[]
   >([])
-  const [selectedAccountId, setSelectedAccountId] = useState<number | null>(null);
+  const [selectedAccountId, setSelectedAccountId] = useState<number | null>(
+    null
+  )
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
 
   const [expenses, setExpenses] = useState<IExpense[]>([])
@@ -70,7 +72,7 @@ export const useExpense = (isReadOnly: boolean) => {
       amount: isNotEmpty('Ingrese un monto'),
       expenseType: isNotEmpty('Seleccione un tipo de gasto'),
       description: isNotEmpty('Ingrese una descripción'),
-      accountId: value => value === 0 && 'Seleccione una cuenta',
+      accountId: (value) => (value === 0 ? 'Seleccione una cuenta' : null),
       subAccountId: value => value === 0 && 'Seleccione una subcuenta'
     }
   })
@@ -81,15 +83,6 @@ export const useExpense = (isReadOnly: boolean) => {
       getAllSubAccounts()
     }
   }, [])
-
-  useEffect(() => {
-    setFilteredSubAccounts(
-      subAccounts.map(subAccount => ({
-        value: subAccount.id?.toString() as string,
-        label: subAccount.name
-      }))
-    )
-  }, [subAccounts])
 
   const calculateAmount = () => {
     const totalAmount = expenses.reduce((accumulator, currentValue) => {
@@ -204,31 +197,18 @@ export const useExpense = (isReadOnly: boolean) => {
 
   const onSelectAccount = (accountId: string) => {
     const filterSubAccounts = subAccounts.filter(subAccount => {
-      return Number(subAccount.accountId) === Number(accountId);
-    });
-  
+      return Number(subAccount.accountId) === Number(accountId)
+    })
+
     const formatedSubAccounts = filterSubAccounts.map(subAccount => ({
-      value: subAccount.id?.toString() as string,
-      label: subAccount.name
-    }));
-  
-    setFilteredSubAccounts(formatedSubAccounts);
-    setSelectedAccountId(Number(accountId));
-    form.setFieldValue('subAccountId', 0);
-  };
-
-  useEffect(() => {
-    const filterSubAccounts = subAccounts.filter(
-      subAccount => Number(subAccount.accountId) === form.values.accountId
-    )
-
-    const formattedSubAccounts = filterSubAccounts.map(subAccount => ({
       value: subAccount.id?.toString() as string,
       label: subAccount.name
     }))
 
-    setFilteredSubAccounts(formattedSubAccounts)
-  }, [form.values.accountId, subAccounts])
+    setFilteredSubAccounts(formatedSubAccounts)
+    setSelectedAccountId(Number(accountId))
+    form.setFieldValue('subAccountId', 0)
+  }
 
   const onDelete = () => {
     expenses.splice(actualId, 1)
