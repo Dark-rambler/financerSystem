@@ -33,6 +33,8 @@ export const useUser = () => {
 
   const [regionals, setRegionals] = useState<SelectFormat[]>([])
   const [roles, setRoles] = useState<SelectFormat[]>([])
+  const rolesData= useRef<Role[]>()
+  
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -53,11 +55,11 @@ export const useUser = () => {
       roleId: (value: number) => {
         if (value === 0) return 'Seleccione un rol'
 
-        const selectedRole = roles.find(role => role.value === value)
-        const maxEmployeesForRole = selectedRole.maxEmployeesAllowed
-        const usersWithRole = users.filter(user => user.role.id === value)
+        const selectedRole = rolesData.current?.find(role => Number(role?.id) === value)
+        const maxEmployeesForRole = selectedRole?.maxEmployeesAllowed
+        const usersWithRole = users.filter(user => user.role?.id === value)
 
-        if (usersWithRole.length >= maxEmployeesForRole) {
+        if (usersWithRole.length >= Number(maxEmployeesForRole)) {
           return `Se ha alcanzado el límite de usuarios para este rol (${maxEmployeesForRole})`
         }
       },
@@ -81,8 +83,9 @@ export const useUser = () => {
     const roles = data.map((role: Role) => ({
       value: role.id,
       label: role.name,
-      maxEmployeesAllowed: role.maxEmployeesAllowed
+      /*maxEmployeesAllowed: role.maxEmployeesAllowed*/
     }))
+  rolesData.current=data
     setRoles(roles)
   }
 
