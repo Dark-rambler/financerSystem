@@ -1,21 +1,27 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { AgGridReact } from 'ag-grid-react'
-import { Input } from '@mantine/core'
+import { Input, Button } from '@mantine/core'
 import { TbSearch } from 'react-icons/tb'
+import { BsFillFileEarmarkPdfFill } from 'react-icons/bs'
 
 import { useLoginStore } from '../../components/store/loginStore'
 import { IExpense } from '../../models/Expense'
 import { errorToast } from '../../services/toasts'
+import { generateExpenseReportPDF } from '../../components/pdf/PDFExpenseReport'
 
 import { getAllExpenses } from '../../services/Expense'
 import ExpenseAGTable from '../../components/table/techobol/AGTables/ExpenseAGTable'
+
 import socket from '../../services/SocketIOConnection'
+import { useRealTimeDate } from '../../hooks/useRealTimeDate'
 
 const Expenses = () => {
   const { token } = useLoginStore()
   const [expenseData, setExpenseData] = useState<IExpense[]>([])
+  const realTimeDate = useRealTimeDate()
 
   const gridRef = useRef<AgGridReact<IExpense>>(null)
+  const filteredExpenseData = useRef<IExpense[]>()
 
   const getExpenses = async () => {
     const data = await getAllExpenses(token)
@@ -24,6 +30,7 @@ const Expenses = () => {
       return
     }
     setExpenseData(data)
+    filteredExpenseData.current = data
   }
 
   useEffect(() => {
@@ -33,13 +40,17 @@ const Expenses = () => {
   useEffect(() => {
     socket.on('newExpenses', (data: IExpense[]) => {
       setExpenseData(prevState => [...prevState, ...data])
+      filteredExpenseData.current = [...expenseData, ...data]
     })
 
-    return () => { 
+    return () => {
       socket.off('newExpenses')
     }
-   
   }, [])
+
+  const handleDownloadPDFReport = () => { 
+    generateExpenseReportPDF(filteredExpenseData.current as IExpense[], realTimeDate)
+  }
 
   const onFilterTextBoxChanged = useCallback(() => {
     let value = ''
@@ -62,6 +73,13 @@ const Expenses = () => {
           </div>
 
           <div className='flex space-x-5'>
+            <Button
+              className='bg-blue-600 hover:bg-blue-700'
+              leftIcon={<BsFillFileEarmarkPdfFill />}
+              onClick={handleDownloadPDFReport}
+            >
+              Descargar PDF
+            </Button>
             <Input
               id='filter-text-box'
               icon={<TbSearch />}
@@ -71,9 +89,8 @@ const Expenses = () => {
             />
           </div>
         </div>
-
-        <div className='h-[calc(100%-46px)] overflow-x-auto max-2xl:border-x-2 '>
-          <ExpenseAGTable data={expenseData} gridRef={gridRef} />
+        <div className='h-[calc(100%-46px)]'>
+          <ExpenseAGTable data={expenseData} gridRef={gridRef} filteredExpenseData={filteredExpenseData}/>
         </div>
       </div>
     </>

@@ -269,11 +269,11 @@ const CreateDepositOrderReport = () => {
       <ConfirmModal
         opened={depositOrderReport.opened}
         close={depositOrderReport.close}
-        title={'Enviar reporte de orden de depósito'}
+        title={'Enviar informe de orden de depósito'}
         description={
           depositOrderReport.isReportValid
-            ? 'El reporte parece correcto. ¿Desea enviarlo ahora?'
-            : 'El reporte no coincide. ¿Desea enviarlo de todos modos?'
+            ? 'El informe parece correcto. ¿Desea enviarlo ahora?'
+            : 'El informe no coincide. ¿Desea enviarlo de todos modos?'
         }
         buttonText='Enviar'
         primaryColor={depositOrderReport.isReportValid ? 'blue' : 'red'}

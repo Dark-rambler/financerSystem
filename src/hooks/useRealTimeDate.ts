@@ -4,7 +4,7 @@ export const useRealTimeDate = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
-    fetch('http://worldtimeapi.org/api/timezone/America/La_Paz')
+    fetch('http://worldtimeapi.org/api/ip/timezone/America/La_Paz')
       .then((response) => response.json())
       .then((data) => {
         const dateObject = new Date(data.datetime);
