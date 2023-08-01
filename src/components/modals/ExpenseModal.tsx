@@ -89,7 +89,6 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
           />
         </SimpleGrid>
 
-    
         <SimpleGrid cols={2}>
           <Select
             data={expense.accounts}
@@ -98,8 +97,10 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
             label={'Cuenta financiera'}
             searchable
             {...expense.form.getInputProps('accountId')}
-
-            // onSelect={(e) => expense.onSelectAccount(e.currentTarget.value)}
+            onChange={e => (
+              expense.onSelectAccount(e ? e.toString() : ''),
+              expense.form.getInputProps('accountId').onChange(e)
+            )}
           />
           <Select
             data={expense.filteredSubAccounts}
