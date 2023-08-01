@@ -58,7 +58,7 @@ export const useMoneyCollection = () => {
       },
       amount: value => {
         const foundBranchOffice = depositBranchOffice.find(
-          branchOffice => branchOffice.branchOfficeId == idOfice.current
+          branchOffice => branchOffice.branchOfficeId == idOffice.current
         )?.amount
         if (foundBranchOffice) {
           const numericValue =
