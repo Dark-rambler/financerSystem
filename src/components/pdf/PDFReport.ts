@@ -274,7 +274,7 @@ export const generateReportPDF = ({
     doc.lastAutoTable.finalY + 1
   )
   // doc.save('reporte.pdf')
-  const file = new File([doc.output('blob')], 'reporte.pdf', {
+  const file = new File([doc.output('blob')], 'informe.pdf', {
     type: 'application/pdf'
   })
 

@@ -10,9 +10,14 @@ import { IExpense } from '../../../../models/Expense'
 interface ExpenseProps {
   data: IExpense[]
   gridRef: React.MutableRefObject<AgGridReact<IExpense> | null>
+  filteredExpenseData: React.MutableRefObject<IExpense[] | undefined>
 }
 
-const ExpenseAGTable = ({ data, gridRef }: ExpenseProps) => {
+const ExpenseAGTable = ({
+  data,
+  gridRef,
+  filteredExpenseData
+}: ExpenseProps) => {
   const [rowData, setRowData] = useState<IExpense[]>(data)
   const containerStyle = useMemo(
     () => ({ width: '100%', height: '100%', minWidth: '1500px' }),
@@ -120,12 +125,19 @@ const ExpenseAGTable = ({ data, gridRef }: ExpenseProps) => {
       suppressRowClickSelection: true,
       cacheQuickFilter: true,
       localeText: AG_GRID_LOCALE_ES,
-
       onGridSizeChanged: params => {
         params.api.sizeColumnsToFit()
       },
       onFirstDataRendered: params => {
         params.api.sizeColumnsToFit()
+      },
+      onFilterChanged: params => {
+        const filteredData: IExpense[] = []
+        params.api.forEachNodeAfterFilter(node => {
+          filteredData.push(node.data)
+        })
+        filteredExpenseData.current = filteredData
+        // const filterModel = params.api.getFilterModel()
       }
     }),
     []

@@ -98,8 +98,7 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
             label={'Cuenta financiera'}
             searchable
             {...expense.form.getInputProps('accountId')}
-
-            // onSelect={(e) => expense.onSelectAccount(e.currentTarget.value)}
+            maxDropdownHeight={125}
           />
           <Select
             data={expense.filteredSubAccounts}
@@ -107,8 +106,8 @@ const ExpenseModal = ({ opened, close, expense }: ExpenseModalProps) => {
             placeholder={'Subcuenta financiera'}
             label={'Subcuenta financiera'}
             searchable
-            // disabled={expense.form.values.accountId === 0}
             {...expense.form.getInputProps('subAccountId')}
+            maxDropdownHeight={125}
           />
         </SimpleGrid>
         <Textarea

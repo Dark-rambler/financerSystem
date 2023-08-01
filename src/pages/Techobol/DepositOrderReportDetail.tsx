@@ -45,20 +45,20 @@ const DepositOrderReportDetail = () => {
         <h1 className='text-xl font-bold'>Documentos</h1>
         <div className='flex items-end space-x-3 px-3'>
           <ViewDocument
-            label='Respaldo de salidas'
+            label='Respaldo de documentos'
             url={depositOrder.reportUrl as string}
           />
         </div>
         <div className='flex items-end space-x-3 px-3'>
           <ViewDocument
-            label='Reporte de orden de depósito'
+            label='Informe de orden de depósito'
             url={depositOrder.generatedReportUrl as string}
           />
         </div>
       </div>
       <Divider />
       <div className='space-y-10'>
-        <h1 className='text-xl font-bold'>Reporte de orden de depósito</h1>
+        <h1 className='text-xl font-bold'>Informe de orden de depósito</h1>
 
         <div className='space-y-20'>
           <section className='space-y-2'>
