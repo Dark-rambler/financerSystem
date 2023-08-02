@@ -267,7 +267,6 @@ export const useExpense = (isReadOnly: boolean) => {
     setBranchOffices,
     getFormattedExpenses,
     getExpensesFromDepositOrder,
-    selectedAccountId,
     currentDate,
     setCurrentDate
   }
