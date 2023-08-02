@@ -81,6 +81,7 @@ const EnvelopeTable = ({ envelope, isReadonly }: EnvelopeTableProps) => {
         opened={envelope.openedDelete}
         close={envelope.modalDeleteHandler.close}
         onDelete={envelope.onDelete}
+        isFemaleArtcle={false}
       />
     </div>
   )

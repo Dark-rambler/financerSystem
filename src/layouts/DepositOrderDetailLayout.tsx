@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect  } from 'react'
 import { useParams, useNavigate, Outlet } from 'react-router-dom'
 import { Tabs } from '@mantine/core'
 
@@ -74,7 +74,7 @@ const DepositOrderDetailLayout = () => {
                 }
                 disabled={depositOrder.status?.toUpperCase() === Status.EMITTED}
               >
-                Reporte de orden de deposito
+                Informe de orden de deposito
               </Tabs.Tab>
             </Tabs.List>
           </Tabs>

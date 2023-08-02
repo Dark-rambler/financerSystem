@@ -90,6 +90,7 @@ const ExpenseTable = ({ expense, isReadonly }: ExpenseTableProps) => {
         opened={expense.expenseOpenedDelete}
         close={expense.expenseOpenedDeleteHandler.close}
         onDelete={expense.onDelete}
+        isFemaleArtcle={false}
       />
     </div>
   )

@@ -113,7 +113,7 @@ const CreateDepositOrderReport = () => {
         <div className='flex justify-between'>
           <ReturnButton onClick={() => navigate('/techobol/deposit-order')} />
           <h1 className='text-center text-md font-bold'>
-            INFORME ORDEN DE DEPOSITO
+            INFORME ORDEN DE DEPÓSITO
           </h1>
           <div></div>
         </div>
@@ -269,11 +269,11 @@ const CreateDepositOrderReport = () => {
       <ConfirmModal
         opened={depositOrderReport.opened}
         close={depositOrderReport.close}
-        title={'Enviar reporte de orden de depósito'}
+        title={'Enviar informe de orden de depósito'}
         description={
           depositOrderReport.isReportValid
-            ? 'El reporte parece correcto. ¿Desea enviarlo ahora?'
-            : 'El reporte no coincide. ¿Desea enviarlo de todos modos?'
+            ? 'El informe parece correcto. ¿Desea enviarlo ahora?'
+            : 'El informe no coincide. ¿Desea enviarlo de todos modos?'
         }
         buttonText='Enviar'
         primaryColor={depositOrderReport.isReportValid ? 'blue' : 'red'}

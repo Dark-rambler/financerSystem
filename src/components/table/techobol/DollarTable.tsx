@@ -82,6 +82,7 @@ const DollarTable = ({ dollar, isReadonly }: DollarsTableProps) => {
         opened={dollar.openedDelete}
         close={dollar.modalDeleteHandler.close}
         onDelete={dollar.onDelete}
+        isFemaleArtcle={false}
       />
     </div>
   )

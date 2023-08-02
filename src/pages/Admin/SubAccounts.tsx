@@ -61,6 +61,7 @@ const SubAccounts = () => {
         opened={subAccount.openedDelete}
         close={subAccount.handlersDelete.close}
         onDelete={subAccount.onDeleteBranchOffice}
+        isFemaleArtcle={true}
       />
     </>
   )

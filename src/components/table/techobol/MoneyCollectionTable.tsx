@@ -81,6 +81,7 @@ const MoneyCollectionTable = ({
         onDelete={moneyCollection.onDelete}
         close={moneyCollection.moneyCollectionOpenedDeleteHandler.close}
         opened={moneyCollection.moneyCollectionOpenedDelete}
+        isFemaleArtcle={true}
       />
     </div>
   )

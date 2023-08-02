@@ -31,9 +31,7 @@ export const useExpense = (isReadOnly: boolean) => {
   const [filteredSubAccounts, setFilteredSubAccounts] = useState<
     FormSelectOption[]
   >([])
-  const [selectedAccountId, setSelectedAccountId] = useState<number | null>(
-    null
-  )
+
   const [branchOffices, setBranchOffices] = useState<FormSelectOption[]>([])
 
   const [expenses, setExpenses] = useState<IExpense[]>([])
@@ -208,7 +206,6 @@ export const useExpense = (isReadOnly: boolean) => {
     }))
 
     setFilteredSubAccounts(formatedSubAccounts)
-    setSelectedAccountId(Number(accountId))
     form.setFieldValue('subAccountId', 0)
   }
 

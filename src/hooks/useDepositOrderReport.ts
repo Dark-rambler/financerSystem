@@ -71,31 +71,31 @@ export const useDepositOrderReport = () => {
       `${depositOrder.orderNumber} DOCUMENTOS`
     )
     if (!r2Response.ok) {
-      errorToast('Error al enviar el reporte')
+      errorToast('Error al enviar el informe')
       return
     }
 
     const r2ReportResponse =
       await s3.uploadGeneratedDepositOrderReportFileOfTechoBol(
         reportFile as File,
-        `${depositOrder.orderNumber} REPORTE`
+        `${depositOrder.orderNumber} INFORME`
       )
     if (!r2ReportResponse.ok) {
-      errorToast('Error al enviar el reporte')
+      errorToast('Error al enviar el informe')
       return
     }
 
     const depositOrderResponse = await createDepositOrderReport(token, depositOrderData)
 
     if (!depositOrderResponse) {
-      errorToast('Error al enviar el reporte')
+      errorToast('Error al enviar el informe')
       setIsLoading(false)
       return
     }
 
     const body = {
       reportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}/TECHOBOL/DEPOSIT_ORDER_DOCUMENTS/${depositOrder?.orderNumber} DOCUMENTOS.pdf`,
-      generatedReportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}/TECHOBOL/DEPOSIT_ORDER_REPORT/${depositOrder?.orderNumber} REPORTE.pdf`
+      generatedReportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}/TECHOBOL/DEPOSIT_ORDER_REPORT/${depositOrder?.orderNumber} INFORME.pdf`
     }
 
     const depositOrderStatusResponse =
@@ -106,13 +106,13 @@ export const useDepositOrderReport = () => {
       )
 
     if (!depositOrderStatusResponse) {
-      errorToast('Error al enviar el reporte')
+      errorToast('Error al enviar el informe')
       setIsLoading(false)
       return
     }
 
     close()
-    succesToast('Reporte enviado correctamente')
+    succesToast('Informe enviado correctamente')
     navigate('/techobol/deposit-order')
     socket.emit('updateDepositOrder', depositOrderStatusResponse)
 

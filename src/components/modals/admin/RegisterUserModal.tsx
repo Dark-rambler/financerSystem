@@ -49,7 +49,7 @@ const RegisterUser = ({ user, opened, close }: RegisterUserProps) => {
                 {...user.form.getInputProps('lastName')}
               />
               <TextInput
-                label={'Correo electronico'}
+                label={'Correo electrónico'}
                 placeholder='Correo electronico'
                 withAsterisk
                 {...user.form.getInputProps('email')}
@@ -63,16 +63,25 @@ const RegisterUser = ({ user, opened, close }: RegisterUserProps) => {
                 withAsterisk
                 searchable
                 {...user.form.getInputProps('regionalOfficeId')}
+                onChange={e => (
+                  user.onSelectRegional(e ?.toString() || ''),
+                  user.form.getInputProps('regionalOfficeId').onChange(e)
+                )}
+
               />
             </SimpleGrid>
             <Select
               label={'Rol'}
               maxDropdownHeight={162}
               placeholder='Rol'
-              data={user.roles}
+              data={user.filteredRoles}
               withAsterisk
               searchable
               {...user.form.getInputProps('roleId')}
+              onChange={e => (
+                user.onSelectRole(e ?.toString() || ''),
+                user.form.getInputProps('roleId').onChange(e)
+              )}
             />
             <div className='flex justify-end'>
               <Button
