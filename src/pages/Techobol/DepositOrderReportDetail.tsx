@@ -33,24 +33,24 @@ const DepositOrderReportDetail = () => {
     if (depositOrder.status !== Status.EMITTED) {
       moneyCollection.getMoneyCollectionsFromDepositOrder(
         Number(id),
-        depositOrder.moneyCollectionAmount
+        depositOrder.moneyCollectionAmount as number
       )
       expense.getExpensesFromDepositOrder(
         Number(id),
-        depositOrder.expenseAmount
+        depositOrder.expenseAmount as number
       )
       dollar.getDollarsFromDepositOrder(
         Number(id),
-        depositOrder.dollarAmountBs,
-        depositOrder.dollarAmountUSD
+        depositOrder.dollarAmountBs as number,
+        depositOrder.dollarAmountUSD as number
       )
       envelope.getEnvelopesFromDepositOrder(
         Number(id),
-        depositOrder.envelopeAmount
+        depositOrder.envelopeAmount as number
       )
       deposit.getDepositsFromDepositOrder(
         Number(id),
-        depositOrder.depositAmount
+        depositOrder.depositAmount as number
       )
     }
   }, [])

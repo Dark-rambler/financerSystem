@@ -19,11 +19,11 @@ export interface DepositOrderInterface {
   generatedReportUrl?: string 
   reportUrl?: string
 
-  moneyCollectionAmount: number,
-  expenseAmount: number,
-  dollarAmountBs: number,
-  dollarAmountUSD: number,
-  envelopeAmount: number,
-  depositAmount: number,
+  moneyCollectionAmount?: number,
+  expenseAmount?: number,
+  dollarAmountBs?: number,
+  dollarAmountUSD?: number,
+  envelopeAmount?: number,
+  depositAmount?: number,
   [key: string]: any
 }
