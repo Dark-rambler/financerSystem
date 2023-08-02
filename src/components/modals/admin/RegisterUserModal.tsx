@@ -78,6 +78,10 @@ const RegisterUser = ({ user, opened, close }: RegisterUserProps) => {
               withAsterisk
               searchable
               {...user.form.getInputProps('roleId')}
+              onChange={e => (
+                user.onSelectRole(e ?.toString() || ''),
+                user.form.getInputProps('roleId').onChange(e)
+              )}
             />
             <div className='flex justify-end'>
               <Button

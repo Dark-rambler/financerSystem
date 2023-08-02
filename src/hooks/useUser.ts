@@ -37,6 +37,7 @@ export const useUser = () => {
   const rolesData = useRef<Role[]>()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const selectedRoleRef = useRef<Role | undefined>(undefined);
 
   const form = useForm<EmployeeInterface>({
     initialValues: {
@@ -58,7 +59,9 @@ export const useUser = () => {
           role => Number(role?.id) === Number(value)
         )
         const maxEmployeesForRole = selectedRole?.maxEmployeesAllowed
-        const usersWithRole = users.filter(user => user.role?.id === Number(value))
+        const usersWithRole = users.filter(
+          user => user.role?.id === Number(value)
+        )
 
         if (usersWithRole.length >= Number(maxEmployeesForRole)) {
           return `Se ha alcanzado el límite de usuarios para este rol (${maxEmployeesForRole})`
@@ -88,6 +91,7 @@ export const useUser = () => {
     }))
     rolesData.current = data
     setRoles(roles)
+    setFilteredRoles(roles)
   }
 
   const getRegionals = async () => {
@@ -125,6 +129,12 @@ export const useUser = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (!opened) {
+      setFilteredRoles(roles);
+    }
+  }, [opened]);
+
   const registerUser = async () => {
     setIsLoading(true)
     const body: EmployeeInterface = {
@@ -132,7 +142,7 @@ export const useUser = () => {
       lastName: form.values.lastName,
       email: form.values.email,
       password: form.values.password,
-      roleId: form.values.roleId,
+      roleId: Number(form.values.roleId),
       regionalOfficeId: form.values.regionalOfficeId
     }
     const data = await createEmployee(token, body)
@@ -182,25 +192,35 @@ export const useUser = () => {
     const selectedRegional = regionals.find(
       regional => Number(regional.value) === Number(regionalId)
     )
-    let filterRoles = roles
-    if (selectedRegional) {
-      filterRoles = roles.filter(role => {
-        if (role.label.includes('Administrador de operaciones de ventas')) {
-          return role.label.includes(selectedRegional.label)
-        } else {
-          return true
-        }
-      })
-    }
-    const formatedRoles = filterRoles.map(role => ({
-      value: role.value?.toString() as string,
-      label: role.label
-    }))
 
-    setFilteredRoles(formatedRoles)
-    form.setFieldValue('roleId', 0)
+    const filterRoles = selectedRegional
+      ? roles.filter(role =>
+          role.label.includes('Administrador de operaciones de ventas')
+            ? role.label.includes(selectedRegional.label)
+            : true
+        )
+      : roles
+
+    setFilteredRoles(
+      filterRoles.map(role => ({
+        value: role.value?.toString() as string,
+        label: role.label
+      }))
+    )
+
+    if(selectedRoleRef.current?.name.includes('Administrador de operaciones de ventas')){
+      form.setFieldValue('roleId',0)
+    }
+
   }
 
+  const onSelectRole = (roleId: string) => {
+    const selectedRole = rolesData.current?.find(
+      role => Number(role?.id) === Number(roleId)
+    )
+    selectedRoleRef.current = selectedRole;
+  }
+  
   return {
     opened,
     open,
@@ -219,6 +239,7 @@ export const useUser = () => {
     onDeleteUser,
     isLoading,
     onSelectRegional,
-    filteredRoles
+    filteredRoles,
+    onSelectRole
   }
 }
