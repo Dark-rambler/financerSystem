@@ -63,13 +63,18 @@ const RegisterUser = ({ user, opened, close }: RegisterUserProps) => {
                 withAsterisk
                 searchable
                 {...user.form.getInputProps('regionalOfficeId')}
+                onChange={e => (
+                  user.onSelectRegional(e ?.toString() || ''),
+                  user.form.getInputProps('regionalOfficeId').onChange(e)
+                )}
+
               />
             </SimpleGrid>
             <Select
               label={'Rol'}
               maxDropdownHeight={162}
               placeholder='Rol'
-              data={user.roles}
+              data={user.filteredRoles}
               withAsterisk
               searchable
               {...user.form.getInputProps('roleId')}
