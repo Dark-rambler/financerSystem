@@ -167,12 +167,12 @@ export const useEnvelope = (isReadOnly: boolean) => {
     return formattedEnvelopes
   }
 
-  const getEnvelopesFromDepositOrder = async (id: number) => {
+  const getEnvelopesFromDepositOrder = async (id: number, totalAmount: number) => {
     const envelopes = await getAllEnvelopesFromDepositOrder(id, token)
     if (!envelopes) return null
     
     setEnvelopes(envelopes)
-    calculateAmount()
+    setTotalAmount(totalAmount)
   }
 
   return {
@@ -194,6 +194,7 @@ export const useEnvelope = (isReadOnly: boolean) => {
     setBranchOffices,
     branchOffices,
     totalAmount,
+    setTotalAmount,
     fromBranchOffices,
     getFormattedEnvelopes,
     getEnvelopesFromDepositOrder,

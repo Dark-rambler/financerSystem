@@ -81,6 +81,7 @@ export const useMoneyCollection = () => {
           : currentValue.amount
       return accumulator + amount
     }, 0)
+    console.log(totalAmount)
     setTotalAmount(() => totalAmount)
   }
 
@@ -181,15 +182,15 @@ export const useMoneyCollection = () => {
     return formatedData
   }
 
-  const getMoneyCollectionsFromDepositOrder = async (id: number) => {
-    const moneyCollections = await getAllMoneyCollectionsFromDepositOrder(
+  const getMoneyCollectionsFromDepositOrder = async (id: number, totalAmount: number) => {
+    const moneyCollectionData = await getAllMoneyCollectionsFromDepositOrder(
       id,
       token
     )
-    if (!moneyCollections) return
+    if (!moneyCollectionData) return
 
-    setMoneyCollections(moneyCollections)
-    calculateAmount()
+    setMoneyCollections(() => moneyCollectionData)
+    setTotalAmount(totalAmount)   
   }
 
   return {
@@ -210,6 +211,7 @@ export const useMoneyCollection = () => {
     setActualId,
     onDelete,
     totalAmount,
+    setTotalAmount,
     setBranchOffices,
     setMoneyCollections,
     getFormattedMoneyCollections,

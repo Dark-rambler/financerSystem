@@ -4,14 +4,15 @@ export const logInAuth = async (email: string, password: string) => {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password }),
+    setTimeout: 10000
   }
   const response = await fetch(
     `${import.meta.env.VITE_API_DOMAIN}/authentication/signIn`,
     requestOptions
   )
 
-  if (response.status !== 200) {
+  if (!response.ok) {
     errorToast('Email o contraseña incorrectos')
     return null
   }
@@ -31,7 +32,7 @@ export const validateToken = async (token: string) => {
       }
     )
 
-    if (response.status === 200) {
+    if (!response.ok) {
       return true
     }
     return null

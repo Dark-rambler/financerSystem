@@ -233,12 +233,12 @@ export const useExpense = (isReadOnly: boolean) => {
     return formatedData
   }
 
-  const getExpensesFromDepositOrder = async (id: number) => {
+  const getExpensesFromDepositOrder = async (id: number, totalAmount: number) => {
     const response = await getAllExpensesFromDepositOrder(id, token)
     if (!response) return
 
     setExpenses(response)
-    calculateAmount()
+    setTotalAmount(totalAmount)
   }
 
   return {
@@ -263,6 +263,7 @@ export const useExpense = (isReadOnly: boolean) => {
     onDelete,
     expenseTypes,
     totalAmount,
+    setTotalAmount,
     setBranchOffices,
     getFormattedExpenses,
     getExpensesFromDepositOrder,

@@ -31,11 +31,27 @@ const DepositOrderReportDetail = () => {
 
   useEffect(() => {
     if (depositOrder.status !== Status.EMITTED) {
-      moneyCollection.getMoneyCollectionsFromDepositOrder(Number(id))
-      expense.getExpensesFromDepositOrder(Number(id))
-      dollar.getDollarsFromDepositOrder(Number(id))
-      envelope.getEnvelopesFromDepositOrder(Number(id))
-      deposit.getDepositsFromDepositOrder(Number(id))
+      moneyCollection.getMoneyCollectionsFromDepositOrder(
+        Number(id),
+        depositOrder.moneyCollectionAmount
+      )
+      expense.getExpensesFromDepositOrder(
+        Number(id),
+        depositOrder.expenseAmount
+      )
+      dollar.getDollarsFromDepositOrder(
+        Number(id),
+        depositOrder.dollarAmountBs,
+        depositOrder.dollarAmountUSD
+      )
+      envelope.getEnvelopesFromDepositOrder(
+        Number(id),
+        depositOrder.envelopeAmount
+      )
+      deposit.getDepositsFromDepositOrder(
+        Number(id),
+        depositOrder.depositAmount
+      )
     }
   }, [])
 
