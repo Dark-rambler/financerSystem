@@ -67,7 +67,7 @@ const DocumentVisualizer = ({ depositOrder }: DocumentVisualizerProps) => {
 
         <div className='pt-[58px] pb-[17px]'>
           <div className='flex space-x-2 font-sans text-[10px]'>
-            <p className='font-bold '>FECHAS DEL DEPOSITO: </p>
+            <p className='font-bold '>FECHAS DEL DEPÓSITO: </p>
             <p className='font-semibold '>
               {depositOrder.form.values.orderRange[0] &&
               depositOrder.form.values.orderRange[1]

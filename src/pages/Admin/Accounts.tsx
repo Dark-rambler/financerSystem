@@ -58,6 +58,7 @@ const Accounts = () => {
         opened={account.openedDelete}
         close={account.handlersDelete.close}
         onDelete={account.onDeleteBranchOffice}
+        isFemaleArtcle={true}
       />
     </>
   )

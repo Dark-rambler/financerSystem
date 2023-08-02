@@ -1,4 +1,4 @@
-import { ActionIcon } from '@mantine/core'
+import { Tooltip, ActionIcon } from '@mantine/core'
 import { MdOutlineAddBox } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 
@@ -22,6 +22,7 @@ const GenerateDepositOrderReport = ({ data }: GenerateDepositOrderReport) => {
   }
 
   return (
+    <Tooltip label={'Realizar informe de depósito'}>
     <ActionIcon
       className={` bg-gray-100 hover:bg-gray-200`}
       disabled={!isAvailable}
@@ -32,6 +33,7 @@ const GenerateDepositOrderReport = ({ data }: GenerateDepositOrderReport) => {
         color={`${isAvailable ? '#6b7280' : '#d1d5db'}`}
       />
     </ActionIcon>
+    </Tooltip>
   )
 }
 

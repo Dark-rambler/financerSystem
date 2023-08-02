@@ -79,7 +79,7 @@ const DropzonePDFFile = ({depositOrderReport}: DropzonePDFFileProps) => {
                 : '#171717'
             }
           >
-            Arrastre el documento aqui o haga click para seleccionar
+            Arrastre el documento aquí o haga click para seleccionar
           </Text>
           <Text size='sm' color='dimmed' inline mt={7}>
             Solo se permite un documento en formato PDF, el documento no

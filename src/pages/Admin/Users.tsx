@@ -53,6 +53,7 @@ const Users = () => {
         opened={user.openedDelete}
         close={user.handlersDelete.close}
         onDelete={user.onDeleteUser}
+        isFemaleArtcle={false}
       />
     </>
   )

@@ -18,7 +18,7 @@ const SingleDepositOrderTable = () => {
           <th>Fecha inicio</th>
           <th>Fecha fin</th>
           <th>Monto</th>
-          <th>Fecha limite</th>
+          <th>Fecha lÍmite</th>
         </tr>
       </thead>
       <tbody>
