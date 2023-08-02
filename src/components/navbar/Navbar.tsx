@@ -11,6 +11,8 @@ import UserMenu from '../menus/UserMenu'
 import { useLoginStore } from '../store/loginStore'
 import { useLocation } from 'react-router-dom'
 
+import SesionExpiredModal from '../modals/SesionExpiredModal'
+
 interface NavbarProps {
   onClickSidebarButton: () => void
 }
@@ -46,6 +48,7 @@ const Navbar = ({ onClickSidebarButton }: NavbarProps) => {
             <TbMoon className='text-slate-900 text-xl ' />
           </div> */}
           {isLoggedIn && <UserMenu />}
+          {isLoggedIn && <SesionExpiredModal />}
         </div>
       </div>
     </div>
