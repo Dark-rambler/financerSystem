@@ -3,6 +3,7 @@ import Navbar from '../components/navbar/Navbar'
 import { Stack } from '@mantine/core'
 import Sidebar from '../components/sidebar/Sidebar'
 import { useState } from 'react'
+import { useValidatioDate } from '../hooks/useValidationDate'
 
 const MainLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -10,6 +11,7 @@ const MainLayout = () => {
   const handleClickSidebarButton = () => {
     setIsSidebarOpen(value => !value)
   }
+  useValidatioDate()
 
   return (
     <Stack className='h-screen' spacing={0}>
@@ -19,7 +21,12 @@ const MainLayout = () => {
       <div className='flex h-full overflow-x-auto'>
         <Sidebar isOpen={isSidebarOpen} />
 
-        <div className='w-full' onClick={() => {setIsSidebarOpen(false)}}>
+        <div
+          className='w-full'
+          onClick={() => {
+            setIsSidebarOpen(false)
+          }}
+        >
           <Outlet />
         </div>
       </div>

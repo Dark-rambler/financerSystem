@@ -37,7 +37,7 @@ const MoneyCollections = () => {
       setMoneyCollectionData(prevState => [...prevState, ...data])
     })
 
-    return () => { 
+    return () => {
       socket.off('newMoneyCollections')
     }
   }, [])
