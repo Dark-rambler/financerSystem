@@ -33,10 +33,11 @@ export const useUser = () => {
 
   const [regionals, setRegionals] = useState<SelectFormat[]>([])
   const [roles, setRoles] = useState<SelectFormat[]>([])
-  const rolesData= useRef<Role[]>()
-  
+  const [filteredRoles, setFilteredRoles] = useState<SelectFormat[]>([])
+  const rolesData = useRef<Role[]>()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const selectedRoleRef = useRef<Role | undefined>(undefined);
 
   const form = useForm<EmployeeInterface>({
     initialValues: {
@@ -54,10 +55,13 @@ export const useUser = () => {
       password: isNotEmpty('Ingrese una contraseña'),
       roleId: (value: number) => {
         if (value === 0) return 'Seleccione un rol'
-
-        const selectedRole = rolesData.current?.find(role => Number(role?.id) === value)
+        const selectedRole = rolesData.current?.find(
+          role => Number(role?.id) === Number(value)
+        )
         const maxEmployeesForRole = selectedRole?.maxEmployeesAllowed
-        const usersWithRole = users.filter(user => user.role?.id === value)
+        const usersWithRole = users.filter(
+          user => user.role?.id === Number(value)
+        )
 
         if (usersWithRole.length >= Number(maxEmployeesForRole)) {
           return `Se ha alcanzado el límite de usuarios para este rol (${maxEmployeesForRole})`
@@ -82,11 +86,12 @@ export const useUser = () => {
     }
     const roles = data.map((role: Role) => ({
       value: role.id,
-      label: role.name,
+      label: role.name
       /*maxEmployeesAllowed: role.maxEmployeesAllowed*/
     }))
-  rolesData.current=data
+    rolesData.current = data
     setRoles(roles)
+    setFilteredRoles(roles)
   }
 
   const getRegionals = async () => {
@@ -124,6 +129,12 @@ export const useUser = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (!opened) {
+      setFilteredRoles(roles);
+    }
+  }, [opened]);
+
   const registerUser = async () => {
     setIsLoading(true)
     const body: EmployeeInterface = {
@@ -131,7 +142,7 @@ export const useUser = () => {
       lastName: form.values.lastName,
       email: form.values.email,
       password: form.values.password,
-      roleId: form.values.roleId,
+      roleId: Number(form.values.roleId),
       regionalOfficeId: form.values.regionalOfficeId
     }
     const data = await createEmployee(token, body)
@@ -177,6 +188,39 @@ export const useUser = () => {
     socket.emit('deleteEmployee', data)
   }
 
+  const onSelectRegional = (regionalId: string) => {
+    const selectedRegional = regionals.find(
+      regional => Number(regional.value) === Number(regionalId)
+    )
+
+    const filterRoles = selectedRegional
+      ? roles.filter(role =>
+          role.label.includes('Administrador de operaciones de ventas')
+            ? role.label.includes(selectedRegional.label)
+            : true
+        )
+      : roles
+
+    setFilteredRoles(
+      filterRoles.map(role => ({
+        value: role.value?.toString() as string,
+        label: role.label
+      }))
+    )
+
+    if(selectedRoleRef.current?.name.includes('Administrador de operaciones de ventas')){
+      form.setFieldValue('roleId',0)
+    }
+
+  }
+
+  const onSelectRole = (roleId: string) => {
+    const selectedRole = rolesData.current?.find(
+      role => Number(role?.id) === Number(roleId)
+    )
+    selectedRoleRef.current = selectedRole;
+  }
+  
   return {
     opened,
     open,
@@ -193,6 +237,9 @@ export const useUser = () => {
     actualUserId,
     setActualUserId,
     onDeleteUser,
-    isLoading
+    isLoading,
+    onSelectRegional,
+    filteredRoles,
+    onSelectRole
   }
 }
