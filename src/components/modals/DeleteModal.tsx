@@ -5,9 +5,10 @@ interface DeleteModalProps {
   opened: boolean
   close: () => void
   onDelete: () => void
+  isFemaleArtcle: boolean
 }
 
-const DeleteModal = ({ label, opened, close, onDelete }: DeleteModalProps) => {
+const DeleteModal = ({ label, opened, close, onDelete, isFemaleArtcle }: DeleteModalProps) => {
   return (
     <>
       <Modal
@@ -21,7 +22,7 @@ const DeleteModal = ({ label, opened, close, onDelete }: DeleteModalProps) => {
       >
         <div className='space-y-5'>
           <p className='text-sm'>
-            ¿Esta seguro que desea eliminar este {label.toLowerCase()}?
+            ¿Esta seguro que desea eliminar {isFemaleArtcle?"esta":"este"} {label.toLowerCase()}?
           </p>
           <div className='flex justify-end space-x-2'>
             <Button className='bg-gray-200 text-gray-900 hover:bg-gray-300' onClick={close}>

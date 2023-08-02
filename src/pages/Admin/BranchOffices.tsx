@@ -55,6 +55,7 @@ const BranchOffices = () => {
         opened={branchOffice.openedDelete}
         close={branchOffice.handlersDelete.close}
         onDelete={branchOffice.onDeleteBranchOffice}
+        isFemaleArtcle={true}
       />
     </>
   )

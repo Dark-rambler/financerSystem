@@ -80,6 +80,7 @@ const DepositTable = ({ deposit, isReadonly }: DepositTableProps) => {
         opened={deposit.openedDelete}
         close={deposit.modalDeleteHandler.close}
         onDelete={deposit.onDelete}
+        isFemaleArtcle={false}
       />
     </div>
   )

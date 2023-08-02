@@ -22,7 +22,7 @@ const DollarModal = ({ opened, close, dollar }: DollarModalProps) => {
     <Modal
       opened={opened}
       onClose={close}
-      title={'Sobre'}
+      title={'Dólares'}
       styles={{
         title: { fontSize: '18px', fontWeight: 'bold' },
         body: { padding: '20px' }

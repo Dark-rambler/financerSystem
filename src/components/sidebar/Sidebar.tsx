@@ -60,7 +60,7 @@ const Sidebar = ({ isOpen }: { isOpen: boolean }) => {
               />
             </div>
 
-            <p className='text-sm text-gray-800'>Ordenes de deposito</p>
+            <p className='text-sm text-gray-800'>Ordenes de depósito</p>
           </div>
         </NavLink>
       </div>

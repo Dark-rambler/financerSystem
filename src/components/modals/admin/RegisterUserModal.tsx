@@ -49,7 +49,7 @@ const RegisterUser = ({ user, opened, close }: RegisterUserProps) => {
                 {...user.form.getInputProps('lastName')}
               />
               <TextInput
-                label={'Correo electronico'}
+                label={'Correo electrónico'}
                 placeholder='Correo electronico'
                 withAsterisk
                 {...user.form.getInputProps('email')}

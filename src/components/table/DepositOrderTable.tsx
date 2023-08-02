@@ -16,7 +16,7 @@ import GenerateDepositOrderReport from '../buttons/depositOrder/GenerateDepositO
 import { AG_GRID_LOCALE_ES } from '../../locale/locale.es'
 import { useLoginStore } from '../store/loginStore'
 import { Roles } from '../../enums/Roles'
-
+ 
 interface DepositOrderTableProps {
   depositOrderData: DepositOrderInterface[]
   gridRef: React.MutableRefObject<AgGridReact<DepositOrderInterface> | null>
@@ -134,7 +134,7 @@ const Table = ({
         valueFormatter: params => {
           return `${params.value.toLocaleDateString('es-ES')}`
         },
-        headerName: 'Fecha limite',
+        headerName: 'Fecha límite',
         sortable: true,
         filter: 'agDateColumnFilter',
         resizable: true

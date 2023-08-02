@@ -113,7 +113,7 @@ const CreateDepositOrderReport = () => {
         <div className='flex justify-between'>
           <ReturnButton onClick={() => navigate('/techobol/deposit-order')} />
           <h1 className='text-center text-md font-bold'>
-            INFORME ORDEN DE DEPOSITO
+            INFORME ORDEN DE DEPÓSITO
           </h1>
           <div></div>
         </div>
