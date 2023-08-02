@@ -293,7 +293,18 @@ const CreateDepositOrderReport = () => {
             dollars: dollarData,
             deposits: depositData
           }
-          depositOrderReport.onSendDepositOrderReport(depositOrderReportData)
+
+          const depositOrderData = {
+            deliveredDate: realTimeDate,
+            moneyCollectionAmount: moneyCollection.totalAmount,
+            expenseAmount: expense.totalAmount,
+            dollarAmountUSD: dollar.totalAmount,
+            dollarAmountBs: dollar.totalAmountBs,
+            envelopeAmount: envelope.totalAmount,
+            depositAmount: deposit.totalAmount
+          }
+
+          depositOrderReport.onSendDepositOrderReport(depositOrderReportData, depositOrderData)
         }}
         isLoading={depositOrderReport.isLoading}
       />

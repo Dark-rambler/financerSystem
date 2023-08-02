@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { useParams, useNavigate } from 'react-router-dom'
 
-import { IDepositOrderReport } from '../models/DepositOrderReport'
+import {
+  IDepositOrderReport,
+  IDepositOrderData
+} from '../models/DepositOrderReport'
 
 import { getAllDepositOrderBranchOfficeGivenAnId } from '../services/DepositOrderBranchOffice'
 import {
@@ -63,7 +66,8 @@ export const useDepositOrderReport = () => {
   }, [])
 
   const onSendDepositOrderReport = async (
-    depositOrderData: IDepositOrderReport
+    depositOrderReportData: IDepositOrderReport,
+    depositOrderData: IDepositOrderData
   ) => {
     setIsLoading(() => true)
     const r2Response = await s3.uploadDepositOrderReportFileOfTechoBol(
@@ -85,7 +89,10 @@ export const useDepositOrderReport = () => {
       return
     }
 
-    const depositOrderResponse = await createDepositOrderReport(token, depositOrderData)
+    const depositOrderResponse = await createDepositOrderReport(
+      token,
+      depositOrderReportData
+    )
 
     if (!depositOrderResponse) {
       errorToast('Error al enviar el informe')
@@ -94,8 +101,17 @@ export const useDepositOrderReport = () => {
     }
 
     const body = {
-      reportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}/TECHOBOL/DEPOSIT_ORDER_DOCUMENTS/${depositOrder?.orderNumber} DOCUMENTOS.pdf`,
-      generatedReportUrl: `${import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN}/TECHOBOL/DEPOSIT_ORDER_REPORT/${depositOrder?.orderNumber} INFORME.pdf`
+      reportUrl: `${
+        import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN
+      }/TECHOBOL/DEPOSIT_ORDER_DOCUMENTS/${
+        depositOrder?.orderNumber
+      } DOCUMENTOS.pdf`,
+      generatedReportUrl: `${
+        import.meta.env.VITE_PUBLIC_ACCESS_DOMAIN
+      }/TECHOBOL/DEPOSIT_ORDER_REPORT/${depositOrder?.orderNumber} INFORME.pdf`,
+      status: 'Entregado',
+      revisionStatus: 'Pendiente',
+      ...depositOrderData
     }
 
     const depositOrderStatusResponse =

@@ -141,11 +141,17 @@ export const useDollar = () => {
     return formattedDollars
   }
 
-  const getDollarsFromDepositOrder = async (id: number) => {
+  const getDollarsFromDepositOrder = async (
+    id: number,
+    totalAmountBs: number,
+    totalAmountUSD: number
+  ) => {
     const dollars = await getAllDollarsFromDepositOrder(id, token)
     if (!dollars) return
+  
     setDollars(dollars)
-    calculateAmount()
+    setTotalAmountBs(totalAmountBs)
+    setTotalAmount(totalAmountUSD)
   }
 
   return {
@@ -167,7 +173,9 @@ export const useDollar = () => {
     branchOffices,
     setBranchOffices,
     totalAmount,
+    setTotalAmount,
     totalAmountBs,
+    setTotalAmountBs,
     getFormattedDollars,
     getDollarsFromDepositOrder,
     currentDate,
