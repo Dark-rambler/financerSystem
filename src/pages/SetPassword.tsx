@@ -75,7 +75,7 @@ const SetPassword = () => {
   return (
     <>
       {isTokenValid ? (
-        <div className=' pt-36 flex h-full justify-center'>
+        <div className='flex h-full justify-center items-center'>
           <form
             onSubmit={e => {
               e.preventDefault()
@@ -98,7 +98,7 @@ const SetPassword = () => {
                 </Button>
               </div>
             ) : (
-              <div className=' space-y-5 w-[430px] border-slate-300 rounded-xl bg-white p-8'>
+              <div className=' space-y-5 sm:w-full md:w-[430px] lg:w-[430px] border-slate-300 rounded-xl bg-white p-8'>
                 <div className='space-y-4'>
                   <h1 className=' text-3xl font-bold text-center text-slate-700'>
                     Crear contraseña

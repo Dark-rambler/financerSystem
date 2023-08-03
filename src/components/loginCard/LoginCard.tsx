@@ -12,7 +12,7 @@ const LoginCard = () => {
         authentication.signIn(authentication.email, authentication.password)
       }}
     >
-      <div className=' space-y-8 w-[430px] border-slate-300 rounded-xl bg-white p-8'>
+      <div className=' space-y-8 sm:w-full md:w-[430px] lg:w-[430px] border-slate-300 rounded-xl bg-white p-8'>
         <h1 className=' text-3xl font-bold text-center text-slate-700'>
           Iniciar sesión
         </h1>
