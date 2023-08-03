@@ -1,8 +1,13 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-alpine.css'
-import { ColDef, GridOptions, NumberFilter } from 'ag-grid-community'
+import {
+  ColDef,
+  GridOptions,
+  NumberFilter,
+  GridApi
+} from 'ag-grid-community'
 import { AG_GRID_LOCALE_ES } from '../../../../locale/locale.es'
 
 import { IExpense } from '../../../../models/Expense'
@@ -24,6 +29,9 @@ const ExpenseAGTable = ({
     []
   )
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), [])
+  const [gridApi, setGridApi] = useState<GridApi | null>(null)
+  const [totalMonto, setTotalMonto] = useState<number>(0)
+  const totalMontoRef = useRef<number>(0)
 
   useEffect(() => {
     setRowData(data)
@@ -35,7 +43,8 @@ const ExpenseAGTable = ({
         field: 'depositOrder.orderNumber',
         headerName: 'Orden de depósito',
         sortable: true,
-        comparator: (idA: string, idB: string) => (parseInt(idA.split('-')[1]) - parseInt(idB.split('-')[1])),
+        comparator: (idA: string, idB: string) =>
+          parseInt(idA.split('-')[1]) - parseInt(idB.split('-')[1]),
         filter: true,
         resizable: true
       },
@@ -119,6 +128,39 @@ const ExpenseAGTable = ({
     []
   )
 
+  const onGridReady = (params: { api: GridApi }) => {
+    setGridApi(params.api)
+  }
+
+  useEffect(() => {
+    if (gridApi) {
+      const updateFilteredData = () => {
+        const filteredData: IExpense[] = []
+        gridApi.forEachNodeAfterFilter(node => {
+          filteredData.push(node.data)
+        })
+        filteredExpenseData.current = filteredData
+
+        const totalMonto = filteredData.reduce(
+          (total, row) => total + Number(row.amount || 0),
+          0
+        )
+        setTotalMonto(totalMonto)
+        totalMontoRef.current = totalMonto
+      }
+
+      updateFilteredData()
+
+      gridApi.addEventListener('filterChanged', updateFilteredData)
+
+      return () => {
+        if (gridApi) {
+          gridApi.removeEventListener('filterChanged', updateFilteredData)
+        }
+      }
+    }
+  }, [gridApi, data, filteredExpenseData])
+
   const gridOptions = useMemo<GridOptions>(
     () => ({
       pagination: true,
@@ -146,7 +188,7 @@ const ExpenseAGTable = ({
 
   return (
     <div style={containerStyle}>
-      <div style={{ height: '100%', boxSizing: 'border-box' }}>
+      <div style={{ height: '90%', boxSizing: 'border-box' }}>
         <div style={gridStyle} className='ag-theme-alpine'>
           <AgGridReact
             ref={gridRef}
@@ -154,7 +196,19 @@ const ExpenseAGTable = ({
             columnDefs={columnDefs}
             animateRows={true}
             gridOptions={gridOptions}
+            onGridReady={onGridReady}
           ></AgGridReact>
+          <div
+            style={{
+              textAlign: 'right',
+              padding: '1rem',
+              paddingRight: '2rem',
+              border: '1px solid #BABFC7',
+              borderTop: 'none'
+            }}
+          >
+            Total Salida: {totalMonto.toFixed(2)} Bs.
+          </div>
         </div>
       </div>
     </div>
