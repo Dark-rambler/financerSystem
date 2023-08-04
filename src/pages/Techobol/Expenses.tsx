@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react'
 import { Input, Button } from '@mantine/core'
 import { TbSearch } from 'react-icons/tb'
 import { BsFillFileEarmarkPdfFill } from 'react-icons/bs'
+import { HiArrowTrendingUp } from "react-icons/hi2";
 
 import { useLoginStore } from '../../components/store/loginStore'
 import { IExpense } from '../../models/Expense'
@@ -14,11 +15,15 @@ import ExpenseAGTable from '../../components/table/techobol/AGTables/ExpenseAGTa
 
 import socket from '../../services/SocketIOConnection'
 import { useRealTimeDate } from '../../hooks/useRealTimeDate'
+import StadisticsModal from '../../components/modals/StadisticsModal'
+import { useDisclosure } from '@mantine/hooks'
 
 const Expenses = () => {
   const { token } = useLoginStore()
   const [expenseData, setExpenseData] = useState<IExpense[]>([])
   const realTimeDate = useRealTimeDate()
+  const [isOpen, { open, close }] = useDisclosure()
+  //const { opened, toggle, open, close } = useDisclosure();
 
   const gridRef = useRef<AgGridReact<IExpense>>(null)
   const filteredExpenseData = useRef<IExpense[]>()
@@ -73,6 +78,13 @@ const Expenses = () => {
           </div>
 
           <div className='flex space-x-5'>
+          <Button
+              className='bg-gray-600 hover:bg-gray-700'
+              leftIcon={<HiArrowTrendingUp />}
+              onClick={() => open()}          >
+              Ver estadisticas
+            </Button>
+            <StadisticsModal isOpen={isOpen} onClose={close}/>
             <Button
               className='bg-blue-600 hover:bg-blue-700'
               leftIcon={<BsFillFileEarmarkPdfFill />}
