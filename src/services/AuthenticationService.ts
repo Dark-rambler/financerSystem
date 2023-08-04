@@ -33,9 +33,9 @@ export const validateToken = async (token: string) => {
     )
 
     if (!response.ok) {
-      return true
+      return null
     }
-    return null
+    return true
   } catch {
     return null
   }
