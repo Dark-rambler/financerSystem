@@ -23,6 +23,7 @@
     "@tremor/react": "^3.6.0",
     "ag-grid-community": "^30.0.2",
     "ag-grid-react": "^30.0.2",
+    "date-fns": "^2.30.0",
     "dayjs": "^1.11.9",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.31",

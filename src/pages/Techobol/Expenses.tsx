@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { AgGridReact } from 'ag-grid-react'
-import { Input, Button } from '@mantine/core'
+import { Input, Button,Menu } from '@mantine/core'
 import { TbSearch } from 'react-icons/tb'
 import { BsFillFileEarmarkPdfFill } from 'react-icons/bs'
 import { HiArrowTrendingUp } from "react-icons/hi2";
@@ -17,13 +17,14 @@ import socket from '../../services/SocketIOConnection'
 import { useRealTimeDate } from '../../hooks/useRealTimeDate'
 import StadisticsModal from '../../components/modals/StadisticsModal'
 import { useDisclosure } from '@mantine/hooks'
+import DropDownButton from '../../components/buttons/DropDownButton'
 
 const Expenses = () => {
   const { token } = useLoginStore()
   const [expenseData, setExpenseData] = useState<IExpense[]>([])
   const realTimeDate = useRealTimeDate()
   const [isOpen, { open, close }] = useDisclosure()
-  //const { opened, toggle, open, close } = useDisclosure();
+  const [buscar, setBuscar]= useState("")
 
   const gridRef = useRef<AgGridReact<IExpense>>(null)
   const filteredExpenseData = useRef<IExpense[]>()
@@ -78,14 +79,26 @@ const Expenses = () => {
           </div>
 
           <div className='flex space-x-5'>
-          <Button
+          
+            <Menu shadow="md" width={200}>
+      <Menu.Target>
+      <Button
               className='bg-gray-600 hover:bg-gray-700'
               leftIcon={<HiArrowTrendingUp />}
-              onClick={() => {open(); console.log(expenseData)}}          >
+                   >
               Ver estadisticas
             </Button>
+      </Menu.Target>
+
+      <Menu.Dropdown>
+        <Menu.Label>Salidas</Menu.Label>
+        <Menu.Item onClick={() => {open(); setBuscar("Combustible")}}>Combustible</Menu.Item>
+        <Menu.Item onClick={() => {open(); setBuscar("Transporte")}}>Transporte</Menu.Item>
+        <Menu.Item onClick={() => {open(); setBuscar("Otros")}}>Otros</Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
             
-            <StadisticsModal isOpen={isOpen} onClose={close} />
+            <StadisticsModal isOpen={isOpen} onClose={close} datas={expenseData} buscar={buscar}/>
             <Button
               className='bg-blue-600 hover:bg-blue-700'
               leftIcon={<BsFillFileEarmarkPdfFill />}
