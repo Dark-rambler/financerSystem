@@ -8,6 +8,7 @@ import { Toaster } from 'react-hot-toast'
 import { DatesProvider } from '@mantine/dates'
 import { MantineProvider } from '@mantine/core'
 
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
