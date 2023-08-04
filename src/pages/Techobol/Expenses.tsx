@@ -81,10 +81,11 @@ const Expenses = () => {
           <Button
               className='bg-gray-600 hover:bg-gray-700'
               leftIcon={<HiArrowTrendingUp />}
-              onClick={() => open()}          >
+              onClick={() => {open(); console.log(expenseData)}}          >
               Ver estadisticas
             </Button>
-            <StadisticsModal isOpen={isOpen} onClose={close}/>
+            
+            <StadisticsModal isOpen={isOpen} onClose={close} />
             <Button
               className='bg-blue-600 hover:bg-blue-700'
               leftIcon={<BsFillFileEarmarkPdfFill />}
