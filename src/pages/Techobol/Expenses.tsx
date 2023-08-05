@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { AgGridReact } from 'ag-grid-react'
-import { Input, Button,Menu } from '@mantine/core'
+import { Input, Button, Menu } from '@mantine/core'
 import { TbSearch } from 'react-icons/tb'
 import { BsFillFileEarmarkPdfFill } from 'react-icons/bs'
-import { HiArrowTrendingUp } from "react-icons/hi2";
+import { HiArrowTrendingUp } from 'react-icons/hi2'
 
 import { useLoginStore } from '../../components/store/loginStore'
 import { IExpense } from '../../models/Expense'
@@ -24,11 +24,13 @@ const Expenses = () => {
   const [expenseData, setExpenseData] = useState<IExpense[]>([])
   const realTimeDate = useRealTimeDate()
   const [isOpen, { open, close }] = useDisclosure()
-  const [buscar, setBuscar]= useState("")
+  const [buscar, setBuscar] = useState('')
 
   const gridRef = useRef<AgGridReact<IExpense>>(null)
   const filteredExpenseData = useRef<IExpense[]>()
-
+  const addBuscar = (value: string) => {
+    setBuscar(value)
+  }
   const getExpenses = async () => {
     const data = await getAllExpenses(token)
     if (!data) {
@@ -54,8 +56,11 @@ const Expenses = () => {
     }
   }, [])
 
-  const handleDownloadPDFReport = () => { 
-    generateExpenseReportPDF(filteredExpenseData.current as IExpense[], realTimeDate)
+  const handleDownloadPDFReport = () => {
+    generateExpenseReportPDF(
+      filteredExpenseData.current as IExpense[],
+      realTimeDate
+    )
   }
 
   const onFilterTextBoxChanged = useCallback(() => {
@@ -79,26 +84,25 @@ const Expenses = () => {
           </div>
 
           <div className='flex space-x-5'>
-          
-            <Menu shadow="md" width={200}>
-      <Menu.Target>
-      <Button
-              className='bg-gray-600 hover:bg-gray-700'
-              leftIcon={<HiArrowTrendingUp />}
-                   >
-              Ver estadisticas
-            </Button>
-      </Menu.Target>
+            <Menu shadow='md' width={200}>
+              <Menu.Target>
+                <Button
+                  className='bg-gray-600 hover:bg-gray-700'
+                  leftIcon={<HiArrowTrendingUp />}
+                >
+                  Ver estadisticas
+                </Button>
+              </Menu.Target>
 
-      <Menu.Dropdown>
-        <Menu.Label>Salidas</Menu.Label>
-        <Menu.Item onClick={() => {open(); setBuscar("Combustible")}}>Combustible</Menu.Item>
-        <Menu.Item onClick={() => {open(); setBuscar("Transporte")}}>Transporte</Menu.Item>
-        <Menu.Item onClick={() => {open(); setBuscar("Otros")}}>Otros</Menu.Item>
-      </Menu.Dropdown>
-    </Menu>
-            
-            <StadisticsModal isOpen={isOpen} onClose={close} datas={expenseData} buscar={buscar}/>
+              <DropDownButton open={open}  addBuscar={addBuscar}/>
+            </Menu>
+
+            <StadisticsModal
+              isOpen={isOpen}
+              onClose={close}
+              datas={expenseData}
+              buscar={buscar}
+            />
             <Button
               className='bg-blue-600 hover:bg-blue-700'
               leftIcon={<BsFillFileEarmarkPdfFill />}
@@ -116,7 +120,11 @@ const Expenses = () => {
           </div>
         </div>
         <div className='h-[calc(100%-46px)]'>
-          <ExpenseAGTable data={expenseData} gridRef={gridRef} filteredExpenseData={filteredExpenseData}/>
+          <ExpenseAGTable
+            data={expenseData}
+            gridRef={gridRef}
+            filteredExpenseData={filteredExpenseData}
+          />
         </div>
       </div>
     </>

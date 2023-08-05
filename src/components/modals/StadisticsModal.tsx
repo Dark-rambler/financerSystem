@@ -3,20 +3,6 @@ import {Card, AreaChart, Title} from '@tremor/react'
 import { IExpense } from '../../models/Expense'
 import { format } from 'date-fns';
 
-/*interface DataItem {
- * label: string;
-  value: number;
-}*/
-
-/*interface DataItem {
-  date: string;
-  value: number;
-  name: string;
-  account: string;
-  */
-  // Otras propiedades si las hay
-//}
-
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -26,22 +12,19 @@ interface ModalProps {
 
 const StadisticsModal: React.FC<ModalProps> = ({ isOpen, onClose, datas, buscar }) => {
   const data: IExpense[] = datas
-  console.log(datas)
   const filteredAndTransformedData = data
   .filter(item => item.account?.name === buscar) 
   .map(item => {
     if (item.date) {
       return {
-        date: format(new Date(item.date), 'dd/MM/yyyy'),
+        date: format(new Date(item.date), 'MM/yyyy'),
         Salidas: item.amount,
       };
     }
     return null;
   })
   .filter(Boolean);
-
-console.log(filteredAndTransformedData);
-
+  
   const dataFormatter = (number: number) => {
     return "Bs " + Intl.NumberFormat("Bs").format(number).toString();
   };

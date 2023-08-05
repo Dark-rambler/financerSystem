@@ -1,28 +1,28 @@
-import React from 'react';
-import { IExpense } from '../../models/Expense';
-import { Menu } from '@mantine/core';
+import React from 'react'
 
+import { Menu } from '@mantine/core'
+import { useSubAccount } from '../../hooks/useSubAccount'
 interface ComponentListProps {
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
-  expenses: IExpense[];
+  open: () => void
+
+  addBuscar: (value: string) => void
 }
 
-const DropDownButton: React.FC<ComponentListProps> = ({ isOpen, open, close, expenses }) => {
+const DropDownButton: React.FC<ComponentListProps> = ({ open, addBuscar }) => {
+
+  const expenses= useSubAccount().accounts
   return (
     <div>
-        <Menu.Dropdown >
-           <Menu.Label>Salidas</Menu.Label>
-      {expenses.map(expense => (
-         
-           <Menu.Item key={expense.id} onClick={() => open()}>{expense.account?.name}</Menu.Item>
-         
-      )
-      )}
+      <Menu.Dropdown>
+        <Menu.Label>Salidas</Menu.Label>
+        {expenses.map(expense => (
+          <Menu.Item key={expense.value} onClick={() => {open(), addBuscar(expense.label)}}>
+            {expense.label}
+          </Menu.Item>
+        ))}
       </Menu.Dropdown>
     </div>
-  );
-}; 
+  )
+}
 
-export default DropDownButton;
+export default DropDownButton
