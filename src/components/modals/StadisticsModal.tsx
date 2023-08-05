@@ -46,7 +46,7 @@ console.log(filteredAndTransformedData);
     return "Bs " + Intl.NumberFormat("Bs").format(number).toString();
   };
   return (
-    <Modal opened={isOpen} onClose={onClose} size="xl">
+    <Modal opened={isOpen} onClose={onClose} size="xl">  
       <Card>
         <Title>Salídas mensuales (Bs)</Title>
         <AreaChart
