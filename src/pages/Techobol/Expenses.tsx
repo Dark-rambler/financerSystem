@@ -90,7 +90,7 @@ const Expenses = () => {
                   className='bg-gray-600 hover:bg-gray-700'
                   leftIcon={<HiArrowTrendingUp />}
                 >
-                  Ver estadisticas
+                  Gráfica de datos
                 </Button>
               </Menu.Target>
 
